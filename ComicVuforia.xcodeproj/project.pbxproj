@@ -14,6 +14,18 @@
 		3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3049AB991AA84AF0006DB915 /* Images.xcassets */; };
 		3049AB9D1AA84AF0006DB915 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3049AB9B1AA84AF0006DB915 /* LaunchScreen.xib */; };
 		3049ABA91AA84AF0006DB915 /* ComicVuforiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3049ABA81AA84AF0006DB915 /* ComicVuforiaTests.m */; };
+		30ABDD4C1AA8677A0062A8AB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4B1AA8677A0062A8AB /* CoreVideo.framework */; };
+		30ABDD4E1AA8678D0062A8AB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4D1AA8678D0062A8AB /* CoreMedia.framework */; };
+		30ABDD501AA867960062A8AB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4F1AA867960062A8AB /* AVFoundation.framework */; };
+		30ABDD521AA8679F0062A8AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD511AA8679F0062A8AB /* UIKit.framework */; };
+		30ABDD541AA867A90062A8AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD531AA867A90062A8AB /* Foundation.framework */; };
+		30ABDD561AA867B30062A8AB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD551AA867B30062A8AB /* CoreFoundation.framework */; };
+		30ABDD581AA867BE0062A8AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD571AA867BE0062A8AB /* QuartzCore.framework */; };
+		30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD591AA867CA0062A8AB /* SystemConfiguration.framework */; };
+		30ABDD5C1AA867D40062A8AB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */; };
+		30ABDD5E1AA867DD0062A8AB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */; };
+		30ABDD601AA867E40062A8AB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5F1AA867E40062A8AB /* Security.framework */; };
+		30ABDD621AA8691E0062A8AB /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD611AA8691E0062A8AB /* libVuforia.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +52,18 @@
 		3049ABA21AA84AF0006DB915 /* ComicVuforiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComicVuforiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3049ABA71AA84AF0006DB915 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3049ABA81AA84AF0006DB915 /* ComicVuforiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicVuforiaTests.m; sourceTree = "<group>"; };
+		30ABDD4B1AA8677A0062A8AB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		30ABDD4D1AA8678D0062A8AB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		30ABDD4F1AA867960062A8AB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		30ABDD511AA8679F0062A8AB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		30ABDD531AA867A90062A8AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		30ABDD551AA867B30062A8AB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		30ABDD571AA867BE0062A8AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		30ABDD591AA867CA0062A8AB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		30ABDD5F1AA867E40062A8AB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		30ABDD611AA8691E0062A8AB /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +71,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30ABDD621AA8691E0062A8AB /* libVuforia.a in Frameworks */,
+				30ABDD601AA867E40062A8AB /* Security.framework in Frameworks */,
+				30ABDD5E1AA867DD0062A8AB /* CoreMotion.framework in Frameworks */,
+				30ABDD5C1AA867D40062A8AB /* OpenGLES.framework in Frameworks */,
+				30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */,
+				30ABDD581AA867BE0062A8AB /* QuartzCore.framework in Frameworks */,
+				30ABDD561AA867B30062A8AB /* CoreFoundation.framework in Frameworks */,
+				30ABDD541AA867A90062A8AB /* Foundation.framework in Frameworks */,
+				30ABDD521AA8679F0062A8AB /* UIKit.framework in Frameworks */,
+				30ABDD501AA867960062A8AB /* AVFoundation.framework in Frameworks */,
+				30ABDD4E1AA8678D0062A8AB /* CoreMedia.framework in Frameworks */,
+				30ABDD4C1AA8677A0062A8AB /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +99,7 @@
 		3049AB801AA84AF0006DB915 = {
 			isa = PBXGroup;
 			children = (
+				30ABDD4A1AA867430062A8AB /* Framwork */,
 				3049AB8B1AA84AF0006DB915 /* ComicVuforia */,
 				3049ABA51AA84AF0006DB915 /* ComicVuforiaTests */,
 				3049AB8A1AA84AF0006DB915 /* Products */,
@@ -117,6 +154,25 @@
 				3049ABA71AA84AF0006DB915 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		30ABDD4A1AA867430062A8AB /* Framwork */ = {
+			isa = PBXGroup;
+			children = (
+				30ABDD611AA8691E0062A8AB /* libVuforia.a */,
+				30ABDD5F1AA867E40062A8AB /* Security.framework */,
+				30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */,
+				30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */,
+				30ABDD591AA867CA0062A8AB /* SystemConfiguration.framework */,
+				30ABDD571AA867BE0062A8AB /* QuartzCore.framework */,
+				30ABDD551AA867B30062A8AB /* CoreFoundation.framework */,
+				30ABDD531AA867A90062A8AB /* Foundation.framework */,
+				30ABDD511AA8679F0062A8AB /* UIKit.framework */,
+				30ABDD4F1AA867960062A8AB /* AVFoundation.framework */,
+				30ABDD4D1AA8678D0062A8AB /* CoreMedia.framework */,
+				30ABDD4B1AA8677A0062A8AB /* CoreVideo.framework */,
+			);
+			name = Framwork;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,8 +401,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/jinjie/Downloads/vuforia_sdk/build/include,
+				);
 				INFOPLIST_FILE = ComicVuforia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jinjie/Downloads/vuforia_sdk/build/lib/arm,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -355,8 +420,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/jinjie/Downloads/vuforia_sdk/build/include,
+				);
 				INFOPLIST_FILE = ComicVuforia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jinjie/Downloads/vuforia_sdk/build/lib/arm,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -414,6 +488,7 @@
 				3049ABAE1AA84AF0006DB915 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3049ABAF1AA84AF0006DB915 /* Build configuration list for PBXNativeTarget "ComicVuforiaTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +497,7 @@
 				3049ABB11AA84AF0006DB915 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,25 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="sfJ-2b-aKC"/>
+                        <viewControllerLayoutGuide type="bottom" id="Zn5-I8-5jc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-zg-aVq">
+                                <rect key="frame" x="60" y="80" width="200" height="200"/>
+                                <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Enr-zg-aVq" secondAttribute="height" multiplier="1:1" id="Bka-qc-pXy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <state key="normal">
+                                    <string key="title">开启
+奇幻之旅</string>
+                                    <color key="titleColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="e1k-rL-u1L">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="XmU-56-To9"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="DX4-lq-Nru"/>
+                                    <barButtonItem title="关于" id="o7x-Ac-YlI"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="jkq-mc-a3R"/>
+                                    <barButtonItem title="设置" id="wFH-YQ-G9S"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="8pf-fJ-9UV"/>
+                                </items>
+                            </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z82-Uw-NpE">
+                                <rect key="frame" x="60" y="360" width="200" height="41"/>
+                                <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="应用简介">
+                                    <color key="titleColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="z82-Uw-NpE" firstAttribute="width" secondItem="Enr-zg-aVq" secondAttribute="width" id="AqD-5O-BH8"/>
+                            <constraint firstAttribute="trailing" secondItem="e1k-rL-u1L" secondAttribute="trailing" id="HTU-WX-EMU"/>
+                            <constraint firstAttribute="bottom" secondItem="e1k-rL-u1L" secondAttribute="bottom" id="SgW-dD-99t"/>
+                            <constraint firstItem="Enr-zg-aVq" firstAttribute="top" secondItem="sfJ-2b-aKC" secondAttribute="bottom" constant="60" id="Yd0-GZ-Daz"/>
+                            <constraint firstAttribute="centerX" secondItem="z82-Uw-NpE" secondAttribute="centerX" id="ae8-lK-P7w"/>
+                            <constraint firstItem="e1k-rL-u1L" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fOx-dy-ztG"/>
+                            <constraint firstItem="Enr-zg-aVq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="60" id="qPI-8O-ZcP"/>
+                            <constraint firstItem="z82-Uw-NpE" firstAttribute="top" secondItem="Enr-zg-aVq" secondAttribute="bottom" constant="80" id="rTg-lf-4WY"/>
+                            <constraint firstAttribute="centerX" secondItem="Enr-zg-aVq" secondAttribute="centerX" id="yAJ-xI-Qgo"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="aboutButton" destination="o7x-Ac-YlI" id="wNq-Qy-lfK"/>
+                        <outlet property="briefButton" destination="z82-Uw-NpE" id="Dzb-RZ-V2r"/>
+                        <outlet property="settingButton" destination="wFH-YQ-G9S" id="4oA-aG-yFl"/>
+                        <outlet property="startButton" destination="Enr-zg-aVq" id="gzW-A3-WqD"/>
+                        <outlet property="startLeftSpace" destination="qPI-8O-ZcP" id="p1z-y5-nOJ"/>
+                        <outlet property="startTopSpace" destination="Yd0-GZ-Daz" id="gzM-fM-sLY"/>
+                        <outlet property="toolBar" destination="e1k-rL-u1L" id="rO5-Ha-V1d"/>
+                        <outlet property="toolbarHeight" destination="XmU-56-To9" id="w4F-GM-oWY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="225" y="248"/>
         </scene>
     </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
