@@ -13,7 +13,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <QCAR/DataSet.h>
 #import <QCAR/CameraDevice.h>
 
+#import <QuartzCore/QuartzCore.h>
+#import "ViewController.h"
+
 @interface ImageTargetsViewController ()
+@property (strong, nonatomic) UIButton *returnButton;
+@property (strong, nonatomic) UIButton *switchButton;
+@property (strong, nonatomic) UIButton *voiceButton;
+@property (strong, nonatomic) UIButton *snapButton;
+@property (strong, nonatomic) UIButton *expressionButton;
 
 @end
 
@@ -81,7 +89,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         
     }
     // Create the EAGLView
-    NSLog(@"load view");
     eaglView = [[ImageTargetsEAGLView alloc] initWithFrame:viewFrame appSession:vapp];
     [self setView:eaglView];
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -91,19 +98,95 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [self showLoadingAnimation];
     
     // initialize the AR session
-    NSLog(@"---vapp will initar");
     [vapp initAR: (QCAR::GL_20) ARViewBoundsSize:viewFrame.size orientation:UIInterfaceOrientationPortrait];
-    NSLog(@"+++vapp init ar end");
 }
 
+- (void)addButtons {
+    // add control button
+    _returnButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 30, 100, 30)];
+    _switchButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 130, 100, 30)];
+    _voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 100, 30)];
+    _snapButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 330, 100, 30)];
+    _expressionButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 430, 100, 30)];
+    
+    [_returnButton setTitle:@"返回" forState:UIControlStateNormal];
+    [_switchButton setTitle:@"切换相机" forState:UIControlStateNormal];
+    [_voiceButton setTitle:@"语音交互" forState:UIControlStateNormal];
+    [_snapButton setTitle:@"拍照" forState:UIControlStateNormal];
+    [_expressionButton setTitle:@"表情识别" forState:UIControlStateNormal];
+    
+    // set backgroundcolor
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:[user objectForKey:@"backgroundcolor"]];
+    NSInteger colorIndex = [user integerForKey:@"colorIndex"];
+    if ([user objectForKey:@"colorcount"] != nil) {
+        colorIndex = (colorIndex + 1)%([user integerForKey:@"colorcount"]);
+        [user setInteger:colorIndex forKey:@"colorIndex"];
+    }
+    
+    [_returnButton setTitleColor:color forState:UIControlStateNormal];
+    [_switchButton setTitleColor:color forState:UIControlStateNormal];
+    [_voiceButton setTitleColor:color forState:UIControlStateNormal];
+    [_snapButton setTitleColor:color forState:UIControlStateNormal];
+    [_expressionButton setTitleColor:color forState:UIControlStateNormal];
+    
+    [_returnButton addTarget:self action:@selector(returnFunc:) forControlEvents:UIControlEventTouchDown];
+    [_switchButton addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchDown];
+    [_voiceButton addTarget:self action:@selector(voiceHandle:) forControlEvents:UIControlEventTouchDown];
+    [_snapButton addTarget:self action:@selector(snapImage:) forControlEvents:UIControlEventTouchDown];
+    [_expressionButton addTarget:self action:@selector(expressionRecognize:) forControlEvents:UIControlEventTouchDown];
+    
+    [eaglView addSubview:_returnButton];
+    [eaglView addSubview:_switchButton];
+    [eaglView addSubview:_voiceButton];
+    [eaglView addSubview:_snapButton];
+    [eaglView addSubview:_expressionButton];
+}
+
+- (void)returnFunc:(id)sender {
+    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"storyboardWithViewControllerName" bundle:nil];
+    ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"ViewControllerId"];
+}
+- (void)switchCamera:(id)sender {
+    
+}
+- (void)voiceHandle:(id)sender {
+    
+}
+- (void)setButtonHidden:(BOOL)hidden {
+    _returnButton.hidden = hidden;
+    _switchButton.hidden = hidden;
+    _snapButton.hidden = hidden;
+    _voiceButton.hidden = hidden;
+    _expressionButton.hidden = hidden;
+}
+- (void)snapImage:(id)sender {
+    [self setButtonHidden:YES];
+    
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
+    
+    [self setButtonHidden:NO];
+}
+- (void)expressionRecognize:(id)sender {
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    NSLog(@"enter view did load");
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     [self.view addGestureRecognizer:tapGestureRecognizer];
+    [self prefersStatusBarHidden];
     
+    [self addButtons];
+}
+
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
