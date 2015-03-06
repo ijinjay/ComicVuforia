@@ -36,19 +36,17 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCAR::CameraDevice::getInstance().setFlashTorchMode(false);
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadView
-{
+- (void)loadView {
     // initilize variables
     if (self) {
         vapp = [[QCARSession alloc] initWithDelegate:self];
         
         // Custom initialization
-        self.title = @"Image Targets";
+        self.title = @"Comic Vuforia";
         // Create the EAGLView with the screen dimensions
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         viewFrame = screenBounds;
@@ -99,16 +97,13 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     NSLog(@"enter view did load");
 	// Do any additional setup after loading the view.
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
-//    NSLog(@"self.navigationController.navigationBarHidden: %s", self.navigationController.navigationBarHidden ? "Yes" : "No");
-    NSLog(@"delete the navigationcontroller");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -126,22 +121,19 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [super viewWillDisappear:animated];
 }
 
-- (void)finishOpenGLESCommands
-{
+- (void)finishOpenGLESCommands {
     // Called in response to applicationWillResignActive.  Inform the EAGLView
     [eaglView finishOpenGLESCommands];
 }
 
 
-- (void)freeOpenGLESResources
-{
+- (void)freeOpenGLESResources {
     // Called in response to applicationDidEnterBackground.  Inform the EAGLView
     [eaglView freeOpenGLESResources];
 }
 
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -245,8 +237,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
@@ -264,8 +255,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 // Load the image tracker data set
-- (QCAR::DataSet *)loadObjectTrackerDataSet:(NSString*)dataFile
-{
+- (QCAR::DataSet *)loadObjectTrackerDataSet:(NSString*)dataFile {
     NSLog(@"loadObjectTrackerDataSet (%@)", dataFile);
     QCAR::DataSet * dataSet = NULL;
     
@@ -323,12 +313,10 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCAR::ObjectTracker* objectTracker = static_cast<QCAR::ObjectTracker*>(trackerManager.getTracker(QCAR::ObjectTracker::getClassType()));
     
     // Destroy the data sets:
-    if (!objectTracker->destroyDataSet(dataSetTarmac))
-    {
+    if (!objectTracker->destroyDataSet(dataSetTarmac)) {
         NSLog(@"Failed to destroy data set Tarmac.");
     }
-    if (!objectTracker->destroyDataSet(dataSetStonesAndChips))
-    {
+    if (!objectTracker->destroyDataSet(dataSetStonesAndChips)) {
         NSLog(@"Failed to destroy data set Stones and Chips.");
     }
     
@@ -336,11 +324,9 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     return YES;
 }
 
-- (BOOL)activateDataSet:(QCAR::DataSet *)theDataSet
-{
+- (BOOL)activateDataSet:(QCAR::DataSet *)theDataSet {
     // if we've previously recorded an activation, deactivate it
-    if (dataSetCurrent != nil)
-    {
+    if (dataSetCurrent != nil) {
         [self deactivateDataSet:dataSetCurrent];
     }
     BOOL success = NO;
@@ -352,15 +338,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     if (objectTracker == NULL) {
         NSLog(@"Failed to load tracking data set because the ObjectTracker has not been initialized.");
     }
-    else
-    {
+    else {
         // Activate the data set:
-        if (!objectTracker->activateDataSet(theDataSet))
-        {
+        if (!objectTracker->activateDataSet(theDataSet)) {
             NSLog(@"Failed to activate data set.");
         }
-        else
-        {
+        else {
             NSLog(@"Successfully activated data set.");
             dataSetCurrent = theDataSet;
             success = YES;
@@ -375,10 +358,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     return success;
 }
 
-- (BOOL)deactivateDataSet:(QCAR::DataSet *)theDataSet
-{
-    if ((dataSetCurrent == nil) || (theDataSet != dataSetCurrent))
-    {
+- (BOOL)deactivateDataSet:(QCAR::DataSet *)theDataSet {
+    if ((dataSetCurrent == nil) || (theDataSet != dataSetCurrent)) {
         NSLog(@"Invalid request to deactivate data set.");
         return NO;
     }
@@ -392,19 +373,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCAR::TrackerManager& trackerManager = QCAR::TrackerManager::getInstance();
     QCAR::ObjectTracker* objectTracker = static_cast<QCAR::ObjectTracker*>(trackerManager.getTracker(QCAR::ObjectTracker::getClassType()));
     
-    if (objectTracker == NULL)
-    {
+    if (objectTracker == NULL) {
         NSLog(@"Failed to unload tracking data set because the ObjectTracker has not been initialized.");
     }
-    else
-    {
+    else {
         // Activate the data set:
-        if (!objectTracker->deactivateDataSet(theDataSet))
-        {
+        if (!objectTracker->deactivateDataSet(theDataSet)) {
             NSLog(@"Failed to deactivate data set.");
         }
-        else
-        {
+        else {
             success = YES;
         }
     }
@@ -419,14 +396,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     for (int tIdx = 0; tIdx < theDataSet->getNumTrackables(); tIdx++) {
         QCAR::Trackable* trackable = theDataSet->getTrackable(tIdx);
         if (start) {
-            if (!trackable->startExtendedTracking())
-            {
+            if (!trackable->startExtendedTracking()) {
                 NSLog(@"Failed to start extended tracking on: %s", trackable->getName());
                 result = false;
             }
         } else {
-            if (!trackable->stopExtendedTracking())
-            {
+            if (!trackable->stopExtendedTracking()) {
                 NSLog(@"Failed to stop extended tracking on: %s", trackable->getName());
                 result = false;
             }
@@ -441,13 +416,11 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     return YES;
 }
 
-- (void)autofocus:(UITapGestureRecognizer *)sender
-{
+- (void)autofocus:(UITapGestureRecognizer *)sender {
     [self performSelector:@selector(cameraPerformAutoFocus) withObject:nil afterDelay:.4];
 }
 
-- (void)cameraPerformAutoFocus
-{
+- (void)cameraPerformAutoFocus {
     QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_TRIGGERAUTO);
 }
 
