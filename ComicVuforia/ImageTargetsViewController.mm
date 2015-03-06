@@ -309,9 +309,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         
         // by default, we try to set the continuous auto focus mode
         // and we update menu to reflect the state of continuous auto-focus
-        bool isContinuousAutofocus = QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_CONTINUOUSAUTO);
-//        SampleAppMenu * menu = [SampleAppMenu instance];
-//        [menu setSelectionValueForCommand:C_AUTOFOCUS value:isContinuousAutofocus];
+        QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_CONTINUOUSAUTO);
     } else {
         NSLog(@"Error initializing AR:%@", [initError description]);
         dispatch_async( dispatch_get_main_queue(), ^{
@@ -514,95 +512,5 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)cameraPerformAutoFocus {
     QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_TRIGGERAUTO);
 }
-
-
-#pragma mark - left menu
-
-typedef enum {
-    C_EXTENDED_TRACKING,
-    C_AUTOFOCUS,
-    C_FLASH,
-    C_CAMERA_FRONT,
-    C_CAMERA_REAR,
-    SWITCH_TO_TARMAC,
-    SWITCH_TO_STONES_AND_CHIPS,
-} MENU_COMMAND;
-
-//- (void) prepareMenu {
-//    
-//    SampleAppMenu * menu = [SampleAppMenu prepareWithCommandProtocol:self title:@"Image Targets"];
-//    SampleAppMenuGroup * group;
-//    
-//    group = [menu addGroup:@""];
-//    [group addTextItem:@"Vuforia Samples" command:-1];
-//
-//    group = [menu addGroup:@""];
-//    [group addSelectionItem:@"Extended Tracking" command:C_EXTENDED_TRACKING isSelected:NO];
-//    [group addSelectionItem:@"Autofocus" command:C_AUTOFOCUS isSelected:NO];
-//    [group addSelectionItem:@"Flash" command:C_FLASH isSelected:NO];
-//
-//    group = [menu addSelectionGroup:@"CAMERA"];
-//    [group addSelectionItem:@"Front" command:C_CAMERA_FRONT isSelected:NO];
-//    [group addSelectionItem:@"Rear" command:C_CAMERA_REAR isSelected:YES];
-//
-//    group = [menu addSelectionGroup:@"DATABASE"];
-//    [group addSelectionItem:@"Stones & Chips" command:SWITCH_TO_STONES_AND_CHIPS isSelected:YES];
-//    [group addSelectionItem:@"Tarmac" command:SWITCH_TO_TARMAC isSelected:NO];
-//}
-//
-//- (bool) menuProcess:(SampleAppMenu *) menu command:(int) command value:(bool) value{
-//    bool result = true;
-//    NSError * error = nil;
-//    
-//    switch(command) {
-//        case C_FLASH:
-//            if (!QCAR::CameraDevice::getInstance().setFlashTorchMode(value)) {
-//                result = false;
-//            }
-//            break;
-//            
-//        case C_EXTENDED_TRACKING:
-//            result = [self setExtendedTrackingForDataSet:dataSetCurrent start:value];
-//            if (result) {
-//                [eaglView setOffTargetTrackingMode:value];
-//                extendedTrackingIsOn = value;
-//            }
-//            break;
-//            
-//        case C_CAMERA_FRONT:
-//        case C_CAMERA_REAR: {
-//            if ([vapp stopCamera:&error]) {
-//                result = [vapp startAR:(command == C_CAMERA_FRONT) ? QCAR::CameraDevice::CAMERA_FRONT:QCAR::CameraDevice::CAMERA_BACK error:&error];
-//            } else {
-//                result = false;
-//            }
-//
-//        }
-//            break;
-//            
-//        case C_AUTOFOCUS: {
-//            int focusMode = value ? QCAR::CameraDevice::FOCUS_MODE_CONTINUOUSAUTO : QCAR::CameraDevice::FOCUS_MODE_NORMAL;
-//            result = QCAR::CameraDevice::getInstance().setFocusMode(focusMode);
-//        }
-//            break;
-//            
-//        case SWITCH_TO_TARMAC:
-//            [self setExtendedTrackingForDataSet:dataSetCurrent start:NO];
-//            switchToTarmac = YES;
-//            switchToStonesAndChips = NO;
-//            break;
-//            
-//        case SWITCH_TO_STONES_AND_CHIPS:
-//            [self setExtendedTrackingForDataSet:dataSetCurrent start:NO];
-//            switchToStonesAndChips = YES;
-//            switchToTarmac = NO;
-//            break;
-//            
-//        default:
-//            result = false;
-//            break;
-//    }
-//    return result;
-//}
 
 @end
