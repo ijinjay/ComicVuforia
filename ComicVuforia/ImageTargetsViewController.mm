@@ -23,6 +23,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (strong, nonatomic) UIButton *snapButton;
 @property (strong, nonatomic) UIButton *expressionButton;
 
+@property (nonatomic) BOOL isBackCamera;
+
 @end
 
 @implementation ImageTargetsViewController
@@ -88,6 +90,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
          object:nil];
         
     }
+    _isBackCamera = YES;
     // Create the EAGLView
     eaglView = [[ImageTargetsEAGLView alloc] initWithFrame:viewFrame appSession:vapp];
     [self setView:eaglView];
@@ -144,11 +147,16 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 - (void)returnFunc:(id)sender {
-    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"storyboardWithViewControllerName" bundle:nil];
-    ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"ViewControllerId"];
+    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"home"];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 - (void)switchCamera:(id)sender {
-    
+    NSError * error = nil;
+    if ([vapp stopCamera:&error]) {
+        [vapp startAR:(_isBackCamera ? QCAR::CameraDevice::CAMERA_FRONT : QCAR::CameraDevice::CAMERA_BACK) error:&error];
+        _isBackCamera = !_isBackCamera;
+    }
 }
 - (void)voiceHandle:(id)sender {
     
@@ -180,7 +188,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // Do any additional setup after loading the view.
     [self.view addGestureRecognizer:tapGestureRecognizer];
     [self prefersStatusBarHidden];
-    
+
     [self addButtons];
 }
 
