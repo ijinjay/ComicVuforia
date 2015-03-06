@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>478ECFBF-32AA-449E-8703-6C30AA7DE87D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ComicVuforia</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>4AC0593D2D8453832578001659470193B0B73B0E</key>
+		<string>github.com:jinjaysnow/ComicVuforia.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ComicVuforia.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>4AC0593D2D8453832578001659470193B0B73B0E</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:jinjaysnow/ComicVuforia.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>4AC0593D2D8453832578001659470193B0B73B0E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4AC0593D2D8453832578001659470193B0B73B0E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ComicVuforia</string>
+		</dict>
+	</array>
+</dict>
+</plist>
