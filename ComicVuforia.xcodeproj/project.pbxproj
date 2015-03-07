@@ -48,7 +48,12 @@
 		30ABDD5C1AA867D40062A8AB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */; };
 		30ABDD5E1AA867DD0062A8AB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */; };
 		30ABDD601AA867E40062A8AB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5F1AA867E40062A8AB /* Security.framework */; };
-		30ABDD621AA8691E0062A8AB /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD611AA8691E0062A8AB /* libVuforia.a */; };
+		88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */; };
+		88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */; };
+		88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E821AAAEB0000FD3A53 /* libz.dylib */; };
+		88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */; };
+		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
+		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,7 +124,12 @@
 		30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		30ABDD5F1AA867E40062A8AB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		30ABDD611AA8691E0062A8AB /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
+		88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		88186E821AAAEB0000FD3A53 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		88D256B51AAAE343001261F8 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = ComicVuforia/iflyMSC.framework; sourceTree = "<group>"; };
+		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,11 +137,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30ABDD621AA8691E0062A8AB /* libVuforia.a in Frameworks */,
+				88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */,
+				88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */,
+				30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */,
+				88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */,
+				88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */,
+				88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */,
+				88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */,
 				30ABDD601AA867E40062A8AB /* Security.framework in Frameworks */,
 				30ABDD5E1AA867DD0062A8AB /* CoreMotion.framework in Frameworks */,
 				30ABDD5C1AA867D40062A8AB /* OpenGLES.framework in Frameworks */,
-				30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */,
 				30ABDD581AA867BE0062A8AB /* QuartzCore.framework in Frameworks */,
 				30ABDD561AA867B30062A8AB /* CoreFoundation.framework in Frameworks */,
 				30ABDD541AA867A90062A8AB /* Foundation.framework in Frameworks */,
@@ -155,6 +170,10 @@
 		3049AB801AA84AF0006DB915 = {
 			isa = PBXGroup;
 			children = (
+				88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */,
+				88186E821AAAEB0000FD3A53 /* libz.dylib */,
+				88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */,
+				88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */,
 				30ABDD4A1AA867430062A8AB /* Framwork */,
 				3049AB8B1AA84AF0006DB915 /* ComicVuforia */,
 				3049ABA51AA84AF0006DB915 /* ComicVuforiaTests */,
@@ -296,7 +315,8 @@
 		30ABDD4A1AA867430062A8AB /* Framwork */ = {
 			isa = PBXGroup;
 			children = (
-				30ABDD611AA8691E0062A8AB /* libVuforia.a */,
+				88D256B51AAAE343001261F8 /* iflyMSC.framework */,
+				88ECCDFC1AA9DA28007AF804 /* libVuforia.a */,
 				30ABDD5F1AA867E40062A8AB /* Security.framework */,
 				30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */,
 				30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */,
@@ -561,16 +581,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ComicVuforia",
+				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/jinjie/Downloads/vuforia_sdk/build/include,
+					/Users/jinjay/Downloads/vuforia_sdk/build/include,
 				);
 				INFOPLIST_FILE = ComicVuforia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/jinjie/Downloads/vuforia_sdk/build/lib/arm,
+					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -580,16 +604,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ComicVuforia",
+				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/jinjie/Downloads/vuforia_sdk/build/include,
+					/Users/jinjay/Downloads/vuforia_sdk/build/include,
 				);
 				INFOPLIST_FILE = ComicVuforia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/jinjie/Downloads/vuforia_sdk/build/lib/arm,
+					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

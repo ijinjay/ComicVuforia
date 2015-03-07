@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (assign, nonatomic) id<SampleGLResourceHandler> glResourceHandler;
 
+- (void)captureImage;
 
 @end
 

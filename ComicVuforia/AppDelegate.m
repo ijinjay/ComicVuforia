@@ -10,6 +10,7 @@
 
 @interface AppDelegate ()
 
+- (void)captureImage;
 @end
 
 @implementation AppDelegate
@@ -43,4 +44,22 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+-(UIImage*)captureView:(UIView *)theView
+{
+    CGRect rect = theView.frame;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context =UIGraphicsGetCurrentContext();
+    [theView.layer renderInContext:context];
+    UIImage *img =UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
+
+- (void)captureImage {
+    UIView *view= [self.window snapshotViewAfterScreenUpdates:YES];
+    
+    UIImageWriteToSavedPhotosAlbum([self captureView:view], nil, nil, nil);
+    
+}
 @end

@@ -15,15 +15,26 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
+#import <GLKit/GLKit.h>
 
-@interface ImageTargetsViewController ()
+// Speech Recognize
+#import <iflyMSC/IFlyRecognizerViewDelegate.h>
+#import <iflyMSC/IFlyRecognizerView.h>
+#import <iflyMSC/IFlySpeechUtility.h>
+#import <iflyMSC/IFlySpeechError.h>
+
+@interface ImageTargetsViewController () <IFlyRecognizerViewDelegate>
 @property (strong, nonatomic) UIButton *returnButton;
 @property (strong, nonatomic) UIButton *switchButton;
-@property (strong, nonatomic) UIButton *voiceButton;
+@property (strong, nonatomic) UIButton *speechButton;
 @property (strong, nonatomic) UIButton *snapButton;
 @property (strong, nonatomic) UIButton *expressionButton;
 
 @property (nonatomic) BOOL isBackCamera;
+
+@property (nonatomic, strong) IFlyRecognizerView *speechView;
+@property (nonatomic, strong) NSString *speechResult;
+@property (nonatomic, strong) NSString *endStr;
 
 @end
 
@@ -108,13 +119,13 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // add control button
     _returnButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 30, 100, 30)];
     _switchButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 130, 100, 30)];
-    _voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 100, 30)];
+    _speechButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 100, 30)];
     _snapButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 330, 100, 30)];
     _expressionButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 430, 100, 30)];
     
     [_returnButton setTitle:@"返回" forState:UIControlStateNormal];
     [_switchButton setTitle:@"切换相机" forState:UIControlStateNormal];
-    [_voiceButton setTitle:@"语音交互" forState:UIControlStateNormal];
+    [_speechButton setTitle:@"语音交互" forState:UIControlStateNormal];
     [_snapButton setTitle:@"拍照" forState:UIControlStateNormal];
     [_expressionButton setTitle:@"表情识别" forState:UIControlStateNormal];
     
@@ -129,19 +140,19 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     [_returnButton setTitleColor:color forState:UIControlStateNormal];
     [_switchButton setTitleColor:color forState:UIControlStateNormal];
-    [_voiceButton setTitleColor:color forState:UIControlStateNormal];
+    [_speechButton setTitleColor:color forState:UIControlStateNormal];
     [_snapButton setTitleColor:color forState:UIControlStateNormal];
     [_expressionButton setTitleColor:color forState:UIControlStateNormal];
     
     [_returnButton addTarget:self action:@selector(returnFunc:) forControlEvents:UIControlEventTouchDown];
     [_switchButton addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchDown];
-    [_voiceButton addTarget:self action:@selector(voiceHandle:) forControlEvents:UIControlEventTouchDown];
+    [_speechButton addTarget:self action:@selector(speechHandle:) forControlEvents:UIControlEventTouchDown];
     [_snapButton addTarget:self action:@selector(snapImage:) forControlEvents:UIControlEventTouchDown];
     [_expressionButton addTarget:self action:@selector(expressionRecognize:) forControlEvents:UIControlEventTouchDown];
     
     [eaglView addSubview:_returnButton];
     [eaglView addSubview:_switchButton];
-    [eaglView addSubview:_voiceButton];
+    [eaglView addSubview:_speechButton];
     [eaglView addSubview:_snapButton];
     [eaglView addSubview:_expressionButton];
 }
@@ -158,24 +169,25 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         _isBackCamera = !_isBackCamera;
     }
 }
-- (void)voiceHandle:(id)sender {
+- (void)speechHandle:(id)sender {
     
+    [eaglView addSubview:_speechView];
+    
+    [_speechView start];
 }
 - (void)setButtonHidden:(BOOL)hidden {
     _returnButton.hidden = hidden;
     _switchButton.hidden = hidden;
     _snapButton.hidden = hidden;
-    _voiceButton.hidden = hidden;
+    _speechButton.hidden = hidden;
     _expressionButton.hidden = hidden;
 }
+
 - (void)snapImage:(id)sender {
     [self setButtonHidden:YES];
     
-    UIGraphicsBeginImageContext(self.view.bounds.size);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
+    AppDelegate *ad = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [ad captureImage];
     
     [self setButtonHidden:NO];
 }
@@ -190,6 +202,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [self prefersStatusBarHidden];
 
     [self addButtons];
+    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",@"54faa960"];
+    [IFlySpeechUtility createUtility:initString];
+    _speechView = [[IFlyRecognizerView alloc] initWithCenter:CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0)];
+    [_speechView setParameter:@"iat" forKey:@"domain"];
+    [_speechView setParameter:@"500" forKey:@"vad_eos"];
+    _speechView.delegate = self;
 }
 
 
@@ -511,6 +529,54 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 - (void)cameraPerformAutoFocus {
     QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_TRIGGERAUTO);
+}
+
+#pragma mark - IFlyRecognization
+
+/** 回调返回识别结果
+ 
+ @param resultArray 识别结果，NSArray的第一个元素为NSDictionary，NSDictionary的key为识别结果，value为置信度
+ @param isLast      -[out] 是否最后一个结果
+ */
+- (void)onResult:(NSArray *)resultArray isLast:(BOOL) isLast {
+    NSArray * temp = [[NSArray alloc]init];
+    NSString * str = [[NSString alloc]init];
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSDictionary *dic = resultArray[0];
+    for (NSString *key in dic) {
+        [result appendFormat:@"%@",key];
+    }
+    
+    NSLog(@"听写结果：%@",result);
+    //---------讯飞语音识别JSON数据解析---------//
+    NSError * error;
+    NSData * data = [result dataUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"data: %@",data);
+    NSDictionary * dic_result =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+    NSArray * array_ws = [dic_result objectForKey:@"ws"];
+    //遍历识别结果的每一个单词
+    for (int i=0; i<array_ws.count; i++) {
+        temp = [[array_ws objectAtIndex:i] objectForKey:@"cw"];
+        NSDictionary * dic_cw = [temp objectAtIndex:0];
+        str = [str  stringByAppendingString:[dic_cw objectForKey:@"w"]];
+        NSLog(@"识别结果:%@",[dic_cw objectForKey:@"w"]);
+    }
+    NSLog(@"最终的识别结果:%@",str);
+    //去掉识别结果最后的标点符号
+    if ([str isEqualToString:@"。"] || [str isEqualToString:@"？"] || [str isEqualToString:@"！"]) {
+        NSLog(@"末尾标点符号：%@",str);
+        _endStr = str;
+    } else {
+        _speechResult = str;
+    }
+}
+
+/** 识别结束回调
+ 
+ @param error 识别结束错误码
+ */
+- (void)onError: (IFlySpeechError *) error {
+    NSLog(@"%@", [error errorDesc]);
 }
 
 @end
