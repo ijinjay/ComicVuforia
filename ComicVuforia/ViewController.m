@@ -48,8 +48,11 @@
     UIColor *color3 = [UIColor colorWithRed:(231/255.0) green:(76/255.0) blue:(60/255.0) alpha:1.0];
     UIColor *color4 = [UIColor colorWithRed:(0/255.0) green:(213/255.0) blue:(255/255.0) alpha:1.0];
     UIColor *color5 = [UIColor colorWithRed:(255/255.0) green:(51/255.0) blue:(146/255.0) alpha:1.0];
+    UIColor *color6 = [UIColor colorWithRed:(254/255.0) green:(247/255.0) blue:(4/255.0) alpha:1.0];
+    UIColor *color7 = [UIColor colorWithRed:(231/255.0) green:(76/255.0) blue:(60/255.0) alpha:1.0];
+
     
-    NSArray *colorArray = [[NSArray alloc] initWithObjects:color1, color2, color3, color4, color5, nil];
+    NSArray *colorArray = [[NSArray alloc] initWithObjects:color1, color2, color3, color4, color5, color6, color7, nil];
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([user objectForKey:@"colorIndex"] == nil) {

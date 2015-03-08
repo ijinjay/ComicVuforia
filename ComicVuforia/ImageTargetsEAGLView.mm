@@ -16,6 +16,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <QCAR/Renderer.h>
 #import <QCAR/TrackableResult.h>
 #import <QCAR/VideoBackgroundConfig.h>
+#import <QCAR/Image.h>
 
 #import "ImageTargetsEAGLView.h"
 #import "Texture.h"
@@ -23,6 +24,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "SampleApplicationShaderUtils.h"
 #import "Teapot.h"
 
+#import <OpenGLES/ES1/glext.h>
 
 //******************************************************************************
 // *** OpenGL ES thread safety ***
@@ -67,7 +69,7 @@ namespace {
 - (void)deleteFramebuffer;
 - (void)setFramebuffer;
 - (BOOL)presentFramebuffer;
-
+- (void)savePhoto;
 @end
 
 
@@ -75,8 +77,7 @@ namespace {
 
 // You must implement this method, which ensures the view's underlying layer is
 // of type CAEAGLLayer
-+ (Class)layerClass
-{
++ (Class)layerClass {
     return [CAEAGLLayer class];
 }
 
@@ -84,8 +85,7 @@ namespace {
 //------------------------------------------------------------------------------
 #pragma mark - Lifecycle
 
-- (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app
-{
+- (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app {
     self = [super initWithFrame:frame];
     
     if (self) {
@@ -120,7 +120,7 @@ namespace {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, [augmentationTexture[i] width], [augmentationTexture[i] height], 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)[augmentationTexture[i] pngData]);
         }
-
+        
         offTargetTrackingEnabled = NO;
         
         [self loadBuildingsModel];
@@ -131,8 +131,7 @@ namespace {
 }
 
 
-- (void)dealloc
-{
+- (void)dealloc {
     [self deleteFramebuffer];
     
     // Tear down context
@@ -142,8 +141,7 @@ namespace {
 }
 
 
-- (void)finishOpenGLESCommands
-{
+- (void)finishOpenGLESCommands {
     // Called in response to applicationWillResignActive.  The render loop has
     // been stopped, so we now make sure all OpenGL ES commands complete before
     // we (potentially) go into the background
@@ -154,8 +152,7 @@ namespace {
 }
 
 
-- (void)freeOpenGLESResources
-{
+- (void)freeOpenGLESResources {
     // Called in response to applicationDidEnterBackground.  Free easily
     // recreated OpenGL ES resources
     [self deleteFramebuffer];
@@ -171,6 +168,31 @@ namespace {
     [buildingModel read];
 }
 
+// generate UIImage from QCAR:Image
+void releasePixels(void *info, const void *data, size_t size) {
+    // do nothing
+}
+- (UIImage *)createUIImage:(const QCAR::Image *)qcarImage {
+    int width = qcarImage->getWidth();
+    int height = qcarImage->getHeight();
+    int bitsPerComponent = 8;
+    int bitsPerPixel = QCAR::getBitsPerPixel(QCAR::RGB888);
+    int bytesPerRow = qcarImage->getBufferWidth() * bitsPerPixel / bitsPerComponent;
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNone;
+    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+    
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, qcarImage->getPixels(), QCAR::getBufferSize(width, height, QCAR::RGB888), releasePixels);
+    
+    CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+    UIImage *image = [UIImage imageWithCGImage:imageRef];
+    
+    CGDataProviderRelease(provider);
+    CGColorSpaceRelease(colorSpaceRef);
+    CGImageRelease(imageRef);
+    
+    return image;
+}
 
 //------------------------------------------------------------------------------
 #pragma mark - UIGLViewProtocol methods
@@ -181,8 +203,8 @@ namespace {
 // the screen.
 //
 // *** QCAR will call this method periodically on a background thread ***
-- (void)renderFrameQCAR
-{
+static int queryFrequency = 0;
+- (void)renderFrameQCAR {
     [self setFramebuffer];
     
     // Clear colour and depth buffers
@@ -191,6 +213,23 @@ namespace {
     // Render video background and retrieve tracking state
     QCAR::State state = QCAR::Renderer::getInstance().begin();
     QCAR::Renderer::getInstance().drawVideoBackground();
+    
+    QCAR::setFrameFormat(QCAR::RGB888, YES);
+    
+    // QCAR::Image -> UIImage
+    if ((queryFrequency++) == 30) {
+        QCAR::Frame frame = state.getFrame();
+        NSLog(@"-------");
+        for (int i = 0; i < frame.getNumImages(); i++) {
+            const QCAR::Image *qcarImage = frame.getImage(i);
+            NSLog(@"format: %d", qcarImage->getFormat());
+            if (qcarImage->getFormat() == QCAR::RGB888) {
+                _frameImage = [self createUIImage:qcarImage];
+                NSLog(@"frameImage size: %lf, %lf", _frameImage.size.height, _frameImage.size.width);
+            }
+        }
+        queryFrequency = 0;
+    }
     
     glEnable(GL_DEPTH_TEST);
     // We must detect if background reflection is active and adjust the culling direction.
@@ -286,8 +325,7 @@ namespace {
 //------------------------------------------------------------------------------
 #pragma mark - OpenGL ES management
 
-- (void)initShaders
-{
+- (void)initShaders {
     shaderProgramID = [SampleApplicationShaderUtils createProgramWithVertexShaderFileName:@"Simple.vertsh"
                                                    fragmentShaderFileName:@"Simple.fragsh"];
 
@@ -304,8 +342,7 @@ namespace {
 }
 
 
-- (void)createFramebuffer
-{
+- (void)createFramebuffer {
     if (context) {
         // Create default framebuffer object
         glGenFramebuffers(1, &defaultFramebuffer);
@@ -337,8 +374,7 @@ namespace {
 }
 
 
-- (void)deleteFramebuffer
-{
+- (void)deleteFramebuffer {
     if (context) {
         [EAGLContext setCurrentContext:context];
         
@@ -360,8 +396,7 @@ namespace {
 }
 
 
-- (void)setFramebuffer
-{
+- (void)setFramebuffer {
     // The EAGLContext must be set for each thread that wishes to use it.  Set
     // it the first time this method is called (on the render thread)
     if (context != [EAGLContext currentContext]) {
@@ -379,8 +414,7 @@ namespace {
 }
 
 
-- (BOOL)presentFramebuffer
-{
+- (BOOL)presentFramebuffer {
     // setFramebuffer must have been called before presentFramebuffer, therefore
     // we know the context is valid and has been set for this (render) thread
     
@@ -390,6 +424,12 @@ namespace {
     return [context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
-
+- (void)savePhoto{
+    UIGraphicsBeginImageContext(self.frame.size);
+    [self drawViewHierarchyInRect:self.frame afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+}
 
 @end

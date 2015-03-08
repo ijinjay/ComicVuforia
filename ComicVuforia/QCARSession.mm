@@ -63,8 +63,7 @@ namespace {
 @implementation QCARSession
 @synthesize viewport;
 
-- (id)initWithDelegate:(id<ApplicationControl>) delegate
-{
+- (id)initWithDelegate:(id<ApplicationControl>) delegate {
     self = [super init];
     if (self) {
         self.delegate = delegate;
@@ -75,8 +74,7 @@ namespace {
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     instance = nil;
     [self setDelegate:nil];
 }
@@ -102,8 +100,7 @@ namespace {
 }
 
 // Determine whether the device has a retina display
-- (BOOL)isRetinaDisplay
-{
+- (BOOL)isRetinaDisplay {
     // If UIScreen mainScreen responds to selector
     // displayLinkWithTarget:selector: and the scale property is 2.0, then this
     // is a retina display
@@ -132,8 +129,7 @@ namespace {
 
 // Initialise QCAR
 // (Performed on a background thread)
-- (void)initQCARInBackground
-{
+- (void)initQCARInBackground {
     // Background thread must have its own autorelease pool
     @autoreleasepool {
         QCAR::setInitParameters(mQCARInitFlags, "62e60124470947828458564e09208326");
@@ -201,8 +197,7 @@ namespace {
 // Prompts a dialog to warn the user that
 // the camera access was not granted to this App and
 // to provide instructions on how to restore it.
--(void) showCameraAccessWarning
-{
+-(void) showCameraAccessWarning {
     NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
     NSString *message = [NSString stringWithFormat:@"User denied camera access to this App. To restore camera access, go to: \nSettings > Privacy > Camera > %@ and turn it ON.", appName];
     
@@ -212,8 +207,7 @@ namespace {
 }
 
 // Quit App when user dismisses the camera access alert dialog
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([alertView.title isEqualToString:@"iOS8 Camera Access Warning"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"kDismissAppViewController" object:nil];
     }
@@ -344,8 +338,7 @@ namespace {
 }
 
 // *** Performed on a background thread ***
-- (void)loadTrackerDataInBackground
-{
+- (void)loadTrackerDataInBackground {
     // Background thread must have its own autorelease pool
     @autoreleasepool {
         // the application can now prepare the loading of the data
@@ -359,8 +352,7 @@ namespace {
 }
 
 // Configure QCAR with the video background size
-- (void)configureVideoBackgroundWithViewWidth:(float)viewWidth andHeight:(float)viewHeight
-{
+- (void)configureVideoBackgroundWithViewWidth:(float)viewWidth andHeight:(float)viewHeight {
     // Get the default video mode
     QCAR::CameraDevice& cameraDevice = QCAR::CameraDevice::getInstance();
     QCAR::VideoMode videoMode = cameraDevice.getVideoMode(QCAR::CameraDevice::MODE_DEFAULT);
@@ -491,8 +483,7 @@ namespace {
 }
 
 // Start QCAR camera with the specified view size
-- (bool)startCamera:(QCAR::CameraDevice::CAMERA)camera viewWidth:(float)viewWidth andHeight:(float)viewHeight error:(NSError **)error
-{
+- (bool)startCamera:(QCAR::CameraDevice::CAMERA)camera viewWidth:(float)viewWidth andHeight:(float)viewHeight error:(NSError **)error {
     // initialize the camera
     if (! QCAR::CameraDevice::getInstance().init(camera)) {
         [self NSErrorWithCode:-1 error:error];
@@ -613,8 +604,7 @@ namespace {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Callback function called by the tracker when each tracking cycle has finished
-void VuforiaApplication_UpdateCallback::QCAR_onUpdate(QCAR::State& state)
-{
+void VuforiaApplication_UpdateCallback::QCAR_onUpdate(QCAR::State& state) {
     if (instance != nil) {
         [instance QCAR_onUpdate:&state];
     }

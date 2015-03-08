@@ -48,10 +48,13 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCARSession * vapp;
 }
 
+@property (nonatomic) UIImage *frameImage;
+
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;
 
 - (void)finishOpenGLESCommands;
 - (void)freeOpenGLESResources;
 
 - (void) setOffTargetTrackingMode:(BOOL) enabled;
+- (void)savePhoto;
 @end

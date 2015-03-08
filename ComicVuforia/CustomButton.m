@@ -14,8 +14,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setTitle:title forState:UIControlStateNormal];
-        [self setBackgroundColor:color];
         self.titleLabel.font = font;
+        self.backgroundColor = [color colorWithAlphaComponent:0.5f];
     }
     return self;
 }

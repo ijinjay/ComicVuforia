@@ -53,6 +53,10 @@
 		88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */; };
 		88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E821AAAEB0000FD3A53 /* libz.dylib */; };
 		88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */; };
+		886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 886BE8301AABEAFA0049F68B /* MBProgressHUD.m */; };
+		886BE8341AAC1A220049F68B /* insight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8321AAC1A220049F68B /* insight.framework */; };
+		886BE8351AAC1A220049F68B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8331AAC1A220049F68B /* opencv2.framework */; };
+		886BE8371AAC1A390049F68B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8361AAC1A390049F68B /* libcurl.a */; };
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
@@ -131,6 +135,11 @@
 		88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		88186E821AAAEB0000FD3A53 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		886BE82F1AABEAFA0049F68B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		886BE8301AABEAFA0049F68B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		886BE8321AAC1A220049F68B /* insight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = insight.framework; path = ComicVuforia/InSight/insight.framework; sourceTree = "<group>"; };
+		886BE8331AAC1A220049F68B /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ComicVuforia/InSight/opencv2.framework; sourceTree = "<group>"; };
+		886BE8361AAC1A390049F68B /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ComicVuforia/InSight/curl/lib/libcurl.a; sourceTree = "<group>"; };
 		88D256B51AAAE343001261F8 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = ComicVuforia/iflyMSC.framework; sourceTree = "<group>"; };
 		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +149,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				886BE8371AAC1A390049F68B /* libcurl.a in Frameworks */,
+				886BE8341AAC1A220049F68B /* insight.framework in Frameworks */,
+				886BE8351AAC1A220049F68B /* opencv2.framework in Frameworks */,
 				88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */,
 				88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */,
 				30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */,
@@ -173,10 +185,9 @@
 		3049AB801AA84AF0006DB915 = {
 			isa = PBXGroup;
 			children = (
-				88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */,
-				88186E821AAAEB0000FD3A53 /* libz.dylib */,
-				88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */,
-				88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */,
+				886BE8361AAC1A390049F68B /* libcurl.a */,
+				886BE8321AAC1A220049F68B /* insight.framework */,
+				886BE8331AAC1A220049F68B /* opencv2.framework */,
 				30ABDD4A1AA867430062A8AB /* Framwork */,
 				3049AB8B1AA84AF0006DB915 /* ComicVuforia */,
 				3049ABA51AA84AF0006DB915 /* ComicVuforiaTests */,
@@ -263,6 +274,8 @@
 				880D65A91AABD17300AEAE61 /* CustomButton.m */,
 				306619441AA937BE00F4D8C9 /* ImageTargetsEAGLView.h */,
 				306619451AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm */,
+				886BE82F1AABEAFA0049F68B /* MBProgressHUD.h */,
+				886BE8301AABEAFA0049F68B /* MBProgressHUD.m */,
 				306619461AA937BE00F4D8C9 /* ImageTargetsViewController.h */,
 				306619471AA937BE00F4D8C9 /* ImageTargetsViewController.mm */,
 				306619531AA9384F00F4D8C9 /* shaders */,
@@ -320,6 +333,10 @@
 		30ABDD4A1AA867430062A8AB /* Framwork */ = {
 			isa = PBXGroup;
 			children = (
+				88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */,
+				88186E821AAAEB0000FD3A53 /* libz.dylib */,
+				88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */,
+				88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */,
 				88D256B51AAAE343001261F8 /* iflyMSC.framework */,
 				88ECCDFC1AA9DA28007AF804 /* libVuforia.a */,
 				30ABDD5F1AA867E40062A8AB /* Security.framework */,
@@ -460,6 +477,7 @@
 				880D65AA1AABD17300AEAE61 /* CustomButton.m in Sources */,
 				306619481AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm in Sources */,
 				306619491AA937BE00F4D8C9 /* ImageTargetsViewController.mm in Sources */,
+				886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */,
 				3049AB8F1AA84AF0006DB915 /* main.m in Sources */,
 				3066195B1AA9384F00F4D8C9 /* SampleApplication3DModel.m in Sources */,
 				306619421AA9357C00F4D8C9 /* QCARSession.mm in Sources */,
@@ -590,6 +608,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ComicVuforia",
+					"$(PROJECT_DIR)/ComicVuforia/InSight",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -601,6 +620,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
+					"$(PROJECT_DIR)/ComicVuforia/InSight/curl/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -613,6 +633,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ComicVuforia",
+					"$(PROJECT_DIR)/ComicVuforia/InSight",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -624,6 +645,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
+					"$(PROJECT_DIR)/ComicVuforia/InSight/curl/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

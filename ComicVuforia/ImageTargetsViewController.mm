@@ -24,6 +24,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <iflyMSC/IFlySpeechError.h>
 
 #import "CustomButton.h"
+#import "MBProgressHUD.h"
+
 
 @interface ImageTargetsViewController () <IFlyRecognizerViewDelegate>
 @property (strong, nonatomic) CustomButton *returnButton;
@@ -35,8 +37,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (nonatomic) BOOL isBackCamera;
 
 @property (nonatomic, strong) IFlyRecognizerView *speechView;
-@property (nonatomic, strong) NSString *speechResult;
-@property (nonatomic, strong) NSString *endStr;
+@property (nonatomic, strong) NSString *speechResult; // speech recognize result
+@property (nonatomic, strong) NSString *endStr;       // speech recognize end punctuation
 
 @end
 
@@ -49,7 +51,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         NSLog(@"Error pausing AR:%@", [error description]);
     }
 }
-
 - (void) resumeAR {
     NSError * error = nil;
     if(! [vapp resumeAR:&error]) {
@@ -62,7 +63,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 - (void)loadView {
     // initilize variables
     if (self) {
@@ -116,7 +116,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // initialize the AR session
     [vapp initAR: (QCAR::GL_20) ARViewBoundsSize:viewFrame.size orientation:UIInterfaceOrientationPortrait];
 }
-
 - (void)addButtons {
     // add control button
     CGFloat fontSize = 20.0;
@@ -141,7 +140,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _returnButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, 0, deviceWidth/3.0, 40*scale) andTitle:@"返回" andBackgroundColor:color andFont:buttonFont];
     _switchButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, 0, deviceWidth/3.0, 40*scale) andTitle:@"切换相机" andBackgroundColor:color andFont:buttonFont];
     _speechButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"语音交互" andBackgroundColor:color andFont:buttonFont];
-    _snapButton   = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0, deviceHeight-40*scale*1.2, deviceWidth/3.0, 40*scale*1.2) andTitle:@"拍照" andBackgroundColor:color andFont:buttonFont];
+    _snapButton   = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0, deviceHeight-40*scale*1.5, deviceWidth/3.0, 40*scale*1.5) andTitle:@"拍照" andBackgroundColor:color andFont:buttonFont];
     _expressionButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"表情识别" andBackgroundColor:color andFont:buttonFont];
     
     [_returnButton addTarget:self action:@selector(returnFunc:) forControlEvents:UIControlEventTouchDown];
@@ -157,6 +156,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [eaglView addSubview:_expressionButton];
 }
 
+// button callback
 - (void)returnFunc:(id)sender {
     UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"home"];
@@ -185,11 +185,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 - (void)snapImage:(id)sender {
     [self setButtonHidden:YES];
-    
-    AppDelegate *ad = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [ad captureImage];
+
+    [eaglView savePhoto];
     
     [self setButtonHidden:NO];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = @"拍照成功";
+    [hud hide:YES afterDelay:0.5];
 }
 - (void)expressionRecognize:(id)sender {
     
@@ -209,14 +213,10 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [_speechView setParameter:@"500" forKey:@"vad_eos"];
     _speechView.delegate = self;
 }
-
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
-
 - (void)viewWillDisappear:(BOOL)animated {
-    
     [vapp stopAR:nil];
     // Be a good OpenGL ES citizen: now that QCAR is paused and the render
     // thread is not executing, inform the root view controller that the
@@ -229,22 +229,18 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
     [super viewWillDisappear:animated];
 }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 - (void)finishOpenGLESCommands {
     // Called in response to applicationWillResignActive.  Inform the EAGLView
     [eaglView finishOpenGLESCommands];
 }
-
-
 - (void)freeOpenGLESResources {
     // Called in response to applicationDidEnterBackground.  Inform the EAGLView
     [eaglView freeOpenGLESResources];
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -348,8 +344,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
-
-
 - (void) onQCARUpdate: (QCAR::State *) state {
     if (switchToTarmac) {
         [self activateDataSet:dataSetTarmac];
@@ -393,7 +387,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     return dataSet;
 }
-
 
 - (bool) doStopTrackers {
     // Stop the tracker
@@ -532,7 +525,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 #pragma mark - IFlyRecognization
-
 /** 回调返回识别结果
  
  @param resultArray 识别结果，NSArray的第一个元素为NSDictionary，NSDictionary的key为识别结果，value为置信度
@@ -568,6 +560,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         _endStr = str;
     } else {
         _speechResult = str;
+    }
+    if (isLast) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = _speechResult;
+        [hud hide:YES afterDelay:1.0];
     }
 }
 
