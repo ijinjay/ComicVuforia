@@ -48,6 +48,7 @@
 		30ABDD5C1AA867D40062A8AB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */; };
 		30ABDD5E1AA867DD0062A8AB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */; };
 		30ABDD601AA867E40062A8AB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD5F1AA867E40062A8AB /* Security.framework */; };
+		880D65AA1AABD17300AEAE61 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 880D65A91AABD17300AEAE61 /* CustomButton.m */; };
 		88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */; };
 		88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */; };
 		88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E821AAAEB0000FD3A53 /* libz.dylib */; };
@@ -124,6 +125,8 @@
 		30ABDD5B1AA867D40062A8AB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		30ABDD5D1AA867DD0062A8AB /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		30ABDD5F1AA867E40062A8AB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		880D65A81AABD16100AEAE61 /* CustomButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
+		880D65A91AABD17300AEAE61 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
 		88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		88186E821AAAEB0000FD3A53 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -256,6 +259,8 @@
 				306619581AA9384F00F4D8C9 /* Teapot.h */,
 				306619591AA9384F00F4D8C9 /* Texture.h */,
 				3066195A1AA9384F00F4D8C9 /* Texture.mm */,
+				880D65A81AABD16100AEAE61 /* CustomButton.h */,
+				880D65A91AABD17300AEAE61 /* CustomButton.m */,
 				306619441AA937BE00F4D8C9 /* ImageTargetsEAGLView.h */,
 				306619451AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm */,
 				306619461AA937BE00F4D8C9 /* ImageTargetsViewController.h */,
@@ -452,6 +457,7 @@
 				306619621AA9384F00F4D8C9 /* Texture.mm in Sources */,
 				3049AB951AA84AF0006DB915 /* ViewController.m in Sources */,
 				3049AB921AA84AF0006DB915 /* AppDelegate.m in Sources */,
+				880D65AA1AABD17300AEAE61 /* CustomButton.m in Sources */,
 				306619481AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm in Sources */,
 				306619491AA937BE00F4D8C9 /* ImageTargetsViewController.mm in Sources */,
 				3049AB8F1AA84AF0006DB915 /* main.m in Sources */,

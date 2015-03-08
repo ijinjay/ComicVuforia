@@ -23,12 +23,14 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <iflyMSC/IFlySpeechUtility.h>
 #import <iflyMSC/IFlySpeechError.h>
 
+#import "CustomButton.h"
+
 @interface ImageTargetsViewController () <IFlyRecognizerViewDelegate>
-@property (strong, nonatomic) UIButton *returnButton;
-@property (strong, nonatomic) UIButton *switchButton;
-@property (strong, nonatomic) UIButton *speechButton;
-@property (strong, nonatomic) UIButton *snapButton;
-@property (strong, nonatomic) UIButton *expressionButton;
+@property (strong, nonatomic) CustomButton *returnButton;
+@property (strong, nonatomic) CustomButton *switchButton;
+@property (strong, nonatomic) CustomButton *speechButton;
+@property (strong, nonatomic) CustomButton *snapButton;
+@property (strong, nonatomic) CustomButton *expressionButton;
 
 @property (nonatomic) BOOL isBackCamera;
 
@@ -117,18 +119,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 - (void)addButtons {
     // add control button
-    _returnButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 30, 100, 30)];
-    _switchButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 130, 100, 30)];
-    _speechButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 100, 30)];
-    _snapButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 330, 100, 30)];
-    _expressionButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 430, 100, 30)];
+    CGFloat fontSize = 20.0;
+    NSInteger scale = 1;
+    // 更新iPad的界面
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        scale = 2;
+    }
     
-    [_returnButton setTitle:@"返回" forState:UIControlStateNormal];
-    [_switchButton setTitle:@"切换相机" forState:UIControlStateNormal];
-    [_speechButton setTitle:@"语音交互" forState:UIControlStateNormal];
-    [_snapButton setTitle:@"拍照" forState:UIControlStateNormal];
-    [_expressionButton setTitle:@"表情识别" forState:UIControlStateNormal];
-    
+    CGFloat deviceWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat deviceHeight= [[UIScreen mainScreen] bounds].size.height;
     // set backgroundcolor
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:[user objectForKey:@"backgroundcolor"]];
@@ -138,11 +137,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         [user setInteger:colorIndex forKey:@"colorIndex"];
     }
     
-    [_returnButton setTitleColor:color forState:UIControlStateNormal];
-    [_switchButton setTitleColor:color forState:UIControlStateNormal];
-    [_speechButton setTitleColor:color forState:UIControlStateNormal];
-    [_snapButton setTitleColor:color forState:UIControlStateNormal];
-    [_expressionButton setTitleColor:color forState:UIControlStateNormal];
+    UIFont *buttonFont = [UIFont systemFontOfSize:fontSize * scale];
+    _returnButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, 0, deviceWidth/3.0, 40*scale) andTitle:@"返回" andBackgroundColor:color andFont:buttonFont];
+    _switchButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, 0, deviceWidth/3.0, 40*scale) andTitle:@"切换相机" andBackgroundColor:color andFont:buttonFont];
+    _speechButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"语音交互" andBackgroundColor:color andFont:buttonFont];
+    _snapButton   = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0, deviceHeight-40*scale*1.2, deviceWidth/3.0, 40*scale*1.2) andTitle:@"拍照" andBackgroundColor:color andFont:buttonFont];
+    _expressionButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"表情识别" andBackgroundColor:color andFont:buttonFont];
     
     [_returnButton addTarget:self action:@selector(returnFunc:) forControlEvents:UIControlEventTouchDown];
     [_switchButton addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchDown];

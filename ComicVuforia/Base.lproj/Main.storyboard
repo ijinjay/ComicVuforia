@@ -14,11 +14,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Zn5-I8-5jc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="e1k-rL-u1L">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="XmU-56-To9"/>
                                 </constraints>
@@ -31,7 +31,7 @@
                                 </items>
                             </toolbar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z82-Uw-NpE">
-                                <rect key="frame" x="60" y="360" width="200" height="41"/>
+                                <rect key="frame" x="60" y="415" width="255" height="41"/>
                                 <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="应用简介">
@@ -40,7 +40,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-zg-aVq">
-                                <rect key="frame" x="60" y="80" width="200" height="200"/>
+                                <rect key="frame" x="60" y="80" width="255" height="255"/>
                                 <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Enr-zg-aVq" secondAttribute="height" multiplier="1:1" id="Bka-qc-pXy"/>
@@ -87,8 +87,8 @@
         <!--Image Targets View Controller-->
         <scene sceneID="nym-cK-2jn">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="F7h-bO-GFW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="XNO-5e-GD7" customClass="ImageTargetsViewController" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F7h-bO-GFW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="601" y="248"/>
         </scene>
@@ -96,6 +96,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination" type="retina47"/>
     </simulatedMetricsContainer>
 </document>
