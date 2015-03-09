@@ -168,32 +168,6 @@ namespace {
     [buildingModel read];
 }
 
-// generate UIImage from QCAR:Image
-void releasePixels(void *info, const void *data, size_t size) {
-    // do nothing
-}
-- (UIImage *)createUIImage:(const QCAR::Image *)qcarImage {
-    int width = qcarImage->getWidth();
-    int height = qcarImage->getHeight();
-    int bitsPerComponent = 8;
-    int bitsPerPixel = QCAR::getBitsPerPixel(QCAR::RGB888);
-    int bytesPerRow = qcarImage->getBufferWidth() * bitsPerPixel / bitsPerComponent;
-    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNone;
-    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-    
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, qcarImage->getPixels(), QCAR::getBufferSize(width, height, QCAR::RGB888), releasePixels);
-    
-    CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
-    UIImage *image = [UIImage imageWithCGImage:imageRef];
-    
-    CGDataProviderRelease(provider);
-    CGColorSpaceRelease(colorSpaceRef);
-    CGImageRelease(imageRef);
-    
-    return image;
-}
-
 //------------------------------------------------------------------------------
 #pragma mark - UIGLViewProtocol methods
 
@@ -203,7 +177,6 @@ void releasePixels(void *info, const void *data, size_t size) {
 // the screen.
 //
 // *** QCAR will call this method periodically on a background thread ***
-static int queryFrequency = 0;
 - (void)renderFrameQCAR {
     [self setFramebuffer];
     
@@ -214,22 +187,7 @@ static int queryFrequency = 0;
     QCAR::State state = QCAR::Renderer::getInstance().begin();
     QCAR::Renderer::getInstance().drawVideoBackground();
     
-    QCAR::setFrameFormat(QCAR::RGB888, YES);
-    
     // QCAR::Image -> UIImage
-    if ((queryFrequency++) == 30) {
-        QCAR::Frame frame = state.getFrame();
-        NSLog(@"-------");
-        for (int i = 0; i < frame.getNumImages(); i++) {
-            const QCAR::Image *qcarImage = frame.getImage(i);
-            NSLog(@"format: %d", qcarImage->getFormat());
-            if (qcarImage->getFormat() == QCAR::RGB888) {
-                _frameImage = [self createUIImage:qcarImage];
-                NSLog(@"frameImage size: %lf, %lf", _frameImage.size.height, _frameImage.size.width);
-            }
-        }
-        queryFrequency = 0;
-    }
     
     glEnable(GL_DEPTH_TEST);
     // We must detect if background reflection is active and adjust the culling direction.

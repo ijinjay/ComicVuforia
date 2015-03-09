@@ -123,7 +123,6 @@ namespace {
     
     // Initialising QCAR is a potentially lengthy operation, so perform it on a
     // background thread
-    NSLog(@"initAR");
     [self performSelectorInBackground:@selector(initQCARInBackground) withObject:nil];
 }
 

@@ -57,6 +57,8 @@
 		886BE8341AAC1A220049F68B /* insight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8321AAC1A220049F68B /* insight.framework */; };
 		886BE8351AAC1A220049F68B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8331AAC1A220049F68B /* opencv2.framework */; };
 		886BE8371AAC1A390049F68B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8361AAC1A390049F68B /* libcurl.a */; };
+		888C48DB1AAD681B007CA1CC /* lf.xml in Resources */ = {isa = PBXBuildFile; fileRef = 888C48D91AAD681B007CA1CC /* lf.xml */; };
+		888C48DC1AAD681B007CA1CC /* lf.dat in Resources */ = {isa = PBXBuildFile; fileRef = 888C48DA1AAD681B007CA1CC /* lf.dat */; };
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
@@ -140,6 +142,8 @@
 		886BE8321AAC1A220049F68B /* insight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = insight.framework; path = ComicVuforia/InSight/insight.framework; sourceTree = "<group>"; };
 		886BE8331AAC1A220049F68B /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ComicVuforia/InSight/opencv2.framework; sourceTree = "<group>"; };
 		886BE8361AAC1A390049F68B /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ComicVuforia/InSight/curl/lib/libcurl.a; sourceTree = "<group>"; };
+		888C48D91AAD681B007CA1CC /* lf.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lf.xml; sourceTree = "<group>"; };
+		888C48DA1AAD681B007CA1CC /* lf.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = lf.dat; sourceTree = "<group>"; };
 		88D256B51AAAE343001261F8 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = ComicVuforia/iflyMSC.framework; sourceTree = "<group>"; };
 		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -322,6 +326,8 @@
 			isa = PBXGroup;
 			children = (
 				306619761AA93C8A00F4D8C9 /* IT_about.html */,
+				888C48D91AAD681B007CA1CC /* lf.xml */,
+				888C48DA1AAD681B007CA1CC /* lf.dat */,
 				306619771AA93C8A00F4D8C9 /* StonesAndChips.dat */,
 				306619781AA93C8A00F4D8C9 /* StonesAndChips.xml */,
 				306619791AA93C8A00F4D8C9 /* Tarmac.dat */,
@@ -448,7 +454,9 @@
 				306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */,
 				306619BB1AA93C8A00F4D8C9 /* TextureTeapotYellow.png in Resources */,
 				306619B91AA93C8A00F4D8C9 /* TextureTeapotGreen.png in Resources */,
+				888C48DC1AAD681B007CA1CC /* lf.dat in Resources */,
 				3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */,
+				888C48DB1AAD681B007CA1CC /* lf.xml in Resources */,
 				3066199C1AA93C8A00F4D8C9 /* building_texture.jpeg in Resources */,
 				306619A91AA93C8A00F4D8C9 /* IT_about.html in Resources */,
 				306619B81AA93C8A00F4D8C9 /* TextureTeapotBrass.png in Resources */,

@@ -12,6 +12,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <QCAR/Trackable.h>
 #import <QCAR/DataSet.h>
 #import <QCAR/CameraDevice.h>
+#import <QCAR/Image.h>
 
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
@@ -39,6 +40,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (nonatomic, strong) IFlyRecognizerView *speechView;
 @property (nonatomic, strong) NSString *speechResult; // speech recognize result
 @property (nonatomic, strong) NSString *endStr;       // speech recognize end punctuation
+
+@property (nonatomic) BOOL analyzeExpression;
 
 @end
 
@@ -104,6 +107,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         
     }
     _isBackCamera = YES;
+    _analyzeExpression = NO;
     // Create the EAGLView
     eaglView = [[ImageTargetsEAGLView alloc] initWithFrame:viewFrame appSession:vapp];
     [self setView:eaglView];
@@ -190,22 +194,30 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     [self setButtonHidden:NO];
     
+    // add a fulfillment tip
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.labelText = @"拍照成功";
     [hud hide:YES afterDelay:0.5];
 }
 - (void)expressionRecognize:(id)sender {
+    _analyzeExpression = YES;
     
+//    if ([eaglView frameImage]) {
+//        UIImageView *imageView = [[UIImageView alloc] initWithImage:[eaglView frameImage]];
+//        [eaglView addSubview:imageView];
+//    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
     [self.view addGestureRecognizer:tapGestureRecognizer];
     [self prefersStatusBarHidden];
 
     [self addButtons];
+    
+    // add iflyspeechrecognize view
     NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",@"54faa960"];
     [IFlySpeechUtility createUtility:initString];
     _speechView = [[IFlyRecognizerView alloc] initWithCenter:CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0)];
@@ -285,7 +297,9 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (bool) doLoadTrackersData {
     dataSetStonesAndChips = [self loadObjectTrackerDataSet:@"StonesAndChips.xml"];
     dataSetTarmac = [self loadObjectTrackerDataSet:@"Tarmac.xml"];
-    if ((dataSetStonesAndChips == NULL) || (dataSetTarmac == NULL)) {
+    dataLF = [self loadObjectTrackerDataSet:@"lf.xml"];
+    
+    if ((dataSetStonesAndChips == NULL) || (dataSetTarmac == NULL) || (dataLF == NULL)) {
         NSLog(@"Failed to load datasets");
         return NO;
     }
@@ -293,7 +307,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         NSLog(@"Failed to activate dataset");
         return NO;
     }
-    
     
     return YES;
 }
@@ -344,6 +357,32 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
+
+// generate UIImage from QCAR:Image
+void releasePixels(void *info, const void *data, size_t size) {
+    // do nothing
+}
+- (UIImage *)createUIImage:(const QCAR::Image *)qcarImage {
+    int width = qcarImage->getWidth();
+    int height = qcarImage->getHeight();
+    int bitsPerComponent = 8;
+    int bitsPerPixel = QCAR::getBitsPerPixel(QCAR::RGB888);
+    int bytesPerRow = qcarImage->getBufferWidth() * bitsPerPixel / bitsPerComponent;
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNone;
+    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+    
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, qcarImage->getPixels(), QCAR::getBufferSize(width, height, QCAR::RGB888), releasePixels);
+    
+    CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+    UIImage *image = [UIImage imageWithCGImage:imageRef];
+    
+    CGDataProviderRelease(provider);
+    CGColorSpaceRelease(colorSpaceRef);
+    CGImageRelease(imageRef);
+    
+    return image;
+}
 - (void) onQCARUpdate: (QCAR::State *) state {
     if (switchToTarmac) {
         [self activateDataSet:dataSetTarmac];
@@ -352,6 +391,25 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     if (switchToStonesAndChips) {
         [self activateDataSet:dataSetStonesAndChips];
         switchToStonesAndChips = NO;
+    }
+    if (switchToLF) {
+        [self activateDataSet:dataLF];
+        switchToLF = NO;
+    }
+    
+    // analyze facial expression
+    QCAR::setFrameFormat(QCAR::RGB888, YES);
+    if (_analyzeExpression) {
+        QCAR::Frame frame = state->getFrame();
+        NSLog(@"-------");
+        for (int i = 0; i < frame.getNumImages(); i++) {
+            const QCAR::Image *qcarImage = frame.getImage(i);
+            if (qcarImage->getFormat() == QCAR::RGB888) {
+                UIImage *frameImage= [self createUIImage:qcarImage];
+                NSLog(@"frameImage size: %lf, %lf", frameImage.size.height, frameImage.size.width);
+            }
+        }
+        _analyzeExpression = NO;
     }
 }
 
