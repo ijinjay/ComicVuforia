@@ -48,7 +48,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCARSession * vapp;
 }
 
-@property (nonatomic) UIImage *frameImage;
+@property (nonatomic) float angleY;
+@property (nonatomic) float angleZ;
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;
 

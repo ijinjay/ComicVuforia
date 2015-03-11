@@ -24,7 +24,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "SampleApplicationShaderUtils.h"
 #import "Teapot.h"
 
-#import <OpenGLES/ES1/glext.h>
+
+#import <GLKit/GLKit.h>
 
 //******************************************************************************
 // *** OpenGL ES thread safety ***
@@ -125,6 +126,10 @@ namespace {
         
         [self loadBuildingsModel];
         [self initShaders];
+        
+        // init the rotation angle
+        _angleY = 0.0;
+        _angleZ = 0.0;
     }
     
     return self;
@@ -187,8 +192,6 @@ namespace {
     QCAR::State state = QCAR::Renderer::getInstance().begin();
     QCAR::Renderer::getInstance().drawVideoBackground();
     
-    // QCAR::Image -> UIImage
-    
     glEnable(GL_DEPTH_TEST);
     // We must detect if background reflection is active and adjust the culling direction.
     // If the reflection is active, this means the pose matrix has been reflected as well,
@@ -204,6 +207,16 @@ namespace {
     else
         glFrontFace(GL_CCW);   //Back camera
     
+    // if long time no track, we should reinitial _angleY and _angleZ
+    static int numDidnotFoundTrack = 0;
+    numDidnotFoundTrack ++;
+    if (state.getNumTrackableResults() != 0 ) {
+        if (numDidnotFoundTrack > 50) {
+            _angleY = 0.0;
+            _angleZ = 0.0;
+        }
+        numDidnotFoundTrack = 0;
+    }
     
     for (int i = 0; i < state.getNumTrackableResults(); ++i) {
         // Get the trackable
@@ -216,11 +229,19 @@ namespace {
         // OpenGL 2
         QCAR::Matrix44F modelViewProjection;
         
+        // TODO: I don't know the meanning of offTargetTrackingEnabled. What i found is it does not work.
         if (offTargetTrackingEnabled) {
             SampleApplicationUtils::rotatePoseMatrix(90, 1, 0, 0,&modelViewMatrix.data[0]);
             SampleApplicationUtils::scalePoseMatrix(kObjectScaleOffTargetTracking, kObjectScaleOffTargetTracking, kObjectScaleOffTargetTracking, &modelViewMatrix.data[0]);
         } else {
+            // Here is the point of transformations
             SampleApplicationUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScaleNormal, &modelViewMatrix.data[0]);
+            
+            // rotate Y axis
+            SampleApplicationUtils::rotatePoseMatrix(_angleY, 0.0f, 1.0f, 0.0f, &modelViewMatrix.data[0]);
+            // rotate Z axis
+            SampleApplicationUtils::rotatePoseMatrix(_angleZ, 0.0f, 0.0f, 1.0f, &modelViewMatrix.data[0]);
+            
             SampleApplicationUtils::scalePoseMatrix(kObjectScaleNormal, kObjectScaleNormal, kObjectScaleNormal, &modelViewMatrix.data[0]);
         }
         
@@ -390,4 +411,13 @@ namespace {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInView:self];
+    CGPoint lastLoc = [touch previousLocationInView:self];
+    CGPoint diff = CGPointMake(lastLoc.x - location.x, lastLoc.y - location.y);
+    
+    _angleY = _angleY - 30 * GLKMathDegreesToRadians(diff.y / 2.0);
+    _angleZ = _angleZ - 30 * GLKMathDegreesToRadians(diff.x / 2.0);
+}
 @end

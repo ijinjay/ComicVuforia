@@ -477,6 +477,9 @@ void releasePixels(void *info, const void *data, size_t size) {
     if (!objectTracker->destroyDataSet(dataSetStonesAndChips)) {
         NSLog(@"Failed to destroy data set Stones and Chips.");
     }
+    if (!objectTracker->destroyDataSet(dataLF)) {
+        NSLog(@"Failed to destroy data set LF");
+    }
     
     NSLog(@"datasets destroyed");
     return YES;
@@ -634,5 +637,6 @@ void releasePixels(void *info, const void *data, size_t size) {
 - (void)onError: (IFlySpeechError *) error {
     NSLog(@"%@", [error errorDesc]);
 }
+
 
 @end
