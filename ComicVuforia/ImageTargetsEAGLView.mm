@@ -22,24 +22,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "SampleApplicationUtils.h"
 #import <GLKit/GLKit.h>
 
-//******************************************************************************
-// *** OpenGL ES thread safety ***
-//
-// OpenGL ES on iOS is not thread safe.  We ensure thread safety by following
-// this procedure:
-// 1) Create the OpenGL ES context on the main thread.
-// 2) Start the QCAR camera, which causes QCAR to locate our EAGLView and start
-//    the render thread.
-// 3) QCAR calls our renderFrameQCAR method periodically on the render thread.
-//    The first time this happens, the defaultFramebuffer does not exist, so it
-//    is created with a call to createFramebuffer.  createFramebuffer is called
-//    on the main thread in order to safely allocate the OpenGL ES storage,
-//    which is shared with the drawable layer.  The render (background) thread
-//    is blocked during the call to createFramebuffer, thus ensuring no
-//    concurrent use of the OpenGL ES context.
-//
-//******************************************************************************
-
 @interface ImageTargetsEAGLView (PrivateMethods)
 
 - (void)createFramebuffer;
@@ -52,8 +34,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 @implementation ImageTargetsEAGLView
 
-// You must implement this method, which ensures the view's underlying layer is
-// of type CAEAGLLayer
 + (Class)layerClass {
     return [CAEAGLLayer class];
 }
@@ -80,7 +60,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         }
         
         // init Scenekit
-        _scene = [SCNScene sceneNamed:@"spider.dae"];
+        _scene = [SCNScene sceneNamed:@"superman.dae"];
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
         
         // create and add a camera to the scene
@@ -90,11 +70,25 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         
         // place the camera
         _cameraNode.position = SCNVector3Make(0, 0, 0);
+        // create and add a light to the scene
+        SCNNode *lightNode = [SCNNode node];
+        lightNode.light = [SCNLight light];
+        lightNode.light.type = SCNLightTypeOmni;
+        lightNode.position = SCNVector3Make(0, 0, 100);
+        [self.scene.rootNode addChildNode:lightNode];
+        
+        // create and add an ambient light to the scene
+        SCNNode *ambientLightNode = [SCNNode node];
+        ambientLightNode.light = [SCNLight light];
+        ambientLightNode.light.type = SCNLightTypeAmbient;
+        ambientLightNode.light.color = [UIColor darkGrayColor];
+        [self.scene.rootNode addChildNode:ambientLightNode];
+        
         // get the ship node
         for (SCNNode *node in _scene.rootNode.childNodes) {
             if (node.camera == nil) {
                 NSLog(@"%@", node);
-                node.scale = SCNVector3FromFloat3(40.0f);
+                node.scale = SCNVector3FromFloat3(30.0f);
             }
         }
         [_scnRender setScene:_scene];
@@ -143,6 +137,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // Clear colour and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    // draw videobackground
     // Render video background and retrieve tracking state
     QCAR::State state = QCAR::Renderer::getInstance().begin();
     QCAR::Renderer::getInstance().drawVideoBackground();
@@ -151,7 +146,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // We must detect if background reflection is active and adjust the culling direction.
     // If the reflection is active, this means the pose matrix has been reflected as well,
     // therefore standard counter clockwise face culling will result in "inside out" models.
-    
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     if(QCAR::Renderer::getInstance().getVideoBackgroundConfig().mReflection == QCAR::VIDEO_BACKGROUND_REFLECTION_ON)
@@ -159,6 +153,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     else
         glFrontFace(GL_CCW);   //Back camera
     
+    (GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    
+    glDisableVertexAttribArray(vertexHandle);
+    glDisableVertexAttribArray(normalHandle);
+    glDisableVertexAttribArray(textureCoordHandle);
+    QCAR::Renderer::getInstance().end();
+    
+    // show the model
     // if long time no track, we should reinitial _angleY and _angleZ
     static int numDidnotFoundTrack = 0;
     numDidnotFoundTrack ++;
@@ -189,14 +192,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         [_scnRender render];
     }
     
-    (GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    
-    glDisableVertexAttribArray(vertexHandle);
-    glDisableVertexAttribArray(normalHandle);
-    glDisableVertexAttribArray(textureCoordHandle);
-    
-    QCAR::Renderer::getInstance().end();
     [self presentFramebuffer];
 }
 
@@ -315,14 +310,39 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     return GLKVector3Normalize(P);
 }
 
+// Add new method above touchesBegan
+- (void)computeIncremental {
+    
+    GLKVector3 axis = GLKVector3CrossProduct(_anchor_position, _current_position);
+    float dot = GLKVector3DotProduct(_anchor_position, _current_position);
+    float angle = acosf(dot);
+    
+    GLKQuaternion Q_rot = GLKQuaternionMakeWithAngleAndVector3Axis(angle * 2, axis);
+    Q_rot = GLKQuaternionNormalize(Q_rot);
+    
+    // TODO: Do something with Q_rot...
+    
+}
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
+    UITouch * touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
+    
+    _anchor_position = GLKVector3Make(location.x, location.y, 0);
+    _anchor_position = [self projectOntoSurface:_anchor_position];
+    
+    _current_position = _anchor_position;
+    
     CGPoint lastLoc = [touch previousLocationInView:self];
     CGPoint diff = CGPointMake(lastLoc.x - location.x, lastLoc.y - location.y);
     
     _angleY = _angleY - 30 * GLKMathDegreesToRadians(diff.y / 2.0);
     _angleZ = _angleZ - 30 * GLKMathDegreesToRadians(diff.x / 2.0);
+    
+    _current_position = GLKVector3Make(location.x, location.y, 0);
+    _current_position = [self projectOntoSurface:_current_position];
+    [self computeIncremental];
+
 }
 
 @end

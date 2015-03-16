@@ -21,7 +21,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 // EAGLView is a subclass of UIView and conforms to the informal protocol
 // UIGLViewProtocol
-@interface ImageTargetsEAGLView : UIView <UIGLViewProtocol, SampleGLResourceHandler> {
+@interface ImageTargetsEAGLView : UIView <UIGLViewProtocol, SampleGLResourceHandler, SCNSceneRendererDelegate> {
 @private
     // OpenGL ES context
     EAGLContext *context;
@@ -49,10 +49,19 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (nonatomic, retain) SCNNode *cameraNode;
 @property (nonatomic, retain) SCNRenderer *scnRender;
 @property (nonatomic, retain) SCNNode *ship;
+@property (nonatomic) GLKQuaternion quatStart;
+@property (nonatomic) GLKQuaternion quat;
+@property (nonatomic) GLKMatrix4 rotMatrix;
+
+@property (nonatomic) BOOL slerping;
+@property (nonatomic) float slerpCur;
+@property (nonatomic) float slerpMax;
+@property (nonatomic) GLKQuaternion slerpStart;
+@property (nonatomic) GLKQuaternion slerpEnd;
 
 // Add to the private interface
-@property (nonatomic) GLKVector3 _anchor_position;
-@property (nonatomic) GLKVector3 _current_position;
+@property (nonatomic) GLKVector3 anchor_position;
+@property (nonatomic) GLKVector3 current_position;
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;
 
