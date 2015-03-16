@@ -19,12 +19,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <QCAR/Image.h>
 
 #import "ImageTargetsEAGLView.h"
-#import "Texture.h"
 #import "SampleApplicationUtils.h"
-#import "SampleApplicationShaderUtils.h"
-#import "Teapot.h"
-
-
 #import <GLKit/GLKit.h>
 
 //******************************************************************************
@@ -45,27 +40,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 //
 //******************************************************************************
 
-
-namespace {
-    // --- Data private to this unit ---
-
-    // Teapot texture filenames
-    const char* textureFilenames[] = {
-        "TextureTeapotBrass.png",
-        "TextureTeapotBlue.png",
-        "TextureTeapotRed.png",
-        "building_texture.jpeg"
-    };
-    
-    // Model scale factor
-    const float kObjectScaleNormal = 3.0f;
-    const float kObjectScaleOffTargetTracking = 12.0f;
-}
-
-
 @interface ImageTargetsEAGLView (PrivateMethods)
 
-- (void)initShaders;
 - (void)createFramebuffer;
 - (void)deleteFramebuffer;
 - (void)setFramebuffer;
@@ -82,13 +58,11 @@ namespace {
     return [CAEAGLLayer class];
 }
 
-
 //------------------------------------------------------------------------------
 #pragma mark - Lifecycle
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app {
     self = [super initWithFrame:frame];
-    
     if (self) {
         vapp = app;
         // Enable retina mode if available on this device
@@ -96,11 +70,6 @@ namespace {
             [self setContentScaleFactor:2.0f];
         }
         
-        // Load the augmentation textures
-        for (int i = 0; i < NUM_AUGMENTATION_TEXTURES; ++i) {
-            augmentationTexture[i] = [[Texture alloc] initWithImageFile:[NSString stringWithCString:textureFilenames[i] encoding:NSASCIIStringEncoding]];
-        }
-
         // Create the OpenGL ES context
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         
@@ -110,31 +79,30 @@ namespace {
             [EAGLContext setCurrentContext:context];
         }
         
-        // Generate the OpenGL ES texture and upload the texture data for use
-        // when rendering the augmentation
-        for (int i = 0; i < NUM_AUGMENTATION_TEXTURES; ++i) {
-            GLuint textureID;
-            glGenTextures(1, &textureID);
-            [augmentationTexture[i] setTextureID:textureID];
-            glBindTexture(GL_TEXTURE_2D, textureID);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, [augmentationTexture[i] width], [augmentationTexture[i] height], 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)[augmentationTexture[i] pngData]);
+        // init Scenekit
+        _scene = [SCNScene sceneNamed:@"spider.dae"];
+        _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
+        
+        // create and add a camera to the scene
+        _cameraNode = [SCNNode node];
+        _cameraNode.camera = [SCNCamera camera];
+        [_scene.rootNode addChildNode:_cameraNode];
+        
+        // place the camera
+        _cameraNode.position = SCNVector3Make(0, 0, 0);
+        // get the ship node
+        for (SCNNode *node in _scene.rootNode.childNodes) {
+            if (node.camera == nil) {
+                NSLog(@"%@", node);
+                node.scale = SCNVector3FromFloat3(40.0f);
+            }
         }
-        
-        offTargetTrackingEnabled = NO;
-        
-        [self loadBuildingsModel];
-        [self initShaders];
-        
-        // init the rotation angle
-        _angleY = 0.0;
-        _angleZ = 0.0;
+        [_scnRender setScene:_scene];
+        _scnRender.showsStatistics = YES;
     }
     
     return self;
 }
-
 
 - (void)dealloc {
     [self deleteFramebuffer];
@@ -144,8 +112,6 @@ namespace {
         [EAGLContext setCurrentContext:nil];
     }
 }
-
-
 - (void)finishOpenGLESCommands {
     // Called in response to applicationWillResignActive.  The render loop has
     // been stopped, so we now make sure all OpenGL ES commands complete before
@@ -155,22 +121,11 @@ namespace {
         glFinish();
     }
 }
-
-
 - (void)freeOpenGLESResources {
     // Called in response to applicationDidEnterBackground.  Free easily
     // recreated OpenGL ES resources
     [self deleteFramebuffer];
     glFinish();
-}
-
-- (void) setOffTargetTrackingMode:(BOOL) enabled {
-    offTargetTrackingEnabled = enabled;
-}
-
-- (void) loadBuildingsModel {
-    buildingModel = [[SampleApplication3DModel alloc] initWithTxtResourceName:@"buildings"];
-    [buildingModel read];
 }
 
 //------------------------------------------------------------------------------
@@ -196,11 +151,8 @@ namespace {
     // We must detect if background reflection is active and adjust the culling direction.
     // If the reflection is active, this means the pose matrix has been reflected as well,
     // therefore standard counter clockwise face culling will result in "inside out" models.
-    if (offTargetTrackingEnabled) {
-        glDisable(GL_CULL_FACE);
-    } else {
-        glEnable(GL_CULL_FACE);
-    }
+    
+    glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     if(QCAR::Renderer::getInstance().getVideoBackgroundConfig().mReflection == QCAR::VIDEO_BACKGROUND_REFLECTION_ON)
         glFrontFace(GL_CW);  //Front camera
@@ -221,76 +173,23 @@ namespace {
     for (int i = 0; i < state.getNumTrackableResults(); ++i) {
         // Get the trackable
         const QCAR::TrackableResult* result = state.getTrackableResult(i);
-        const QCAR::Trackable& trackable = result->getTrackable();
+//        const QCAR::Trackable& trackable = result->getTrackable();
 
-        //const QCAR::Trackable& trackable = result->getTrackable();
         QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
-        
         // OpenGL 2
+        
+        SampleApplicationUtils::rotatePoseMatrix(_angleZ, 1, 0, 0, &modelViewMatrix.data[0]);
+        SampleApplicationUtils::rotatePoseMatrix(_angleY, 0, 0, 1, &modelViewMatrix.data[0]);
+        
         QCAR::Matrix44F modelViewProjection;
-        
-        // TODO: I don't know the meanning of offTargetTrackingEnabled. What i found is it does not work.
-        if (offTargetTrackingEnabled) {
-            SampleApplicationUtils::rotatePoseMatrix(90, 1, 0, 0,&modelViewMatrix.data[0]);
-            SampleApplicationUtils::scalePoseMatrix(kObjectScaleOffTargetTracking, kObjectScaleOffTargetTracking, kObjectScaleOffTargetTracking, &modelViewMatrix.data[0]);
-        } else {
-            // Here is the point of transformations
-            SampleApplicationUtils::translatePoseMatrix(0.0f, 0.0f, kObjectScaleNormal, &modelViewMatrix.data[0]);
-            
-            // rotate Y axis
-            SampleApplicationUtils::rotatePoseMatrix(_angleY, 0.0f, 1.0f, 0.0f, &modelViewMatrix.data[0]);
-            // rotate Z axis
-            SampleApplicationUtils::rotatePoseMatrix(_angleZ, 0.0f, 0.0f, 1.0f, &modelViewMatrix.data[0]);
-            
-            SampleApplicationUtils::scalePoseMatrix(kObjectScaleNormal, kObjectScaleNormal, kObjectScaleNormal, &modelViewMatrix.data[0]);
-        }
-        
         SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
         
-        glUseProgram(shaderProgramID);
-        
-        if (offTargetTrackingEnabled) {
-            glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)buildingModel.vertices);
-            glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)buildingModel.normals);
-            glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)buildingModel.texCoords);
-        } else {
-            glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)teapotVertices);
-            glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)teapotNormals);
-            glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)teapotTexCoords);
-        }
-        
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        
-        // Choose the texture based on the target name
-        int targetIndex = 0; // "stones"
-        if (!strcmp(trackable.getName(), "chips"))
-            targetIndex = 1;
-        else if (!strcmp(trackable.getName(), "tarmac"))
-            targetIndex = 2;
-        
-        glActiveTexture(GL_TEXTURE0);
-        
-        if (offTargetTrackingEnabled) {
-            glBindTexture(GL_TEXTURE_2D, augmentationTexture[3].textureID);
-        } else {
-            glBindTexture(GL_TEXTURE_2D, augmentationTexture[targetIndex].textureID);
-        }
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (const GLfloat*)&modelViewProjection.data[0]);
-        glUniform1i(texSampler2DHandle, 0 /*GL_TEXTURE0*/);
-        
-        if (offTargetTrackingEnabled) {
-            glDrawArrays(GL_TRIANGLES, 0, buildingModel.numVertices);
-        } else {
-            glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*)teapotIndices);
-        }
-        
-        SampleApplicationUtils::checkGlError("EAGLView renderFrameQCAR");
-        
+        GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
+        _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
+        [_scnRender render];
     }
     
-    glDisable(GL_DEPTH_TEST);
+    (GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
     glDisableVertexAttribArray(vertexHandle);
@@ -303,23 +202,6 @@ namespace {
 
 //------------------------------------------------------------------------------
 #pragma mark - OpenGL ES management
-
-- (void)initShaders {
-    shaderProgramID = [SampleApplicationShaderUtils createProgramWithVertexShaderFileName:@"Simple.vertsh"
-                                                   fragmentShaderFileName:@"Simple.fragsh"];
-
-    if (0 < shaderProgramID) {
-        vertexHandle = glGetAttribLocation(shaderProgramID, "vertexPosition");
-        normalHandle = glGetAttribLocation(shaderProgramID, "vertexNormal");
-        textureCoordHandle = glGetAttribLocation(shaderProgramID, "vertexTexCoord");
-        mvpMatrixHandle = glGetUniformLocation(shaderProgramID, "modelViewProjectionMatrix");
-        texSampler2DHandle  = glGetUniformLocation(shaderProgramID,"texSampler2D");
-    }
-    else {
-        NSLog(@"Could not initialise augmentation shader");
-    }
-}
-
 
 - (void)createFramebuffer {
     if (context) {
@@ -411,6 +293,28 @@ namespace {
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 
+- (GLKVector3) projectOntoSurface:(GLKVector3) touchPoint {
+    float radius = self.bounds.size.width/3;
+    GLKVector3 center = GLKVector3Make(self.bounds.size.width/2, self.bounds.size.height/2, 0);
+    GLKVector3 P = GLKVector3Subtract(touchPoint, center);
+    
+    // Flip the y-axis because pixel coords increase toward the bottom.
+    P = GLKVector3Make(P.x, P.y * -1, P.z);
+    
+    float radius2 = radius * radius;
+    float length2 = P.x*P.x + P.y*P.y;
+    
+    if (length2 <= radius2)
+        P.z = sqrt(radius2 - length2);
+    else {
+        P.x *= radius / sqrt(length2);
+        P.y *= radius / sqrt(length2);
+        P.z = 0;
+    }
+    
+    return GLKVector3Normalize(P);
+}
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
@@ -420,4 +324,5 @@ namespace {
     _angleY = _angleY - 30 * GLKMathDegreesToRadians(diff.y / 2.0);
     _angleZ = _angleZ - 30 * GLKMathDegreesToRadians(diff.x / 2.0);
 }
+
 @end

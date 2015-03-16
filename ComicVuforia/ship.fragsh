@@ -1,0 +1,9 @@
+precision mediump float;
+
+uniform sampler2D cameraTexture;
+varying mediump vec2 texCoord;
+
+void main(void) {
+    //draw the texture full screen
+    gl_FragColor = texture2D(cameraTexture, texCoord);
+}

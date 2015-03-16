@@ -14,6 +14,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "SampleApplication3DModel.h"
 #import "SampleGLResourceHandler.h"
 
+#import <SceneKit/SceneKit.h>
 
 #define NUM_AUGMENTATION_TEXTURES 4
 
@@ -38,24 +39,25 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     GLint textureCoordHandle;
     GLint mvpMatrixHandle;
     GLint texSampler2DHandle;
-    
-    // Texture used when rendering augmentation
-    Texture* augmentationTexture[NUM_AUGMENTATION_TEXTURES];
-    
-    BOOL offTargetTrackingEnabled;
-    SampleApplication3DModel * buildingModel;
 
     QCARSession * vapp;
 }
 
 @property (nonatomic) float angleY;
 @property (nonatomic) float angleZ;
+@property (nonatomic, retain) SCNScene *scene;
+@property (nonatomic, retain) SCNNode *cameraNode;
+@property (nonatomic, retain) SCNRenderer *scnRender;
+@property (nonatomic, retain) SCNNode *ship;
+
+// Add to the private interface
+@property (nonatomic) GLKVector3 _anchor_position;
+@property (nonatomic) GLKVector3 _current_position;
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;
 
 - (void)finishOpenGLESCommands;
 - (void)freeOpenGLESResources;
 
-- (void) setOffTargetTrackingMode:(BOOL) enabled;
 - (void)savePhoto;
 @end
