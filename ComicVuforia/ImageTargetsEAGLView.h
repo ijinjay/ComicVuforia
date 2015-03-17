@@ -11,7 +11,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #import "Texture.h"
 #import "QCARSession.h"
-#import "SampleApplication3DModel.h"
 #import "SampleGLResourceHandler.h"
 
 #import <SceneKit/SceneKit.h>
@@ -44,24 +43,17 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 @property (nonatomic) float angleY;
-@property (nonatomic) float angleZ;
+@property (nonatomic) float angleX;
 @property (nonatomic, retain) SCNScene *scene;
 @property (nonatomic, retain) SCNNode *cameraNode;
 @property (nonatomic, retain) SCNRenderer *scnRender;
-@property (nonatomic, retain) SCNNode *ship;
-@property (nonatomic) GLKQuaternion quatStart;
-@property (nonatomic) GLKQuaternion quat;
-@property (nonatomic) GLKMatrix4 rotMatrix;
+@property (nonatomic, retain) SCNNode *armature;
 
-@property (nonatomic) BOOL slerping;
-@property (nonatomic) float slerpCur;
-@property (nonatomic) float slerpMax;
-@property (nonatomic) GLKQuaternion slerpStart;
-@property (nonatomic) GLKQuaternion slerpEnd;
+@property (nonatomic) SCNMatrix4 scaleMatrix;           // 模型大小
+@property (nonatomic) SCNMatrix4 fixedPostionMatrix;    // 模型修正后的位置
+@property (nonatomic) SCNMatrix4 rotMatrix;             // 模型旋转矩阵
 
-// Add to the private interface
-@property (nonatomic) GLKVector3 anchor_position;
-@property (nonatomic) GLKVector3 current_position;
+
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;
 

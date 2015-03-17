@@ -46,6 +46,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     if (self) {
         vapp = app;
         // Enable retina mode if available on this device
+        
         if (YES == [vapp isRetinaDisplay]) {
             [self setContentScaleFactor:2.0f];
         }
@@ -60,9 +61,10 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         }
         
         // init Scenekit
-        _scene = [SCNScene sceneNamed:@"superman.dae"];
+        _scene = [SCNScene sceneNamed:@"Histoire.dae"];
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
         
+        NSLog(@"%@---scene", _scene);
         // create and add a camera to the scene
         _cameraNode = [SCNNode node];
         _cameraNode.camera = [SCNCamera camera];
@@ -70,12 +72,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         
         // place the camera
         _cameraNode.position = SCNVector3Make(0, 0, 0);
-        // create and add a light to the scene
-        SCNNode *lightNode = [SCNNode node];
-        lightNode.light = [SCNLight light];
-        lightNode.light.type = SCNLightTypeOmni;
-        lightNode.position = SCNVector3Make(0, 0, 100);
-        [self.scene.rootNode addChildNode:lightNode];
         
         // create and add an ambient light to the scene
         SCNNode *ambientLightNode = [SCNNode node];
@@ -88,9 +84,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         for (SCNNode *node in _scene.rootNode.childNodes) {
             if (node.camera == nil) {
                 NSLog(@"%@", node);
-                node.scale = SCNVector3FromFloat3(30.0f);
+                node.scale = SCNVector3FromFloat3(5.0f);
             }
         }
+        
+        _angleY = -90.0;
+        _angleX = 135.0;
+        _fixedPostionMatrix = SCNMatrix4MakeTranslation(0, 0, 0);
+        _scaleMatrix = SCNMatrix4MakeScale(3.0, 3.0, 3.0);
+        
         [_scnRender setScene:_scene];
         _scnRender.showsStatistics = YES;
     }
@@ -167,8 +169,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     numDidnotFoundTrack ++;
     if (state.getNumTrackableResults() != 0 ) {
         if (numDidnotFoundTrack > 50) {
-            _angleY = 0.0;
-            _angleZ = 0.0;
+            _angleY = -90.0;
+            _angleX = 135.0;
         }
         numDidnotFoundTrack = 0;
     }
@@ -177,18 +179,21 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         // Get the trackable
         const QCAR::TrackableResult* result = state.getTrackableResult(i);
 //        const QCAR::Trackable& trackable = result->getTrackable();
-
         QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
-        // OpenGL 2
-        
-        SampleApplicationUtils::rotatePoseMatrix(_angleZ, 1, 0, 0, &modelViewMatrix.data[0]);
-        SampleApplicationUtils::rotatePoseMatrix(_angleY, 0, 0, 1, &modelViewMatrix.data[0]);
-        
         QCAR::Matrix44F modelViewProjection;
         SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
         
+        // set the camera position
         GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
         _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
+        
+        // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
+        SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
+        rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
+        SCNNode *root= [_scene.rootNode childNodeWithName:@"root" recursively:YES];
+        root.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
+        NSLog(@"position: %lf, %lf, %lf", root.position.x, root.position.y, root.position.z);
+        
         [_scnRender render];
     }
     
@@ -288,61 +293,16 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 
-- (GLKVector3) projectOntoSurface:(GLKVector3) touchPoint {
-    float radius = self.bounds.size.width/3;
-    GLKVector3 center = GLKVector3Make(self.bounds.size.width/2, self.bounds.size.height/2, 0);
-    GLKVector3 P = GLKVector3Subtract(touchPoint, center);
-    
-    // Flip the y-axis because pixel coords increase toward the bottom.
-    P = GLKVector3Make(P.x, P.y * -1, P.z);
-    
-    float radius2 = radius * radius;
-    float length2 = P.x*P.x + P.y*P.y;
-    
-    if (length2 <= radius2)
-        P.z = sqrt(radius2 - length2);
-    else {
-        P.x *= radius / sqrt(length2);
-        P.y *= radius / sqrt(length2);
-        P.z = 0;
-    }
-    
-    return GLKVector3Normalize(P);
-}
-
 // Add new method above touchesBegan
-- (void)computeIncremental {
-    
-    GLKVector3 axis = GLKVector3CrossProduct(_anchor_position, _current_position);
-    float dot = GLKVector3DotProduct(_anchor_position, _current_position);
-    float angle = acosf(dot);
-    
-    GLKQuaternion Q_rot = GLKQuaternionMakeWithAngleAndVector3Axis(angle * 2, axis);
-    Q_rot = GLKQuaternionNormalize(Q_rot);
-    
-    // TODO: Do something with Q_rot...
-    
-}
-
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch * touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
     
-    _anchor_position = GLKVector3Make(location.x, location.y, 0);
-    _anchor_position = [self projectOntoSurface:_anchor_position];
-    
-    _current_position = _anchor_position;
-    
     CGPoint lastLoc = [touch previousLocationInView:self];
     CGPoint diff = CGPointMake(lastLoc.x - location.x, lastLoc.y - location.y);
     
-    _angleY = _angleY - 30 * GLKMathDegreesToRadians(diff.y / 2.0);
-    _angleZ = _angleZ - 30 * GLKMathDegreesToRadians(diff.x / 2.0);
-    
-    _current_position = GLKVector3Make(location.x, location.y, 0);
-    _current_position = [self projectOntoSurface:_current_position];
-    [self computeIncremental];
-
+    _angleY = _angleY - GLKMathDegreesToRadians(diff.y / 2.0);
+    _angleX = _angleX + GLKMathDegreesToRadians(diff.x / 2.0);
 }
 
 @end
