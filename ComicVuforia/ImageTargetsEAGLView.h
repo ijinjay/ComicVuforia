@@ -47,12 +47,13 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (nonatomic, retain) SCNScene *scene;
 @property (nonatomic, retain) SCNNode *cameraNode;
 @property (nonatomic, retain) SCNRenderer *scnRender;
-@property (nonatomic, retain) SCNNode *armature;
+@property (nonatomic, retain) SCNNode *rootNode;
 
 @property (nonatomic) SCNMatrix4 scaleMatrix;           // 模型大小
 @property (nonatomic) SCNMatrix4 fixedPostionMatrix;    // 模型修正后的位置
 @property (nonatomic) SCNMatrix4 rotMatrix;             // 模型旋转矩阵
-
+@property (nonatomic) float fixAngleX;
+@property (nonatomic) float fixAngleY;
 
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;

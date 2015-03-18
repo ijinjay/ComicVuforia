@@ -24,6 +24,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import <iflyMSC/IFlySpeechUtility.h>
 #import <iflyMSC/IFlySpeechError.h>
 
+#import <AVFoundation/AVFoundation.h>
 #import "CustomButton.h"
 #import "MBProgressHUD.h"
 
@@ -626,10 +627,17 @@ void releasePixels(void *info, const void *data, size_t size) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.labelText = _speechResult;
+        if (_speechResult != nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self parseText:_speechResult];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // 更新界面
+                });
+            });
+        }
         [hud hide:YES afterDelay:1.0];
     }
 }
-
 /** 识别结束回调
  
  @param error 识别结束错误码
@@ -638,5 +646,15 @@ void releasePixels(void *info, const void *data, size_t size) {
     NSLog(@"%@", [error errorDesc]);
 }
 
+- (void)parseText:(NSString *)str {
+    if ([str compare:@"你好"] == NSOrderedSame) {
+        AVSpeechSynthesizer *avSpeech = [[AVSpeechSynthesizer alloc] init];
+        AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:_speechResult];
+        utterance.rate = AVSpeechUtteranceMaximumSpeechRate / 4.0f;
+        utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-guoyu"]; // defaults to your system language
+        [avSpeech speakUtterance:utterance];
+    }
+}
+    
 
 @end

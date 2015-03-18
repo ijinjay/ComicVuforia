@@ -22,6 +22,15 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "SampleApplicationUtils.h"
 #import <GLKit/GLKit.h>
 
+NSDictionary *readPlist(NSString *keyWord) {
+    NSDictionary *result;
+    
+    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"model" ofType:@"plist"]];
+    result = [plistDict objectForKey:keyWord];
+    
+    return result;
+}
+
 @interface ImageTargetsEAGLView (PrivateMethods)
 
 - (void)createFramebuffer;
@@ -61,7 +70,17 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         }
         
         // init Scenekit
-        _scene = [SCNScene sceneNamed:@"Histoire.dae"];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        if ([user objectForKey:@"modelName"] == nil) {
+            [user setObject:@"Histoire" forKey:@"modelName"];
+        }
+        NSString *modelName = [user objectForKey:@"modelName"];
+        
+        NSDictionary *dict = readPlist(modelName);
+        assert(dict != nil);
+        
+        _scene = [SCNScene sceneNamed:[dict objectForKey:@"filePath"]];
+        
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
         
         NSLog(@"%@---scene", _scene);
@@ -80,18 +99,19 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         ambientLightNode.light.color = [UIColor darkGrayColor];
         [self.scene.rootNode addChildNode:ambientLightNode];
         
-        // get the ship node
-        for (SCNNode *node in _scene.rootNode.childNodes) {
-            if (node.camera == nil) {
-                NSLog(@"%@", node);
-                node.scale = SCNVector3FromFloat3(5.0f);
-            }
-        }
         
-        _angleY = -90.0;
-        _angleX = 135.0;
-        _fixedPostionMatrix = SCNMatrix4MakeTranslation(0, 0, 0);
-        _scaleMatrix = SCNMatrix4MakeScale(3.0, 3.0, 3.0);
+        _fixAngleX = [[dict objectForKey:@"angleX"] intValue];
+        _fixAngleY = [[dict objectForKey:@"angleY"] intValue];
+        
+        _angleX = _fixAngleX;
+        _angleY = _fixAngleY;
+        
+        NSDictionary *fixedPosition = [dict objectForKey:@"fixedPosition"];
+        _fixedPostionMatrix = SCNMatrix4MakeTranslation([[fixedPosition objectForKey:@"x"] intValue], [[fixedPosition objectForKey:@"y"] intValue],[[fixedPosition objectForKey:@"z"] intValue]);
+        
+        float scale = [[dict objectForKey:@"scale"] intValue];
+        _scaleMatrix = SCNMatrix4MakeScale(scale, scale, scale);
+        _rootNode = [_scene.rootNode childNodeWithName:[dict objectForKey:@"rootNode"] recursively:YES];
         
         [_scnRender setScene:_scene];
         _scnRender.showsStatistics = YES;
@@ -169,8 +189,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     numDidnotFoundTrack ++;
     if (state.getNumTrackableResults() != 0 ) {
         if (numDidnotFoundTrack > 50) {
-            _angleY = -90.0;
-            _angleX = 135.0;
+            _angleY = _fixAngleY;
+            _angleX = _fixAngleX;
         }
         numDidnotFoundTrack = 0;
     }
@@ -190,10 +210,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
         SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
         rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
-        SCNNode *root= [_scene.rootNode childNodeWithName:@"root" recursively:YES];
-        root.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
-        NSLog(@"position: %lf, %lf, %lf", root.position.x, root.position.y, root.position.z);
-        
+        _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
+//        NSLog(@"position: %lf, %lf, %lf", _rootNode.position.x, _rootNode.position.y, _rootNode.position.z);
         [_scnRender render];
     }
     
@@ -234,7 +252,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     }
 }
 
-
 - (void)deleteFramebuffer {
     if (context) {
         [EAGLContext setCurrentContext:context];
@@ -256,7 +273,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     }
 }
 
-
 - (void)setFramebuffer {
     // The EAGLContext must be set for each thread that wishes to use it.  Set
     // it the first time this method is called (on the render thread)
@@ -273,7 +289,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
 }
-
 
 - (BOOL)presentFramebuffer {
     // setFramebuffer must have been called before presentFramebuffer, therefore
