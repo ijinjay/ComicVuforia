@@ -113,8 +113,12 @@ NSDictionary *readPlist(NSString *keyWord) {
         _scaleMatrix = SCNMatrix4MakeScale(scale, scale, scale);
         _rootNode = [_scene.rootNode childNodeWithName:[dict objectForKey:@"rootNode"] recursively:YES];
         
+        // fixed the oringinal pos
+        SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
+        rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
+        _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
+        
         [_scnRender setScene:_scene];
-        _scnRender.showsStatistics = YES;
     }
     
     return self;
@@ -207,11 +211,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
         _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
         
-        // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
-        SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
-        rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
-        _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
-//        NSLog(@"position: %lf, %lf, %lf", _rootNode.position.x, _rootNode.position.y, _rootNode.position.z);
         [_scnRender render];
     }
     
@@ -318,6 +317,15 @@ NSDictionary *readPlist(NSString *keyWord) {
     
     _angleY = _angleY - GLKMathDegreesToRadians(diff.y / 2.0);
     _angleX = _angleX + GLKMathDegreesToRadians(diff.x / 2.0);
+        // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
+    SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
+    rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
+    _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
+    
+}
+
+- (void)rotateModel {
+    [_rootNode runAction:[SCNAction rotateByX:0 y:3.14 z:0 duration:1]];
 }
 
 @end

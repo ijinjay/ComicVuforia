@@ -204,6 +204,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)expressionRecognize:(id)sender {
     _analyzeExpression = YES;
     
+    [eaglView rotateModel];
 //    if ([eaglView frameImage]) {
 //        UIImageView *imageView = [[UIImageView alloc] initWithImage:[eaglView frameImage]];
 //        [eaglView addSubview:imageView];
@@ -654,6 +655,16 @@ void releasePixels(void *info, const void *data, size_t size) {
         utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-guoyu"]; // defaults to your system language
         [avSpeech speakUtterance:utterance];
     }
+    if (([str rangeOfString:@"萌"].location != -1) || ([str rangeOfString:@"跳"].location != -1)) {
+        NSLog(@"萌一个");
+    }
+    if (str == nil) {
+        NSLog(@"识别失败");
+    }
+    else {
+        NSLog(@"不能识别您的意思");
+    }
+    [eaglView rotateModel];
 }
     
 

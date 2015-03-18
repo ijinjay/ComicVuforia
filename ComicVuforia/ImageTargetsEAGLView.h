@@ -62,4 +62,5 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)freeOpenGLESResources;
 
 - (void)savePhoto;
+- (void)rotateModel;
 @end
