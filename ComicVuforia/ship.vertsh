@@ -1,8 +1,0 @@
-attribute lowp vec4 position;
-attribute lowp vec2 textureCoordinate;
-varying lowp vec2 texCoord;
-void main(void) {
-    texCoord = textureCoordinate;
-    //draw a screen quad at far clipping
-    gl_Position = vec4(position.xy, 1.0, 1.0);
-}

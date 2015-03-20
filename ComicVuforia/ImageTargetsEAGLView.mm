@@ -299,6 +299,8 @@ NSDictionary *readPlist(NSString *keyWord) {
     return [context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
+#pragma mark User Event Handle
+
 - (void)savePhoto{
     UIGraphicsBeginImageContext(self.frame.size);
     [self drawViewHierarchyInRect:self.frame afterScreenUpdates:YES];
@@ -324,8 +326,97 @@ NSDictionary *readPlist(NSString *keyWord) {
     
 }
 
-- (void)rotateModel {
-    [_rootNode runAction:[SCNAction rotateByX:0 y:3.14 z:0 duration:1]];
+- (void)rotateModel:(float) angle{
+    [_rootNode runAction:[SCNAction rotateByX:0 y:angle z:0 duration:1]];
 }
 
+- (SCNNode *)getNodebyName:(NSString *)name {
+    SCNNode *node = [_rootNode childNodeWithName:name recursively:YES];
+    return node;
+}
+
+- (void)dance {
+    
+    [SCNTransaction begin];
+    _rootNode.position = SCNVector3Make(0, 50, 0);
+    [self rotateModel:M_PI*6];
+    [SCNTransaction setAnimationDuration:0.5];
+    [SCNTransaction setCompletionBlock:^(){
+        [SCNTransaction begin];
+        _rootNode.position = SCNVector3Make(0, 0, 0);
+        [SCNTransaction setAnimationDuration:0.5];
+        [SCNTransaction setCompletionBlock:^(){
+            [self sayHello];
+            [self walk];
+        }];
+        [SCNTransaction commit];
+    }];
+    [SCNTransaction commit];
+    
+}
+
+- (void) legMoveForward:(SCNNode *)up down:(SCNNode*)down skirt:(SCNNode *)skirt onCompltetion:(void (^)())block{
+    if (skirt != nil) {
+        [skirt runAction:[SCNAction rotateByX:M_PI/6 y:0 z:0 duration:0.4] completionHandler:^(){
+            [skirt runAction:[SCNAction rotateByX:-M_PI/6 y:0 z:0 duration:0.4]];
+        }];
+    }
+    [up runAction:[SCNAction rotateByX:M_PI/6 y:0 z:0 duration:0.4] completionHandler:^(){
+        [up runAction:[SCNAction rotateByX:-M_PI/6 y:0 z:0 duration:0.4]];
+    }];
+    [down runAction:[SCNAction rotateByX:-M_PI/6 y:0 z:0 duration:0.4] completionHandler:^(){
+        [down runAction:[SCNAction rotateByX:M_PI/6 y:0 z:0 duration:0.4] completionHandler:block];
+    }];
+}
+
+- (void)walk{
+    SCNNode *ll1 = [self getNodebyName:@"L_leg_01"];
+    SCNNode *ll2 = [self getNodebyName:@"L_leg_02"];
+    SCNNode *rl1 = [self getNodebyName:@"R_leg_01"];
+    SCNNode *rl2 = [self getNodebyName:@"R_leg_02"];
+    
+    SCNNode *lskirt = [self getNodebyName:@"FL_skirt_02"];
+    SCNNode *rskirt = [self getNodebyName:@"FR_skirt_02"];
+    
+    [self legMoveForward:ll1 down:ll2 skirt:lskirt onCompltetion:^(){
+        [self legMoveForward:rl1 down:rl2 skirt:rskirt onCompltetion:nil];
+    }];
+}
+- (void)sayHello {
+    SCNNode *R_arm = [self getNodebyName:@"R_arm"];
+    SCNNode *R_elbow = [self getNodebyName:@"R_elbow"];
+    SCNNode *R_hand = [self getNodebyName:@"R_hand"];
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *modelName = [user objectForKey:@"modelName"];
+    if ([modelName compare:@"Histoire"] == NSOrderedSame) {
+        [R_arm runAction:[SCNAction rotateByX:M_PI/4 y:0 z:M_PI/4 duration:0.2]];
+        [R_elbow runAction:[SCNAction rotateByX:M_PI/8 y:-M_PI*3/4 z:M_PI/4 duration:0.2] completionHandler:^(){
+            [R_hand runAction:[SCNAction rotateByX:-M_PI/2 y:-M_PI/4 z:M_PI/4 duration:0.1] completionHandler:^(){
+                [R_hand runAction:[SCNAction rotateByX:0 y:0 z:-M_PI/2 duration:0.2] completionHandler:^(){
+                    [R_hand runAction:[SCNAction rotateByX:0 y:0 z:M_PI/4 duration:0.1] completionHandler:^(){
+                        // recover
+                        [R_hand runAction:[SCNAction rotateByX:M_PI/2 y:M_PI/4 z:0 duration:0.1]];
+                        [R_elbow runAction:[SCNAction rotateByX:-M_PI/8 y:M_PI*3/4 z:-M_PI/4 duration:0.2]];
+                        [R_arm runAction:[SCNAction rotateByX:-M_PI/4 y:0 z:-M_PI/4 duration:0.2]];
+                    }];
+                }];
+            }];
+        }];
+    } else {
+        // superman sayhello
+        [R_hand runAction:[SCNAction rotateByX:0 y:M_PI/2 z:0 duration:0.1] completionHandler:^(){
+            [R_arm runAction:[SCNAction rotateByX:+M_PI*3/4 y:0 z:0  duration:0.1] completionHandler:^(){
+                [R_arm runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.2] completionHandler:^(){
+                    [R_arm runAction:[SCNAction rotateByX:+M_PI/2 y:0 z:0 duration:0.1] completionHandler:^(){
+                        // recover
+                        [R_arm runAction:[SCNAction rotateByX:-M_PI*3/4 y:0 z:0 duration:0.2]];
+                        [R_hand runAction:[SCNAction rotateByX:0 y:-M_PI/2 z:0 duration:0.2]];
+                    }];
+                }];
+            }];
+        }];
+    }
+    
+}
 @end

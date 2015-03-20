@@ -28,6 +28,28 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "CustomButton.h"
 #import "MBProgressHUD.h"
 
+// facial recognise
+#import <insight/insight.h>
+#import <opencv2/opencv.hpp>
+#import "Reachability.h"
+#import "SSZipArchive.h"
+#import "PersonView.h"
+
+#if defined( __cplusplus )  && defined( __ARM_NEON__ ) && !defined( __aarch64__ )
+//Converts bgra to bgr using NEON SIMD
+void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int numPixels) {
+  asm volatile("lsr          %[n], %[n], #3       \n\t"   // Will step by 8 pixels
+               "1:                                \n\t"   // Loop label
+               "vld4.8      {d0-d3}, [%[src]]!    \n\t"   // Load 8 BGRA pixels
+               "vst3.8      {d0-d2}, [%[dst]]!    \n\t"   // Store 8 BGR pixels
+               "subs        %[n], %[n], #1        \n\t"   // Decrement iteration count
+               "bne         1b                    "       // Repeat unil iteration count is not zero
+               : [n]"+r"(numPixels), [dst]"+r"(dest), [src]"+r"(source)
+               :
+               :"q0","q1","cc", "memory"                  // Used registers, conditions etc
+               );
+}
+#endif
 
 @interface ImageTargetsViewController () <IFlyRecognizerViewDelegate>
 @property (strong, nonatomic) CustomButton *returnButton;
@@ -44,10 +66,20 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 @property (nonatomic) BOOL analyzeExpression;
 
+// facial recognize
+@property (nonatomic) Reachability *internetReachability;
+
 @end
 
-@implementation ImageTargetsViewController
-
+@implementation ImageTargetsViewController {
+    std::string _dataPath;
+    NSURL *_insightResourcePath;
+    NSURL *_insightDataPath;
+    BOOL _start;
+    BOOL _reset;
+    NSMutableArray *_people;
+}
+InSight *insight;
 
 - (void) pauseAR {
     NSError * error = nil;
@@ -203,12 +235,30 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 - (void)expressionRecognize:(id)sender {
     _analyzeExpression = YES;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSURL *authKeyFile = [_insightDataPath URLByAppendingPathComponent:@"auth_key"
+                                                           isDirectory:NO];
+    BOOL fileExists = [fm fileExistsAtPath:authKeyFile.path];
     
-    [eaglView rotateModel];
-//    if ([eaglView frameImage]) {
-//        UIImageView *imageView = [[UIImageView alloc] initWithImage:[eaglView frameImage]];
-//        [eaglView addSubview:imageView];
-//    }
+    // Check if internet connection is available
+    NetworkStatus netStatus = [self.internetReachability currentReachabilityStatus];
+    
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"Internet connection not found"
+                               message:@"Interenet connection is required on the first run of this application. Please enable internet connection and restart the application."
+                              delegate:nil
+                     cancelButtonTitle:@"OK"
+                     otherButtonTitles:nil];
+    
+    // Continue if redistribution is already activated or can be activated now
+    if (!fileExists && netStatus == NotReachable) {
+        [alert show];
+        _analyzeExpression = NO;
+    } else {
+        _start = true;
+//        _reset = true;
+    }
+    
 }
 
 - (void)viewDidLoad {
@@ -226,6 +276,20 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [_speechView setParameter:@"iat" forKey:@"domain"];
     [_speechView setParameter:@"500" forKey:@"vad_eos"];
     _speechView.delegate = self;
+    
+    // facial recognize initial
+    
+    // Check for internet connection
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+	[self.internetReachability startNotifier];
+    // Setup InSight data folder location
+    _insightDataPath = [self unzipResource:@"data" ofType:@"zip"];
+    _dataPath = std::string([_insightDataPath.path cStringUsingEncoding:NSUTF8StringEncoding]);
+    // Setup InSight resource folder location
+    _insightResourcePath = [self unzipResource:@"resources" ofType:@"zip"];
+    _people = [NSMutableArray array];
+    _start = false;
+    _reset = false;
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -272,12 +336,10 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [eaglView addSubview:loadingIndicator];
     [loadingIndicator startAnimating];
 }
-
 - (void) hideLoadingAnimation {
     UIActivityIndicatorView *loadingIndicator = (UIActivityIndicatorView *)[eaglView viewWithTag:1];
     [loadingIndicator removeFromSuperview];
 }
-
 
 #pragma mark - ApplicationControl
 
@@ -295,7 +357,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     NSLog(@"Successfully initialized ObjectTracker.");
     return true;
 }
-
 - (bool) doLoadTrackersData {
     dataSetStonesAndChips = [self loadObjectTrackerDataSet:@"StonesAndChips.xml"];
     dataSetTarmac = [self loadObjectTrackerDataSet:@"Tarmac.xml"];
@@ -312,7 +373,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     return YES;
 }
-
 - (bool) doStartTrackers {
     QCAR::TrackerManager& trackerManager = QCAR::TrackerManager::getInstance();
     QCAR::Tracker* tracker = trackerManager.getTracker(QCAR::ObjectTracker::getClassType());
@@ -323,7 +383,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     tracker->start();
     return YES;
 }
-
 // callback: the AR initialization is done
 - (void) onInitARDone:(NSError *)initError {
     [self hideLoadingAnimation];
@@ -359,6 +418,27 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
+- (cv::Mat)cvMatFromUIImage:(UIImage *)image {
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+    CGFloat cols = image.size.width;
+    CGFloat rows = image.size.height;
+    
+    cv::Mat cvMat(rows, cols, CV_8UC3); // 8 bits per component, 3 channels (color channels)
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
+                                                    cols,                       // Width of bitmap
+                                                    rows,                       // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNoneSkipLast |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
+    CGContextRelease(contextRef);
+    
+    return cvMat;
+}
 
 // generate UIImage from QCAR:Image
 void releasePixels(void *info, const void *data, size_t size) {
@@ -371,12 +451,18 @@ void releasePixels(void *info, const void *data, size_t size) {
     int bitsPerPixel = QCAR::getBitsPerPixel(QCAR::RGB888);
     int bytesPerRow = qcarImage->getBufferWidth() * bitsPerPixel / bitsPerComponent;
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNone;
     CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
     
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, qcarImage->getPixels(), QCAR::getBufferSize(width, height, QCAR::RGB888), releasePixels);
     
     CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+    
+    // cv::mat
+    cv::Mat cvMat(width, height, CV_8UC3);
+    
+    
     UIImage *image = [UIImage imageWithCGImage:imageRef];
     
     CGDataProviderRelease(provider);
@@ -399,7 +485,7 @@ void releasePixels(void *info, const void *data, size_t size) {
         switchToLF = NO;
     }
     
-    // analyze facial expression
+    // analyze facial expressionz
     QCAR::setFrameFormat(QCAR::RGB888, YES);
     if (_analyzeExpression) {
         QCAR::Frame frame = state->getFrame();
@@ -408,7 +494,13 @@ void releasePixels(void *info, const void *data, size_t size) {
             const QCAR::Image *qcarImage = frame.getImage(i);
             if (qcarImage->getFormat() == QCAR::RGB888) {
                 UIImage *frameImage= [self createUIImage:qcarImage];
-                NSLog(@"frameImage size: %lf, %lf", frameImage.size.height, frameImage.size.width);
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(){
+                    NSLog(@"frameImage size: %lf, %lf", frameImage.size.height, frameImage.size.width);
+                    cv::Mat mat = [self cvMatFromUIImage:frameImage];
+                    NSLog(@"mat:: %d, %d", mat.rows, mat.cols);
+                    [self processImage:mat];
+                });
             }
         }
         _analyzeExpression = NO;
@@ -447,7 +539,6 @@ void releasePixels(void *info, const void *data, size_t size) {
     
     return dataSet;
 }
-
 - (bool) doStopTrackers {
     // Stop the tracker
     QCAR::TrackerManager& trackerManager = QCAR::TrackerManager::getInstance();
@@ -463,7 +554,6 @@ void releasePixels(void *info, const void *data, size_t size) {
         return NO;
     }
 }
-
 - (bool) doUnloadTrackersData {
     [self deactivateDataSet: dataSetCurrent];
     dataSetCurrent = nil;
@@ -486,7 +576,6 @@ void releasePixels(void *info, const void *data, size_t size) {
     NSLog(@"datasets destroyed");
     return YES;
 }
-
 - (BOOL)activateDataSet:(QCAR::DataSet *)theDataSet {
     // if we've previously recorded an activation, deactivate it
     if (dataSetCurrent != nil) {
@@ -520,7 +609,6 @@ void releasePixels(void *info, const void *data, size_t size) {
     
     return success;
 }
-
 - (BOOL)deactivateDataSet:(QCAR::DataSet *)theDataSet {
     if ((dataSetCurrent == nil) || (theDataSet != dataSetCurrent)) {
         NSLog(@"Invalid request to deactivate data set.");
@@ -553,7 +641,6 @@ void releasePixels(void *info, const void *data, size_t size) {
     
     return success;
 }
-
 - (BOOL) setExtendedTrackingForDataSet:(QCAR::DataSet *)theDataSet start:(BOOL) start {
     BOOL result = YES;
     for (int tIdx = 0; tIdx < theDataSet->getNumTrackables(); tIdx++) {
@@ -572,17 +659,14 @@ void releasePixels(void *info, const void *data, size_t size) {
     }
     return result;
 }
-
 - (bool) doDeinitTrackers {
     QCAR::TrackerManager& trackerManager = QCAR::TrackerManager::getInstance();
     trackerManager.deinitTracker(QCAR::ObjectTracker::getClassType());
     return YES;
 }
-
 - (void)autofocus:(UITapGestureRecognizer *)sender {
     [self performSelector:@selector(cameraPerformAutoFocus) withObject:nil afterDelay:.4];
 }
-
 - (void)cameraPerformAutoFocus {
     QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_TRIGGERAUTO);
 }
@@ -647,25 +731,221 @@ void releasePixels(void *info, const void *data, size_t size) {
     NSLog(@"%@", [error errorDesc]);
 }
 
+- (void)saySomething:(NSString *)str{
+    AVSpeechSynthesizer *avSpeech = [[AVSpeechSynthesizer alloc] init];
+    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:str];
+    utterance.rate = AVSpeechUtteranceMaximumSpeechRate / 4.0f;
+    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-guoyu"]; // defaults to your system language
+    [avSpeech speakUtterance:utterance];
+}
 - (void)parseText:(NSString *)str {
-    if ([str compare:@"你好"] == NSOrderedSame) {
-        AVSpeechSynthesizer *avSpeech = [[AVSpeechSynthesizer alloc] init];
-        AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:_speechResult];
-        utterance.rate = AVSpeechUtteranceMaximumSpeechRate / 4.0f;
-        utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-guoyu"]; // defaults to your system language
-        [avSpeech speakUtterance:utterance];
-    }
-    if (([str rangeOfString:@"萌"].location != -1) || ([str rangeOfString:@"跳"].location != -1)) {
-        NSLog(@"萌一个");
-    }
+    
     if (str == nil) {
-        NSLog(@"识别失败");
+        NSLog(@"空字符串");
+        [self saySomething:@"抱歉，您说的是什么？"];
+    } else if ([str compare:@"你是谁"] == NSOrderedSame || [str compare:@"你是谁？"] == NSOrderedSame){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSString *name = [user objectForKey:@"modelName"];
+        [self saySomething:[@"我是" stringByAppendingString:name]];
+    }
+    else if ([str compare:@"你好"] == NSOrderedSame || [str compare:@"你好。"] == NSOrderedSame) {
+        [self saySomething:@"你好"];
+        [eaglView sayHello];
+    }
+    else if ([str rangeOfString:@"舞"].location != NSNotFound){
+        [eaglView dance];
+    }
+    else if (([str rangeOfString:@"萌"].location != NSNotFound) || ([str rangeOfString:@"跳"].location != NSNotFound)) {
+        NSLog(@"萌一个");
+        [self saySomething:@"好的"];
+    } else if ([str rangeOfString:@"转体"].location != NSNotFound){
+        [self saySomething:@"好的"];
+        NSString *newString = [[str componentsSeparatedByCharactersInSet:
+                                [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
+                               componentsJoinedByString:@""];
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        f.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *myNumber = [f numberFromString:newString];
+        NSLog(@"-----%@", myNumber);
+        [eaglView rotateModel:(myNumber.intValue)*M_PI/180.0];
     }
     else {
-        NSLog(@"不能识别您的意思");
+        NSLog(@"未能识别出的语义");
+        [self saySomething:@"真抱歉，不能识别您的语义。"];
     }
-    [eaglView rotateModel];
 }
+
+#pragma mark - Data folder functions
+- (NSURL *)getAppDocumentsRoot:(NSFileManager *)fm {
+    // Locate applications' sandboxed data directory
+    NSArray *possibleURLs = [fm URLsForDirectory:NSApplicationSupportDirectory
+                                       inDomains:NSUserDomainMask];
     
+    NSURL *appSupportDir = nil;
+    NSURL *appDirectory = nil;
+    
+    if ([possibleURLs count] >= 1) {
+        appSupportDir = [possibleURLs objectAtIndex:0];
+    }
+    
+    if (appSupportDir) {
+        NSString *appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+        appDirectory = [appSupportDir URLByAppendingPathComponent:appBundleID];
+    }
+    
+    return appDirectory;
+}
+- (NSURL *)unzipResource:(NSString *)resource ofType:(NSString *) type {
+    // Get default file manager
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    // Get documents folder path
+    NSURL *appDirectory = [self getAppDocumentsRoot:fm];
+    
+    // Check if given resource directory exists
+    NSURL *url = nil;
+    if (appDirectory) {
+        url = [appDirectory URLByAppendingPathComponent:resource isDirectory:YES];
+        BOOL fileExists = [fm fileExistsAtPath:url.path];
+        if (!fileExists) {
+            // Get zipped resource path
+            NSString *zipPath = [[NSBundle mainBundle] pathForResource:resource
+                                                                ofType:type];
+            // Unzip resource to documents folder
+            BOOL unzipped = [SSZipArchive unzipFileAtPath:zipPath
+                                            toDestination:appDirectory.path];
+            if (!unzipped) {
+                url = nil;
+            }
+        }
+    }
+    
+    // Return path to extracted resource
+    return url;
+}
+- (BOOL)fileExistsAtPath:(NSString *)dir isDirectory:(BOOL *)isDir {
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:dir
+                                                           isDirectory:isDir];
+    return fileExists;
+}
+
+#pragma mark - Drawing functions
+- (void)drawPeople:(std::vector<Person> &)people inFrame:(cv::Mat &)frame {
+    static unsigned int frameCounter = 0;
+    ++frameCounter;
+    
+    // For each person in the frame, do:
+    for ( unsigned int i = 0; i < people.size();++i ) {
+        // Create a copy of person on the heap
+        Person *p = new Person(people.at(i));
+        
+        if (i < [_people count]) {
+            // Reuse existing PersonView if available
+            PersonView *pv = [_people objectAtIndex:i];
+            
+            // Draw person
+            [pv releasePerson];
+            [pv setPerson:p];
+            [pv drawPersonWithFrameCounter:frameCounter
+                                  andFrame:frame
+                               andGazeView:eaglView];
+        } else {
+            // Create new PersonView
+            CGRect f = CGRectMake(0.0f,
+                                  0.0f,
+                                  eaglView.bounds.size.width,
+                                  eaglView.bounds.size.height);
+            __block PersonView *pv = nil;
+            
+            
+            // Allocate new PersonView and add to UIImageView on main thread
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                pv = [[PersonView alloc] initWithFrame:f
+                                        andResourceURL:_insightResourcePath];
+                
+                // Add to UIImageView
+                [eaglView addSubview:pv];
+            });
+            
+            // Draw person
+            [pv setPerson:p];
+            [pv drawPersonWithFrameCounter:frameCounter
+                                  andFrame:frame
+                               andGazeView:eaglView];
+            
+            // Save reference to PersonView for reuse
+            [_people addObject:pv];
+        }
+    }
+}
+
+#pragma mark - Protocol CvVideoCameraDelegate
+#ifdef __cplusplus
+- (void)processImage:(cv::Mat&)image {
+    // Convert image to BGR
+    cv::Mat image_bgr(image.size(), CV_8UC3);
+#if __ARM_NEON__ && !defined( __aarch64__ )
+    //Drop alpha channel (faster than cv::cvtColor)
+    neon_bgra_bgr((uint8_t *)image.data, (uint8_t *)image_bgr.data, image.cols*image.rows);
+#else
+    cv::cvtColor(image, image_bgr, cv::COLOR_BGRA2BGR);
+#endif
+    // Allocate insight once
+    if (insight == NULL) {
+        insight = new InSight(_dataPath, DEVELOPER);
+    }
+    // Authenticate insight once
+    if (!insight->isAuthenticated()) {
+        if (!insight->authenticate("56e86f4c38ed489cba865593b5adcc1a")) {
+            std::cout << insight->getErrorDescription() << std::endl;
+        }
+    }
+    // Init InSight
+    if (!insight->isInit() || _reset ) {
+        _reset = false;
+        NSLog(@"insight->init(image)");
+        if (!insight->init(image_bgr)) {
+            std::cout << insight->getErrorDescription() << std::endl;
+        }
+//        // Show all overlay
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            for(UIView *v in [eaglView subviews]) {
+//                [eaglView bringSubviewToFront:v];
+//            }
+//        });
+    } else {
+        // Process frame
+        NSLog(@"insight init success");
+        if (!insight->process(image_bgr)) {
+            std::cout << insight->getErrorDescription() << std::endl;
+        }
+        
+        Person * p = NULL;
+        FeaturesRequest f = ALL_FEATURES;
+        f.age = false;
+        f.gender = false;
+        f.eye_location = false;
+        f.eye_gaze = false;
+        f.head_gaze = false;
+        NSLog(@"insight->getCurrentPerson");
+        if( insight->getCurrentPerson( p, f )  && p != NULL ) {
+            std::vector<Person> v = {*p};
+//            [self drawPeople:v inFrame:image_bgr];
+            NSLog(@"success detect");
+            
+        }
+        
+        // Draw mask points
+//        std::vector<cv::Point> maskPoints;
+//        if (!insight->getMaskPoints(maskPoints)) {
+//            std::cout << insight->getErrorDescription() << std::endl;
+//        } else {
+//            for(int i = 0; i < maskPoints.size(); ++i) {
+//                cv::circle(image_bgr, maskPoints.at(i), 1, cv::Scalar(0,255,0));
+//            }
+//        }
+    }
+}
+#endif
 
 @end

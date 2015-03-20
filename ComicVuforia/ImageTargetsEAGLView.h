@@ -9,7 +9,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #import <QCAR/UIGLViewProtocol.h>
 
-#import "Texture.h"
 #import "QCARSession.h"
 #import "SampleGLResourceHandler.h"
 
@@ -62,5 +61,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)freeOpenGLESResources;
 
 - (void)savePhoto;
-- (void)rotateModel;
+- (void)rotateModel:(float)angle;
+- (void)dance;
+- (void)sayHello;
 @end
