@@ -150,6 +150,19 @@ InSight *insight;
     // show loading animation while AR is being initialized
     [self showLoadingAnimation];
     
+    // facial recognize initial
+    // Check for internet connection
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+	[self.internetReachability startNotifier];
+    // Setup InSight data folder location
+    _insightDataPath = [self unzipResource:@"data" ofType:@"zip"];
+    _dataPath = std::string([_insightDataPath.path cStringUsingEncoding:NSUTF8StringEncoding]);
+    // Setup InSight resource folder location
+    _insightResourcePath = [self unzipResource:@"resources" ofType:@"zip"];
+    _people = [NSMutableArray array];
+    _start = false;
+    _reset = false;
+    
     // initialize the AR session
     [vapp initAR: (QCAR::GL_20) ARViewBoundsSize:viewFrame.size orientation:UIInterfaceOrientationPortrait];
 }
@@ -276,20 +289,6 @@ InSight *insight;
     [_speechView setParameter:@"iat" forKey:@"domain"];
     [_speechView setParameter:@"500" forKey:@"vad_eos"];
     _speechView.delegate = self;
-    
-    // facial recognize initial
-    
-    // Check for internet connection
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
-	[self.internetReachability startNotifier];
-    // Setup InSight data folder location
-    _insightDataPath = [self unzipResource:@"data" ofType:@"zip"];
-    _dataPath = std::string([_insightDataPath.path cStringUsingEncoding:NSUTF8StringEncoding]);
-    // Setup InSight resource folder location
-    _insightResourcePath = [self unzipResource:@"resources" ofType:@"zip"];
-    _people = [NSMutableArray array];
-    _start = false;
-    _reset = false;
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -418,59 +417,6 @@ InSight *insight;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
-- (cv::Mat)cvMatFromUIImage:(UIImage *)image {
-    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
-    CGFloat cols = image.size.width;
-    CGFloat rows = image.size.height;
-    
-    cv::Mat cvMat(rows, cols, CV_8UC3); // 8 bits per component, 3 channels (color channels)
-    
-    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
-                                                    cols,                       // Width of bitmap
-                                                    rows,                       // Height of bitmap
-                                                    8,                          // Bits per component
-                                                    cvMat.step[0],              // Bytes per row
-                                                    colorSpace,                 // Colorspace
-                                                    kCGImageAlphaNoneSkipLast |
-                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
-    
-    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
-    CGContextRelease(contextRef);
-    
-    return cvMat;
-}
-
-// generate UIImage from QCAR:Image
-void releasePixels(void *info, const void *data, size_t size) {
-    // do nothing
-}
-- (UIImage *)createUIImage:(const QCAR::Image *)qcarImage {
-    int width = qcarImage->getWidth();
-    int height = qcarImage->getHeight();
-    int bitsPerComponent = 8;
-    int bitsPerPixel = QCAR::getBitsPerPixel(QCAR::RGB888);
-    int bytesPerRow = qcarImage->getBufferWidth() * bitsPerPixel / bitsPerComponent;
-    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-    
-    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaNone;
-    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-    
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, qcarImage->getPixels(), QCAR::getBufferSize(width, height, QCAR::RGB888), releasePixels);
-    
-    CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
-    
-    // cv::mat
-    cv::Mat cvMat(width, height, CV_8UC3);
-    
-    
-    UIImage *image = [UIImage imageWithCGImage:imageRef];
-    
-    CGDataProviderRelease(provider);
-    CGColorSpaceRelease(colorSpaceRef);
-    CGImageRelease(imageRef);
-    
-    return image;
-}
 - (void) onQCARUpdate: (QCAR::State *) state {
     if (switchToTarmac) {
         [self activateDataSet:dataSetTarmac];
@@ -493,17 +439,22 @@ void releasePixels(void *info, const void *data, size_t size) {
         for (int i = 0; i < frame.getNumImages(); i++) {
             const QCAR::Image *qcarImage = frame.getImage(i);
             if (qcarImage->getFormat() == QCAR::RGB888) {
-                UIImage *frameImage= [self createUIImage:qcarImage];
+                NSData * imageData = [NSData dataWithBytes:qcarImage->getPixels()
+                                                    length:(QCAR::getBufferSize(qcarImage->getWidth(), qcarImage->getHeight(), QCAR::RGB888))];
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(){
-                    NSLog(@"frameImage size: %lf, %lf", frameImage.size.height, frameImage.size.width);
-                    cv::Mat mat = [self cvMatFromUIImage:frameImage];
-                    NSLog(@"mat:: %d, %d", mat.rows, mat.cols);
-                    [self processImage:mat];
+                NSLog(@"is address equal? %d", (void *)imageData.bytes == (void *)qcarImage->getPixels());
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+                    if (imageData != nil) {
+                        NSLog(@"success get image data");
+                        cv::Mat mat(qcarImage->getWidth(), qcarImage->getHeight(), CV_8UC3, (void *)imageData.bytes);
+//                        [self processImage:mat];
+                    }
                 });
+
             }
         }
-        _analyzeExpression = NO;
+//        _analyzeExpression = NO;
     }
 }
 
@@ -882,41 +833,27 @@ void releasePixels(void *info, const void *data, size_t size) {
 #pragma mark - Protocol CvVideoCameraDelegate
 #ifdef __cplusplus
 - (void)processImage:(cv::Mat&)image {
-    // Convert image to BGR
-    cv::Mat image_bgr(image.size(), CV_8UC3);
-#if __ARM_NEON__ && !defined( __aarch64__ )
-    //Drop alpha channel (faster than cv::cvtColor)
-    neon_bgra_bgr((uint8_t *)image.data, (uint8_t *)image_bgr.data, image.cols*image.rows);
-#else
-    cv::cvtColor(image, image_bgr, cv::COLOR_BGRA2BGR);
-#endif
     // Allocate insight once
     if (insight == NULL) {
         insight = new InSight(_dataPath, DEVELOPER);
     }
     // Authenticate insight once
     if (!insight->isAuthenticated()) {
+        NSLog(@"insight is not authenticated");
         if (!insight->authenticate("56e86f4c38ed489cba865593b5adcc1a")) {
             std::cout << insight->getErrorDescription() << std::endl;
         }
     }
     // Init InSight
-    if (!insight->isInit() || _reset ) {
-        _reset = false;
+    if (!insight->isInit()) {
         NSLog(@"insight->init(image)");
-        if (!insight->init(image_bgr)) {
+        if (!insight->init(image)) {
             std::cout << insight->getErrorDescription() << std::endl;
         }
-//        // Show all overlay
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            for(UIView *v in [eaglView subviews]) {
-//                [eaglView bringSubviewToFront:v];
-//            }
-//        });
     } else {
         // Process frame
         NSLog(@"insight init success");
-        if (!insight->process(image_bgr)) {
+        if (!insight->process(image)) {
             std::cout << insight->getErrorDescription() << std::endl;
         }
         
@@ -933,6 +870,7 @@ void releasePixels(void *info, const void *data, size_t size) {
 //            [self drawPeople:v inFrame:image_bgr];
             NSLog(@"success detect");
             
+            _analyzeExpression = NO;
         }
         
         // Draw mask points
