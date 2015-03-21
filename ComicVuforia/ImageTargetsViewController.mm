@@ -29,11 +29,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 #import "MBProgressHUD.h"
 
 // facial recognise
-#import <insight/insight.h>
-#import <opencv2/opencv.hpp>
 #import "Reachability.h"
-#import "SSZipArchive.h"
-#import "PersonView.h"
 
 #if defined( __cplusplus )  && defined( __ARM_NEON__ ) && !defined( __aarch64__ )
 //Converts bgra to bgr using NEON SIMD
@@ -71,15 +67,7 @@ void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int num
 
 @end
 
-@implementation ImageTargetsViewController {
-    std::string _dataPath;
-    NSURL *_insightResourcePath;
-    NSURL *_insightDataPath;
-    BOOL _start;
-    BOOL _reset;
-    NSMutableArray *_people;
-}
-InSight *insight;
+@implementation ImageTargetsViewController
 
 - (void) pauseAR {
     NSError * error = nil;
@@ -154,14 +142,6 @@ InSight *insight;
     // Check for internet connection
     self.internetReachability = [Reachability reachabilityForInternetConnection];
 	[self.internetReachability startNotifier];
-    // Setup InSight data folder location
-    _insightDataPath = [self unzipResource:@"data" ofType:@"zip"];
-    _dataPath = std::string([_insightDataPath.path cStringUsingEncoding:NSUTF8StringEncoding]);
-    // Setup InSight resource folder location
-    _insightResourcePath = [self unzipResource:@"resources" ofType:@"zip"];
-    _people = [NSMutableArray array];
-    _start = false;
-    _reset = false;
     
     // initialize the AR session
     [vapp initAR: (QCAR::GL_20) ARViewBoundsSize:viewFrame.size orientation:UIInterfaceOrientationPortrait];
@@ -247,29 +227,22 @@ InSight *insight;
     [hud hide:YES afterDelay:0.5];
 }
 - (void)expressionRecognize:(id)sender {
-    _analyzeExpression = YES;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSURL *authKeyFile = [_insightDataPath URLByAppendingPathComponent:@"auth_key"
-                                                           isDirectory:NO];
-    BOOL fileExists = [fm fileExistsAtPath:authKeyFile.path];
-    
     // Check if internet connection is available
     NetworkStatus netStatus = [self.internetReachability currentReachabilityStatus];
     
     UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:@"Internet connection not found"
-                               message:@"Interenet connection is required on the first run of this application. Please enable internet connection and restart the application."
+    [[UIAlertView alloc] initWithTitle:@"未能连接到互联网"
+                               message:@"面部表情识别需要使用互联网!"
                               delegate:nil
-                     cancelButtonTitle:@"OK"
+                     cancelButtonTitle:@"确认"
                      otherButtonTitles:nil];
     
     // Continue if redistribution is already activated or can be activated now
-    if (!fileExists && netStatus == NotReachable) {
+    if (netStatus == NotReachable) {
         [alert show];
         _analyzeExpression = NO;
     } else {
-        _start = true;
-//        _reset = true;
+        _analyzeExpression = YES;
     }
     
 }
@@ -447,8 +420,7 @@ InSight *insight;
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
                     if (imageData != nil) {
                         NSLog(@"success get image data");
-                        cv::Mat mat(qcarImage->getWidth(), qcarImage->getHeight(), CV_8UC3, (void *)imageData.bytes);
-//                        [self processImage:mat];
+//                        cv::Mat mat(qcarImage->getWidth(), qcarImage->getHeight(), CV_8UC3, (void *)imageData.bytes);
                     }
                 });
 
@@ -725,165 +697,5 @@ InSight *insight;
         [self saySomething:@"真抱歉，不能识别您的语义。"];
     }
 }
-
-#pragma mark - Data folder functions
-- (NSURL *)getAppDocumentsRoot:(NSFileManager *)fm {
-    // Locate applications' sandboxed data directory
-    NSArray *possibleURLs = [fm URLsForDirectory:NSApplicationSupportDirectory
-                                       inDomains:NSUserDomainMask];
-    
-    NSURL *appSupportDir = nil;
-    NSURL *appDirectory = nil;
-    
-    if ([possibleURLs count] >= 1) {
-        appSupportDir = [possibleURLs objectAtIndex:0];
-    }
-    
-    if (appSupportDir) {
-        NSString *appBundleID = [[NSBundle mainBundle] bundleIdentifier];
-        appDirectory = [appSupportDir URLByAppendingPathComponent:appBundleID];
-    }
-    
-    return appDirectory;
-}
-- (NSURL *)unzipResource:(NSString *)resource ofType:(NSString *) type {
-    // Get default file manager
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    // Get documents folder path
-    NSURL *appDirectory = [self getAppDocumentsRoot:fm];
-    
-    // Check if given resource directory exists
-    NSURL *url = nil;
-    if (appDirectory) {
-        url = [appDirectory URLByAppendingPathComponent:resource isDirectory:YES];
-        BOOL fileExists = [fm fileExistsAtPath:url.path];
-        if (!fileExists) {
-            // Get zipped resource path
-            NSString *zipPath = [[NSBundle mainBundle] pathForResource:resource
-                                                                ofType:type];
-            // Unzip resource to documents folder
-            BOOL unzipped = [SSZipArchive unzipFileAtPath:zipPath
-                                            toDestination:appDirectory.path];
-            if (!unzipped) {
-                url = nil;
-            }
-        }
-    }
-    
-    // Return path to extracted resource
-    return url;
-}
-- (BOOL)fileExistsAtPath:(NSString *)dir isDirectory:(BOOL *)isDir {
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:dir
-                                                           isDirectory:isDir];
-    return fileExists;
-}
-
-#pragma mark - Drawing functions
-- (void)drawPeople:(std::vector<Person> &)people inFrame:(cv::Mat &)frame {
-    static unsigned int frameCounter = 0;
-    ++frameCounter;
-    
-    // For each person in the frame, do:
-    for ( unsigned int i = 0; i < people.size();++i ) {
-        // Create a copy of person on the heap
-        Person *p = new Person(people.at(i));
-        
-        if (i < [_people count]) {
-            // Reuse existing PersonView if available
-            PersonView *pv = [_people objectAtIndex:i];
-            
-            // Draw person
-            [pv releasePerson];
-            [pv setPerson:p];
-            [pv drawPersonWithFrameCounter:frameCounter
-                                  andFrame:frame
-                               andGazeView:eaglView];
-        } else {
-            // Create new PersonView
-            CGRect f = CGRectMake(0.0f,
-                                  0.0f,
-                                  eaglView.bounds.size.width,
-                                  eaglView.bounds.size.height);
-            __block PersonView *pv = nil;
-            
-            
-            // Allocate new PersonView and add to UIImageView on main thread
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                pv = [[PersonView alloc] initWithFrame:f
-                                        andResourceURL:_insightResourcePath];
-                
-                // Add to UIImageView
-                [eaglView addSubview:pv];
-            });
-            
-            // Draw person
-            [pv setPerson:p];
-            [pv drawPersonWithFrameCounter:frameCounter
-                                  andFrame:frame
-                               andGazeView:eaglView];
-            
-            // Save reference to PersonView for reuse
-            [_people addObject:pv];
-        }
-    }
-}
-
-#pragma mark - Protocol CvVideoCameraDelegate
-#ifdef __cplusplus
-- (void)processImage:(cv::Mat&)image {
-    // Allocate insight once
-    if (insight == NULL) {
-        insight = new InSight(_dataPath, DEVELOPER);
-    }
-    // Authenticate insight once
-    if (!insight->isAuthenticated()) {
-        NSLog(@"insight is not authenticated");
-        if (!insight->authenticate("56e86f4c38ed489cba865593b5adcc1a")) {
-            std::cout << insight->getErrorDescription() << std::endl;
-        }
-    }
-    // Init InSight
-    if (!insight->isInit()) {
-        NSLog(@"insight->init(image)");
-        if (!insight->init(image)) {
-            std::cout << insight->getErrorDescription() << std::endl;
-        }
-    } else {
-        // Process frame
-        NSLog(@"insight init success");
-        if (!insight->process(image)) {
-            std::cout << insight->getErrorDescription() << std::endl;
-        }
-        
-        Person * p = NULL;
-        FeaturesRequest f = ALL_FEATURES;
-        f.age = false;
-        f.gender = false;
-        f.eye_location = false;
-        f.eye_gaze = false;
-        f.head_gaze = false;
-        NSLog(@"insight->getCurrentPerson");
-        if( insight->getCurrentPerson( p, f )  && p != NULL ) {
-            std::vector<Person> v = {*p};
-//            [self drawPeople:v inFrame:image_bgr];
-            NSLog(@"success detect");
-            
-            _analyzeExpression = NO;
-        }
-        
-        // Draw mask points
-//        std::vector<cv::Point> maskPoints;
-//        if (!insight->getMaskPoints(maskPoints)) {
-//            std::cout << insight->getErrorDescription() << std::endl;
-//        } else {
-//            for(int i = 0; i < maskPoints.size(); ++i) {
-//                cv::circle(image_bgr, maskPoints.at(i), 1, cv::Scalar(0,255,0));
-//            }
-//        }
-    }
-}
-#endif
 
 @end

@@ -36,7 +36,6 @@
 		880D65AA1AABD17300AEAE61 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 880D65A91AABD17300AEAE61 /* CustomButton.m */; };
 		88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */; };
 		88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */; };
-		88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E821AAAEB0000FD3A53 /* libz.dylib */; };
 		88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */; };
 		881B6AEA1AB9438A0057A746 /* superman.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6AE91AB9438A0057A746 /* superman.png */; };
 		881B6B0F1AB949810057A746 /* Histoire.dae in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B011AB949810057A746 /* Histoire.dae */; };
@@ -57,34 +56,18 @@
 		882F08451AB7021700C3101F /* Superman_Diff.tga in Resources */ = {isa = PBXBuildFile; fileRef = 882F08421AB7021700C3101F /* Superman_Diff.tga */; };
 		882F08461AB7021700C3101F /* superman.dae in Resources */ = {isa = PBXBuildFile; fileRef = 882F08431AB7021700C3101F /* superman.dae */; };
 		886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 886BE8301AABEAFA0049F68B /* MBProgressHUD.m */; };
-		886BE8341AAC1A220049F68B /* insight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8321AAC1A220049F68B /* insight.framework */; };
-		886BE8351AAC1A220049F68B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8331AAC1A220049F68B /* opencv2.framework */; };
-		886BE8371AAC1A390049F68B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 886BE8361AAC1A390049F68B /* libcurl.a */; };
 		886EF7C11AB921A500785CF1 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BD1AB921A500785CF1 /* AboutViewController.m */; };
 		886EF7C21AB921A500785CF1 /* BriefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BF1AB921A500785CF1 /* BriefViewController.m */; };
 		886EF7C31AB921A500785CF1 /* gtk_cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 886EF7C01AB921A500785CF1 /* gtk_cancel.png */; };
 		886EF7C61AB9253500785CF1 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7C51AB9253500785CF1 /* SettingViewController.m */; };
 		888C48DB1AAD681B007CA1CC /* lf.xml in Resources */ = {isa = PBXBuildFile; fileRef = 888C48D91AAD681B007CA1CC /* lf.xml */; };
 		888C48DC1AAD681B007CA1CC /* lf.dat in Resources */ = {isa = PBXBuildFile; fileRef = 888C48DA1AAD681B007CA1CC /* lf.dat */; };
+		889A91E11ABDA3BE000D8783 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E01ABDA3BE000D8783 /* CoreGraphics.framework */; };
+		889A91E31ABDA436000D8783 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E21ABDA436000D8783 /* CoreLocation.framework */; };
+		889A91E51ABDA489000D8783 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E41ABDA489000D8783 /* libz.dylib */; };
 		88B4A5271AB708FD00DD1756 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B4A5261AB708FD00DD1756 /* GLKit.framework */; };
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
-		88DF21EF1ABBFCE100B65E21 /* BarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21E61ABBFCE100B65E21 /* BarView.m */; };
-		88DF21F01ABBFCE100B65E21 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21E81ABBFCE100B65E21 /* CircleView.m */; };
-		88DF21F11ABBFCE100B65E21 /* data.zip in Resources */ = {isa = PBXBuildFile; fileRef = 88DF21E91ABBFCE100B65E21 /* data.zip */; };
-		88DF21F21ABBFCE100B65E21 /* LineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21EB1ABBFCE100B65E21 /* LineView.m */; };
-		88DF21F31ABBFCE100B65E21 /* PersonView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21ED1ABBFCE100B65E21 /* PersonView.mm */; };
-		88DF21F41ABBFCE100B65E21 /* resources.zip in Resources */ = {isa = PBXBuildFile; fileRef = 88DF21EE1ABBFCE100B65E21 /* resources.zip */; };
 		88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21F61ABBFE1F00B65E21 /* Reachability.m */; };
-		88DF22051ABBFE1F00B65E21 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21FA1ABBFE1F00B65E21 /* ioapi.c */; };
-		88DF22061ABBFE1F00B65E21 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21FC1ABBFE1F00B65E21 /* mztools.c */; };
-		88DF22071ABBFE1F00B65E21 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21FE1ABBFE1F00B65E21 /* unzip.c */; };
-		88DF22081ABBFE1F00B65E21 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 88DF22001ABBFE1F00B65E21 /* zip.c */; };
-		88DF22091ABBFE1F00B65E21 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF22031ABBFE1F00B65E21 /* SSZipArchive.m */; };
-		88DF220B1ABC026600B65E21 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF220A1ABC026600B65E21 /* libc++.dylib */; };
-		88DF220D1ABC037900B65E21 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF220C1ABC037900B65E21 /* CoreGraphics.framework */; };
-		88DF220F1ABC038400B65E21 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF220E1ABC038400B65E21 /* AssetsLibrary.framework */; };
-		88DF22111ABC039700B65E21 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF22101ABC039700B65E21 /* Accelerate.framework */; };
-		88DF22131ABC03FA00B65E21 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF22121ABC03FA00B65E21 /* AdSupport.framework */; };
 		88E91C401AB1667C00606084 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E91C3F1AB1667C00606084 /* SceneKit.framework */; };
 		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
@@ -141,7 +124,6 @@
 		880D65A91AABD17300AEAE61 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
 		88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		88186E821AAAEB0000FD3A53 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		881B6AE91AB9438A0057A746 /* superman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = superman.png; sourceTree = "<group>"; };
 		881B6B011AB949810057A746 /* Histoire.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = Histoire.dae; sourceTree = "<group>"; };
@@ -163,9 +145,6 @@
 		882F08431AB7021700C3101F /* superman.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = superman.dae; sourceTree = "<group>"; };
 		886BE82F1AABEAFA0049F68B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		886BE8301AABEAFA0049F68B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		886BE8321AAC1A220049F68B /* insight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = insight.framework; path = ComicVuforia/InSight/insight.framework; sourceTree = "<group>"; };
-		886BE8331AAC1A220049F68B /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ComicVuforia/InSight/opencv2.framework; sourceTree = "<group>"; };
-		886BE8361AAC1A390049F68B /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ComicVuforia/InSight/curl/lib/libcurl.a; sourceTree = "<group>"; };
 		886EF7BC1AB921A500785CF1 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		886EF7BD1AB921A500785CF1 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		886EF7BE1AB921A500785CF1 /* BriefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BriefViewController.h; sourceTree = "<group>"; };
@@ -175,36 +154,13 @@
 		886EF7C51AB9253500785CF1 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		888C48D91AAD681B007CA1CC /* lf.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lf.xml; sourceTree = "<group>"; };
 		888C48DA1AAD681B007CA1CC /* lf.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = lf.dat; sourceTree = "<group>"; };
+		889A91E01ABDA3BE000D8783 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		889A91E21ABDA436000D8783 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		889A91E41ABDA489000D8783 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		88B4A5261AB708FD00DD1756 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		88D256B51AAAE343001261F8 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = ComicVuforia/iflyMSC.framework; sourceTree = "<group>"; };
-		88DF21E51ABBFCE100B65E21 /* BarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarView.h; sourceTree = "<group>"; };
-		88DF21E61ABBFCE100B65E21 /* BarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarView.m; sourceTree = "<group>"; };
-		88DF21E71ABBFCE100B65E21 /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
-		88DF21E81ABBFCE100B65E21 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
-		88DF21E91ABBFCE100B65E21 /* data.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = data.zip; sourceTree = "<group>"; };
-		88DF21EA1ABBFCE100B65E21 /* LineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineView.h; sourceTree = "<group>"; };
-		88DF21EB1ABBFCE100B65E21 /* LineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineView.m; sourceTree = "<group>"; };
-		88DF21EC1ABBFCE100B65E21 /* PersonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonView.h; sourceTree = "<group>"; };
-		88DF21ED1ABBFCE100B65E21 /* PersonView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PersonView.mm; sourceTree = "<group>"; };
-		88DF21EE1ABBFCE100B65E21 /* resources.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = resources.zip; sourceTree = "<group>"; };
 		88DF21F51ABBFE1F00B65E21 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		88DF21F61ABBFE1F00B65E21 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		88DF21F91ABBFE1F00B65E21 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		88DF21FA1ABBFE1F00B65E21 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		88DF21FB1ABBFE1F00B65E21 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		88DF21FC1ABBFE1F00B65E21 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		88DF21FD1ABBFE1F00B65E21 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		88DF21FE1ABBFE1F00B65E21 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		88DF21FF1ABBFE1F00B65E21 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		88DF22001ABBFE1F00B65E21 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		88DF22011ABBFE1F00B65E21 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		88DF22021ABBFE1F00B65E21 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
-		88DF22031ABBFE1F00B65E21 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
-		88DF220A1ABC026600B65E21 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		88DF220C1ABC037900B65E21 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		88DF220E1ABC038400B65E21 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		88DF22101ABC039700B65E21 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		88DF22121ABC03FA00B65E21 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		88E91C3F1AB1667C00606084 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,18 +170,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88DF22131ABC03FA00B65E21 /* AdSupport.framework in Frameworks */,
-				88DF22111ABC039700B65E21 /* Accelerate.framework in Frameworks */,
-				88DF220F1ABC038400B65E21 /* AssetsLibrary.framework in Frameworks */,
-				88DF220D1ABC037900B65E21 /* CoreGraphics.framework in Frameworks */,
-				88DF220B1ABC026600B65E21 /* libc++.dylib in Frameworks */,
+				889A91E51ABDA489000D8783 /* libz.dylib in Frameworks */,
+				88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */,
+				889A91E31ABDA436000D8783 /* CoreLocation.framework in Frameworks */,
+				889A91E11ABDA3BE000D8783 /* CoreGraphics.framework in Frameworks */,
 				88B4A5271AB708FD00DD1756 /* GLKit.framework in Frameworks */,
 				88E91C401AB1667C00606084 /* SceneKit.framework in Frameworks */,
-				886BE8371AAC1A390049F68B /* libcurl.a in Frameworks */,
-				886BE8341AAC1A220049F68B /* insight.framework in Frameworks */,
-				886BE8351AAC1A220049F68B /* opencv2.framework in Frameworks */,
-				88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */,
-				88186E831AAAEB0000FD3A53 /* libz.dylib in Frameworks */,
 				30ABDD5A1AA867CA0062A8AB /* SystemConfiguration.framework in Frameworks */,
 				88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */,
 				88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */,
@@ -390,15 +340,9 @@
 		30ABDD4A1AA867430062A8AB /* Framwork */ = {
 			isa = PBXGroup;
 			children = (
-				88DF22121ABC03FA00B65E21 /* AdSupport.framework */,
-				88DF22101ABC039700B65E21 /* Accelerate.framework */,
-				88DF220E1ABC038400B65E21 /* AssetsLibrary.framework */,
-				88DF220C1ABC037900B65E21 /* CoreGraphics.framework */,
-				88DF220A1ABC026600B65E21 /* libc++.dylib */,
-				886BE8361AAC1A390049F68B /* libcurl.a */,
-				886BE8321AAC1A220049F68B /* insight.framework */,
-				886BE8331AAC1A220049F68B /* opencv2.framework */,
-				88186E821AAAEB0000FD3A53 /* libz.dylib */,
+				889A91E41ABDA489000D8783 /* libz.dylib */,
+				889A91E21ABDA436000D8783 /* CoreLocation.framework */,
+				889A91E01ABDA3BE000D8783 /* CoreGraphics.framework */,
 				88B4A5261AB708FD00DD1756 /* GLKit.framework */,
 				88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */,
 				88E91C3F1AB1667C00606084 /* SceneKit.framework */,
@@ -454,45 +398,8 @@
 			children = (
 				88DF21F51ABBFE1F00B65E21 /* Reachability.h */,
 				88DF21F61ABBFE1F00B65E21 /* Reachability.m */,
-				88DF21F71ABBFE1F00B65E21 /* SSZipArchive */,
-				88DF21E51ABBFCE100B65E21 /* BarView.h */,
-				88DF21E61ABBFCE100B65E21 /* BarView.m */,
-				88DF21E71ABBFCE100B65E21 /* CircleView.h */,
-				88DF21E81ABBFCE100B65E21 /* CircleView.m */,
-				88DF21E91ABBFCE100B65E21 /* data.zip */,
-				88DF21EA1ABBFCE100B65E21 /* LineView.h */,
-				88DF21EB1ABBFCE100B65E21 /* LineView.m */,
-				88DF21EC1ABBFCE100B65E21 /* PersonView.h */,
-				88DF21ED1ABBFCE100B65E21 /* PersonView.mm */,
-				88DF21EE1ABBFCE100B65E21 /* resources.zip */,
 			);
 			name = InSightFile;
-			sourceTree = "<group>";
-		};
-		88DF21F71ABBFE1F00B65E21 /* SSZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-				88DF21F81ABBFE1F00B65E21 /* minizip */,
-				88DF22021ABBFE1F00B65E21 /* SSZipArchive.h */,
-				88DF22031ABBFE1F00B65E21 /* SSZipArchive.m */,
-			);
-			path = SSZipArchive;
-			sourceTree = "<group>";
-		};
-		88DF21F81ABBFE1F00B65E21 /* minizip */ = {
-			isa = PBXGroup;
-			children = (
-				88DF21F91ABBFE1F00B65E21 /* crypt.h */,
-				88DF21FA1ABBFE1F00B65E21 /* ioapi.c */,
-				88DF21FB1ABBFE1F00B65E21 /* ioapi.h */,
-				88DF21FC1ABBFE1F00B65E21 /* mztools.c */,
-				88DF21FD1ABBFE1F00B65E21 /* mztools.h */,
-				88DF21FE1ABBFE1F00B65E21 /* unzip.c */,
-				88DF21FF1ABBFE1F00B65E21 /* unzip.h */,
-				88DF22001ABBFE1F00B65E21 /* zip.c */,
-				88DF22011ABBFE1F00B65E21 /* zip.h */,
-			);
-			path = minizip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -590,7 +497,6 @@
 				882F08441AB7021700C3101F /* Superman_Cape_Spec.tg.tga in Resources */,
 				3049AB9D1AA84AF0006DB915 /* LaunchScreen.xib in Resources */,
 				881B6AEA1AB9438A0057A746 /* superman.png in Resources */,
-				88DF21F11ABBFCE100B65E21 /* data.zip in Resources */,
 				881B6B171AB949810057A746 /* eyelid_00.png in Resources */,
 				306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */,
 				881B6B191AB949810057A746 /* hair_c.png in Resources */,
@@ -598,7 +504,6 @@
 				888C48DC1AAD681B007CA1CC /* lf.dat in Resources */,
 				3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */,
 				888C48DB1AAD681B007CA1CC /* lf.xml in Resources */,
-				88DF21F41ABBFCE100B65E21 /* resources.zip in Resources */,
 				882F08451AB7021700C3101F /* Superman_Diff.tga in Resources */,
 				306619AA1AA93C8A00F4D8C9 /* StonesAndChips.dat in Resources */,
 				881B6B0F1AB949810057A746 /* Histoire.dae in Resources */,
@@ -625,24 +530,15 @@
 				3066195D1AA9384F00F4D8C9 /* SampleApplicationUtils.cpp in Sources */,
 				3049AB951AA84AF0006DB915 /* ViewController.m in Sources */,
 				3049AB921AA84AF0006DB915 /* AppDelegate.m in Sources */,
-				88DF22061ABBFE1F00B65E21 /* mztools.c in Sources */,
 				880D65AA1AABD17300AEAE61 /* CustomButton.m in Sources */,
-				88DF21F01ABBFCE100B65E21 /* CircleView.m in Sources */,
-				88DF22071ABBFE1F00B65E21 /* unzip.c in Sources */,
 				306619481AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm in Sources */,
-				88DF22051ABBFE1F00B65E21 /* ioapi.c in Sources */,
 				306619491AA937BE00F4D8C9 /* ImageTargetsViewController.mm in Sources */,
-				88DF22091ABBFE1F00B65E21 /* SSZipArchive.m in Sources */,
-				88DF21F31ABBFCE100B65E21 /* PersonView.mm in Sources */,
 				886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */,
 				3049AB8F1AA84AF0006DB915 /* main.m in Sources */,
 				306619421AA9357C00F4D8C9 /* QCARSession.mm in Sources */,
-				88DF21EF1ABBFCE100B65E21 /* BarView.m in Sources */,
 				886EF7C21AB921A500785CF1 /* BriefViewController.m in Sources */,
 				886EF7C11AB921A500785CF1 /* AboutViewController.m in Sources */,
 				886EF7C61AB9253500785CF1 /* SettingViewController.m in Sources */,
-				88DF22081ABBFE1F00B65E21 /* zip.c in Sources */,
-				88DF21F21ABBFCE100B65E21 /* LineView.m in Sources */,
 				88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -770,7 +666,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ComicVuforia",
-					"$(PROJECT_DIR)/ComicVuforia/InSight",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -782,7 +677,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
-					"$(PROJECT_DIR)/ComicVuforia/InSight/curl/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -795,7 +689,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ComicVuforia",
-					"$(PROJECT_DIR)/ComicVuforia/InSight",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -807,7 +700,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
-					"$(PROJECT_DIR)/ComicVuforia/InSight/curl/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
