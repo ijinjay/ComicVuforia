@@ -31,22 +31,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 // facial recognise
 #import "Reachability.h"
 
-#if defined( __cplusplus )  && defined( __ARM_NEON__ ) && !defined( __aarch64__ )
-//Converts bgra to bgr using NEON SIMD
-void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int numPixels) {
-  asm volatile("lsr          %[n], %[n], #3       \n\t"   // Will step by 8 pixels
-               "1:                                \n\t"   // Loop label
-               "vld4.8      {d0-d3}, [%[src]]!    \n\t"   // Load 8 BGRA pixels
-               "vst3.8      {d0-d2}, [%[dst]]!    \n\t"   // Store 8 BGR pixels
-               "subs        %[n], %[n], #1        \n\t"   // Decrement iteration count
-               "bne         1b                    "       // Repeat unil iteration count is not zero
-               : [n]"+r"(numPixels), [dst]"+r"(dest), [src]"+r"(source)
-               :
-               :"q0","q1","cc", "memory"                  // Used registers, conditions etc
-               );
-}
-#endif
-
 @interface ImageTargetsViewController () <IFlyRecognizerViewDelegate>
 @property (strong, nonatomic) CustomButton *returnButton;
 @property (strong, nonatomic) CustomButton *switchButton;
@@ -68,6 +52,9 @@ void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int num
 @end
 
 @implementation ImageTargetsViewController
+
+NSString *fpp_api_key = @"ead94b65b97e8f4be31f795fbda17b92";
+NSString *fpp_secret_key = @"ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1";
 
 - (void) pauseAR {
     NSError * error = nil;
@@ -417,16 +404,38 @@ void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int num
                 
                 NSLog(@"is address equal? %d", (void *)imageData.bytes == (void *)qcarImage->getPixels());
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-                    if (imageData != nil) {
-                        NSLog(@"success get image data");
-//                        cv::Mat mat(qcarImage->getWidth(), qcarImage->getHeight(), CV_8UC3, (void *)imageData.bytes);
-                    }
-                });
+                if (imageData != nil) {
+                    NSLog(@"success get image data");
+                    // compress the image data
+                    CGColorSpace *colorSpace = CGColorSpaceCreateDeviceRGB();
+                    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)imageData);
+                    CGImage *imageRef = CGImageCreate(qcarImage->getWidth(), qcarImage->getHeight(), 8, 8*3, qcarImage->getStride(), colorSpace, kCGImageAlphaNone | kCGBitmapByteOrderDefault, provider, nil, false, kCGRenderingIntentDefault);
+                    
+                    UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:1 orientation:UIImageOrientationRightMirrored];
+                    
+                    CGImageRelease(imageRef);
+                    CGDataProviderRelease(provider);
+                    CGColorSpaceRelease(colorSpace);
+                    
+                    NSData *imgData = UIImageJPEGRepresentation(finalImage, 0);
+                    
+                    // post the imgdata
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+                        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
+                        NSData *result = [self uploadData:imgData];
+                        NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // 更新界面
+                            NSString *dict = [jsonResult objectForKey:@"face"];
+                        
+                        });
+                    });
+                }
 
             }
         }
-//        _analyzeExpression = NO;
+        _analyzeExpression = NO;
     }
 }
 
@@ -696,6 +705,46 @@ void neon_bgra_bgr(uint8_t __restrict *source, uint8_t __restrict *dest, int num
         NSLog(@"未能识别出的语义");
         [self saySomething:@"真抱歉，不能识别您的语义。"];
     }
+}
+
+#pragma mark - Faceplusplus
+
+-(NSData *)uploadData:(NSData*)imgData{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://apicn.faceplusplus.com/v2/detection/detect?api_key=ead94b65b97e8f4be31f795fbda17b92&api_secret=ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1&attribute=gender,age,smiling"]]; //创建请求对象并设置请求路径
+    // Init the URLRequest
+    [request setHTTPMethod:@"POST"];
+    NSString *boundary = @"0xKhTmLbOuNdArY";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+
+    NSMutableData *body = [NSMutableData data];
+    // add image data
+    if (imgData) {
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"img\"; filename=\"image.jpeg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:imgData];
+        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // setting the body of the post to the reqeust
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[body length]];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:body];
+    
+    //上传文件开始
+    NSURLResponse *response;
+    NSError *error;
+    
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    if (returnData == nil) {
+        NSLog(@"get nothing- -");
+        NSLog(@"response: %@", response);
+        NSLog(@"error: %@", error);
+    }
+    //返回获得返回值
+    return returnData;
 }
 
 @end
