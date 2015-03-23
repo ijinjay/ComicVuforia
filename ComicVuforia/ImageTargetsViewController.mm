@@ -228,6 +228,12 @@ NSString *fpp_secret_key = @"ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1";
     if (netStatus == NotReachable) {
         [alert show];
         _analyzeExpression = NO;
+        
+        NSError * error = nil;
+        if ([vapp stopCamera:&error]) {
+            [vapp startAR:(QCAR::CameraDevice::CAMERA_FRONT) error:&error];
+            _isBackCamera = NO;
+        }
     } else {
         _analyzeExpression = YES;
     }
@@ -402,8 +408,6 @@ NSString *fpp_secret_key = @"ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1";
                 NSData * imageData = [NSData dataWithBytes:qcarImage->getPixels()
                                                     length:(QCAR::getBufferSize(qcarImage->getWidth(), qcarImage->getHeight(), QCAR::RGB888))];
                 
-                NSLog(@"is address equal? %d", (void *)imageData.bytes == (void *)qcarImage->getPixels());
-                
                 if (imageData != nil) {
                     NSLog(@"success get image data");
                     // compress the image data
@@ -417,18 +421,38 @@ NSString *fpp_secret_key = @"ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1";
                     CGDataProviderRelease(provider);
                     CGColorSpaceRelease(colorSpace);
                     
-                    NSData *imgData = UIImageJPEGRepresentation(finalImage, 0);
-                    
                     // post the imgdata
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-                        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
+                        
+                        NSData *imgData = UIImageJPEGRepresentation(finalImage, 0);
+                        // 耗时的操作
+                        
                         NSData *result = [self uploadData:imgData];
                         NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
                         
+                        NSLog(@"%@", jsonResult);
+                        
                         dispatch_async(dispatch_get_main_queue(), ^{
                             // 更新界面
-                            NSString *dict = [jsonResult objectForKey:@"face"];
-                        
+                            NSArray *face = [jsonResult objectForKey:@"face"];
+                            if ([face count] < 1) {
+                                _analyzeExpression = YES;
+                            } else {
+                                NSDictionary *faceResult =  [face objectAtIndex:0];
+                                NSDictionary *attribute = [faceResult objectForKey:@"attribute"];
+                                NSLog(@"%@", attribute);
+                                
+                                NSDictionary *smiling = [attribute objectForKey:@"smiling"];
+                                NSNumber *smilingNumber = [smiling objectForKey:@"value"];
+                                NSLog(@"%@", smilingNumber);
+                                if ([smilingNumber intValue] < 40) {
+                                    NSLog(@"bad");
+                                    [self saySomething:@"主人，您看起来不太高兴，小的给您跳个舞，您乐一乐"];
+                                } else {
+                                    NSLog(@"excited");
+                                    [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
+                                }
+                            }
                         });
                     });
                 }
@@ -652,6 +676,7 @@ NSString *fpp_secret_key = @"ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1";
                 });
             });
         }
+        hud.removeFromSuperViewOnHide = YES;
         [hud hide:YES afterDelay:1.0];
     }
 }
