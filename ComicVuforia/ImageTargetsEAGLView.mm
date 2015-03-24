@@ -119,6 +119,7 @@ NSDictionary *readPlist(NSString *keyWord) {
         _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
         
         [_scnRender setScene:_scene];
+        _isShouldShowStatic = NO;
     }
     
     return self;
@@ -179,12 +180,9 @@ NSDictionary *readPlist(NSString *keyWord) {
     else
         glFrontFace(GL_CCW);   //Back camera
     
-    (GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
-    glDisableVertexAttribArray(vertexHandle);
-    glDisableVertexAttribArray(normalHandle);
-    glDisableVertexAttribArray(textureCoordHandle);
     QCAR::Renderer::getInstance().end();
     
     // show the model
@@ -199,7 +197,7 @@ NSDictionary *readPlist(NSString *keyWord) {
         numDidnotFoundTrack = 0;
     }
     
-    for (int i = 0; i < state.getNumTrackableResults(); ++i) {
+    for (int i = 0; (i < state.getNumTrackableResults()) && (!_isShouldShowStatic); ++i) {
         // Get the trackable
         const QCAR::TrackableResult* result = state.getTrackableResult(i);
 //        const QCAR::Trackable& trackable = result->getTrackable();
@@ -212,6 +210,18 @@ NSDictionary *readPlist(NSString *keyWord) {
         _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
         
         [_scnRender render];
+    }
+    if (_isShouldShowStatic) {
+        // 这个函数应该完成以下事情
+        // 开启小窗口模式
+        // 在小窗口展示相应动作
+//        if (_scnView == nil) {
+//            _scnView = [[SCNView alloc] initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*3/4, 0, [[UIScreen mainScreen]bounds].size.width/4, [[UIScreen mainScreen]bounds].size.height/4)];
+//            [_scnView setScene:_scene];
+//            [self addSubview:_scnView];
+//        }
+        
+//        [_scnRender render];
     }
     
     [self presentFramebuffer];
@@ -250,7 +260,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
     }
 }
-
 - (void)deleteFramebuffer {
     if (context) {
         [EAGLContext setCurrentContext:context];
@@ -271,7 +280,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         }
     }
 }
-
 - (void)setFramebuffer {
     // The EAGLContext must be set for each thread that wishes to use it.  Set
     // it the first time this method is called (on the render thread)
@@ -288,7 +296,6 @@ NSDictionary *readPlist(NSString *keyWord) {
     
     glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
 }
-
 - (BOOL)presentFramebuffer {
     // setFramebuffer must have been called before presentFramebuffer, therefore
     // we know the context is valid and has been set for this (render) thread
@@ -308,8 +315,6 @@ NSDictionary *readPlist(NSString *keyWord) {
     UIGraphicsEndImageContext();
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
-
-// Add new method above touchesBegan
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch * touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
@@ -325,16 +330,13 @@ NSDictionary *readPlist(NSString *keyWord) {
     _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
     
 }
-
 - (void)rotateModel:(float) angle{
     [_rootNode runAction:[SCNAction rotateByX:0 y:angle z:0 duration:1]];
 }
-
 - (SCNNode *)getNodebyName:(NSString *)name {
     SCNNode *node = [_rootNode childNodeWithName:name recursively:YES];
     return node;
 }
-
 - (void)dance {
     
     [SCNTransaction begin];
@@ -354,8 +356,7 @@ NSDictionary *readPlist(NSString *keyWord) {
     [SCNTransaction commit];
     
 }
-
-- (void) legMoveForward:(SCNNode *)up down:(SCNNode*)down skirt:(SCNNode *)skirt onCompltetion:(void (^)())block{
+- (void)legMoveForward:(SCNNode *)up down:(SCNNode*)down skirt:(SCNNode *)skirt onCompltetion:(void (^)())block{
     if (skirt != nil) {
         [skirt runAction:[SCNAction rotateByX:M_PI/6 y:0 z:0 duration:0.4] completionHandler:^(){
             [skirt runAction:[SCNAction rotateByX:-M_PI/6 y:0 z:0 duration:0.4]];
@@ -368,7 +369,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         [down runAction:[SCNAction rotateByX:M_PI/6 y:0 z:0 duration:0.4] completionHandler:block];
     }];
 }
-
 - (void)walk{
     SCNNode *ll1 = [self getNodebyName:@"L_leg_01"];
     SCNNode *ll2 = [self getNodebyName:@"L_leg_02"];

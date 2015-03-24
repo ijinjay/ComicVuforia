@@ -50,29 +50,104 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 // facial recognize
 @property (nonatomic) Reachability *internetReachability;
 @property (nonatomic, retain) MBProgressHUD *faceHUD;
+@property (nonatomic, retain) SCNView *scnView;
+@property (nonatomic, retain) SCNScene *scnScene;
 
 @end
 
 @implementation ImageTargetsViewController
 
-- (void) pauseAR {
+#pragma mark - Button Callback
+- (void)returnFunc:(id)sender {
+    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"home"];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+- (void)switchCamera:(id)sender {
     NSError * error = nil;
-    if (![vapp pauseAR:&error]) {
-        NSLog(@"Error pausing AR:%@", [error description]);
+    if ([vapp stopCamera:&error]) {
+        [vapp startAR:(_isBackCamera ? QCAR::CameraDevice::CAMERA_FRONT : QCAR::CameraDevice::CAMERA_BACK) error:&error];
+        _isBackCamera = !_isBackCamera;
     }
 }
-- (void) resumeAR {
-    NSError * error = nil;
-    if(! [vapp resumeAR:&error]) {
-        NSLog(@"Error resuming AR:%@", [error description]);
-    }
-    // on resume, we reset the flash and the associated menu item
-    QCAR::CameraDevice::getInstance().setFlashTorchMode(false);
+- (void)speechHandle:(id)sender {
+    
+    [eaglView addSubview:_speechView];
+    
+    [_speechView start];
+}
+- (void)setButtonHidden:(BOOL)hidden {
+    _returnButton.hidden = hidden;
+    _switchButton.hidden = hidden;
+    _snapButton.hidden = hidden;
+    _speechButton.hidden = hidden;
+    _expressionButton.hidden = hidden;
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)snapImage:(id)sender {
+    [self setButtonHidden:YES];
+
+    [eaglView savePhoto];
+    
+    [self setButtonHidden:NO];
+    
+    // add a fulfillment tip
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = @"拍照成功";
+    [hud hide:YES afterDelay:0.5];
 }
+- (void)expressionRecognize:(id)sender {
+    // Check if internet connection is available
+    NetworkStatus netStatus = [self.internetReachability currentReachabilityStatus];
+    
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"未能连接到互联网"
+                               message:@"面部表情识别需要使用互联网!"
+                              delegate:nil
+                     cancelButtonTitle:@"确认"
+                     otherButtonTitles:nil];
+    
+    // Continue if redistribution is already activated or can be activated now
+    if (netStatus == NotReachable) {
+        [alert show];
+        _analyzeExpression = NO;
+        
+    } else {
+        // 默认启用前置摄像头
+        if (_isBackCamera) {
+            NSError * error = nil;
+            if ([vapp stopCamera:&error]) {
+                [vapp startAR:(QCAR::CameraDevice::CAMERA_FRONT) error:&error];
+                _isBackCamera = NO;
+            }
+        }
+        // analyze facial expression
+        QCAR::setFrameFormat(QCAR::RGB888, YES);
+        _faceHUD.mode = MBProgressHUDModeIndeterminate;
+        _faceHUD.labelText = @"正在识别";
+        [_faceHUD show:YES];
+        _analyzeExpression = YES;
+        eaglView.isShouldShowStatic = YES;
+        if (_scnView == nil) {
+            CGFloat height = [[UIScreen mainScreen] bounds].size.height;
+            CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+            _scnView = [[SCNView alloc] initWithFrame:CGRectMake(width*2/3, height*2/3, width/3, height/3)];
+            _scnView.layer.cornerRadius = 2;
+            _scnView.layer.borderColor = [UIColor blackColor].CGColor;
+            _scnView.layer.borderWidth = 2;
+            _scnView.layer.masksToBounds = YES;
+            _scnView.backgroundColor = [UIColor whiteColor];
+        }
+        if (_scnScene == nil) {
+            _scnScene = [SCNScene sceneNamed:@"Histoire.dae"];
+        }
+        [_scnView setScene:_scnScene];
+        [self.view addSubview:_scnView];
+    }
+}
+
+#pragma mark - Init and UI
 - (void)loadView {
     // initilize variables
     if (self) {
@@ -171,81 +246,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [eaglView addSubview:_snapButton];
     [eaglView addSubview:_expressionButton];
 }
-
-// button callback
-- (void)returnFunc:(id)sender {
-    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ViewController * vc =   [st instantiateViewControllerWithIdentifier:@"home"];
-    [self presentViewController:vc animated:YES completion:nil];
-}
-- (void)switchCamera:(id)sender {
-    NSError * error = nil;
-    if ([vapp stopCamera:&error]) {
-        [vapp startAR:(_isBackCamera ? QCAR::CameraDevice::CAMERA_FRONT : QCAR::CameraDevice::CAMERA_BACK) error:&error];
-        _isBackCamera = !_isBackCamera;
-    }
-}
-- (void)speechHandle:(id)sender {
-    
-    [eaglView addSubview:_speechView];
-    
-    [_speechView start];
-}
-- (void)setButtonHidden:(BOOL)hidden {
-    _returnButton.hidden = hidden;
-    _switchButton.hidden = hidden;
-    _snapButton.hidden = hidden;
-    _speechButton.hidden = hidden;
-    _expressionButton.hidden = hidden;
-}
-
-- (void)snapImage:(id)sender {
-    [self setButtonHidden:YES];
-
-    [eaglView savePhoto];
-    
-    [self setButtonHidden:NO];
-    
-    // add a fulfillment tip
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText = @"拍照成功";
-    [hud hide:YES afterDelay:0.5];
-}
-- (void)expressionRecognize:(id)sender {
-    // Check if internet connection is available
-    NetworkStatus netStatus = [self.internetReachability currentReachabilityStatus];
-    
-    UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:@"未能连接到互联网"
-                               message:@"面部表情识别需要使用互联网!"
-                              delegate:nil
-                     cancelButtonTitle:@"确认"
-                     otherButtonTitles:nil];
-    
-    // Continue if redistribution is already activated or can be activated now
-    if (netStatus == NotReachable) {
-        [alert show];
-        _analyzeExpression = NO;
-        
-    } else {
-        // 默认启用前置摄像头
-        if (_isBackCamera) {
-            NSError * error = nil;
-            if ([vapp stopCamera:&error]) {
-                [vapp startAR:(QCAR::CameraDevice::CAMERA_FRONT) error:&error];
-                _isBackCamera = NO;
-            }
-        }
-        // analyze facial expression
-        QCAR::setFrameFormat(QCAR::RGB888, YES);
-        _faceHUD.mode = MBProgressHUDModeIndeterminate;
-        _faceHUD.labelText = @"正在识别";
-        [_faceHUD show:YES];
-        _analyzeExpression = YES;
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -294,7 +294,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // Called in response to applicationDidEnterBackground.  Inform the EAGLView
     [eaglView freeOpenGLESResources];
 }
-
 
 #pragma mark - loading animation
 
@@ -387,11 +386,11 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 #pragma mark - UIAlertViewDelegate
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kMenuDismissViewController" object:nil];
 }
 
+#pragma mark - Application Update
 - (void) onQCARUpdate: (QCAR::State *) state {
     if (switchToTarmac) {
         [self activateDataSet:dataSetTarmac];
@@ -432,18 +431,12 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                     
                     // post the imgdata
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-                        
+                        // 耗时的操作
                         UIImage *imageFixed = [finalImage fixOrientation];
                         NSData *imgData = UIImageJPEGRepresentation(imageFixed, 0);
-                        // 耗时的操作
-                        
                         NSData *result = [self uploadData:imgData];
                         NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
-                        
-                        NSLog(@"%@", jsonResult);
-                        
                         NSArray *face = [jsonResult objectForKey:@"face"];
-                        
                         dispatch_async(dispatch_get_main_queue(), ^{
                             // 更新界面
                             if ([face count] < 1) {
@@ -459,18 +452,36 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                                 NSNumber *ageNumber = [age objectForKey:@"value"];
                                 NSNumber *range = [age objectForKey:@"range"];
                                 
+                                [self.view bringSubviewToFront:_faceHUD];
                                 _faceHUD.labelText = [NSString stringWithFormat:@"识别成功,年龄:%@±%@,笑容:%@", ageNumber, range, smilingNumber];
                                 _faceHUD.mode = MBProgressHUDModeText;
                                 [_faceHUD hide:YES afterDelay:2.0];
-
                                 
-                                if ([smilingNumber floatValue] < 10.0) {
-                                    NSLog(@"bad");
-                                    [self saySomething:@"主人，您看起来心情一般，小的给您跳个舞，您乐一乐"];
-                                } else {
-                                    NSLog(@"excited");
-                                    [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
-                                }
+                                [UIView animateWithDuration:1.0
+                                                 animations:^{
+                                                     _scnView.frame = [[UIScreen mainScreen] bounds];    // move
+                                                 }
+                                                 completion:^(BOOL finished){
+                                                     if ([smilingNumber floatValue] < 10.0) {
+                                                         [self saySomething:@"主人，您看起来心情一般，小的给您跳个舞，您乐一乐"];
+                                                     } else {
+                                                         [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
+                                                     }
+                                                     // code to run when animation completes
+                                                     // (in this case, another animation:)
+                                                     SCNNode *rootNode = [_scnScene.rootNode childNodeWithName:@"root" recursively:YES];
+                                                     [rootNode runAction:[SCNAction rotateByX:0 y:0 z:M_PI*4 duration:2]];
+                                                     
+                                                     [UIView animateWithDuration:5.0
+                                                                      animations:^{        
+                                                                          _scnView.alpha = 0.0;   // fade out
+                                                                      }
+                                                                      completion:^(BOOL finished){  
+                                                                          [_scnView removeFromSuperview];
+                                                                      }];
+                                                 }];
+                                
+                                eaglView.isShouldShowStatic = NO;
                             }
                         });
                     });
@@ -482,8 +493,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     }
 }
 
-// Load the image tracker data set
-- (QCAR::DataSet *)loadObjectTrackerDataSet:(NSString*)dataFile {
+#pragma mark - QCAR correlation
+- (QCAR::DataSet *) loadObjectTrackerDataSet:(NSString*)dataFile {
     NSLog(@"loadObjectTrackerDataSet (%@)", dataFile);
     QCAR::DataSet * dataSet = NULL;
     
@@ -551,7 +562,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     NSLog(@"datasets destroyed");
     return YES;
 }
-- (BOOL)activateDataSet:(QCAR::DataSet *)theDataSet {
+- (BOOL) activateDataSet:(QCAR::DataSet *)theDataSet {
     // if we've previously recorded an activation, deactivate it
     if (dataSetCurrent != nil) {
         [self deactivateDataSet:dataSetCurrent];
@@ -584,7 +595,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     
     return success;
 }
-- (BOOL)deactivateDataSet:(QCAR::DataSet *)theDataSet {
+- (BOOL) deactivateDataSet:(QCAR::DataSet *)theDataSet {
     if ((dataSetCurrent == nil) || (theDataSet != dataSetCurrent)) {
         NSLog(@"Invalid request to deactivate data set.");
         return NO;
@@ -639,11 +650,28 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     trackerManager.deinitTracker(QCAR::ObjectTracker::getClassType());
     return YES;
 }
-- (void)autofocus:(UITapGestureRecognizer *)sender {
+- (void) autofocus:(UITapGestureRecognizer *)sender {
     [self performSelector:@selector(cameraPerformAutoFocus) withObject:nil afterDelay:.4];
 }
-- (void)cameraPerformAutoFocus {
+- (void) cameraPerformAutoFocus {
     QCAR::CameraDevice::getInstance().setFocusMode(QCAR::CameraDevice::FOCUS_MODE_TRIGGERAUTO);
+}
+- (void) pauseAR {
+    NSError * error = nil;
+    if (![vapp pauseAR:&error]) {
+        NSLog(@"Error pausing AR:%@", [error description]);
+    }
+}
+- (void) resumeAR {
+    NSError * error = nil;
+    if(! [vapp resumeAR:&error]) {
+        NSLog(@"Error resuming AR:%@", [error description]);
+    }
+    // on resume, we reset the flash and the associated menu item
+    QCAR::CameraDevice::getInstance().setFlashTorchMode(false);
+}
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - IFlyRecognization
@@ -705,7 +733,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (void)onError: (IFlySpeechError *) error {
     NSLog(@"%@", [error errorDesc]);
 }
-
 - (void)saySomething:(NSString *)str{
     AVSpeechSynthesizer *avSpeech = [[AVSpeechSynthesizer alloc] init];
     AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:str];
@@ -789,4 +816,5 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     //返回获得返回值
     return returnData;
 }
+
 @end

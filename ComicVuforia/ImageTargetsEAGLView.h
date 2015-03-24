@@ -30,14 +30,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     GLuint colorRenderbuffer;
     GLuint depthRenderbuffer;
 
-    // Shader handles
-    GLuint shaderProgramID;
-    GLint vertexHandle;
-    GLint normalHandle;
-    GLint textureCoordHandle;
-    GLint mvpMatrixHandle;
-    GLint texSampler2DHandle;
-
     QCARSession * vapp;
 }
 
@@ -53,6 +45,9 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 @property (nonatomic) SCNMatrix4 rotMatrix;             // 模型旋转矩阵
 @property (nonatomic) float fixAngleX;
 @property (nonatomic) float fixAngleY;
+
+@property (nonatomic) BOOL isShouldShowStatic;          // 表情识别模式下，显示静态模型
+@property (nonatomic, retain) SCNView *scnView;         // 表情识别模式下，模型视图
 
 
 - (id)initWithFrame:(CGRect)frame appSession:(QCARSession *) app;

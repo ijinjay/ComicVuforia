@@ -71,7 +71,13 @@
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     [_pickerView setShowsSelectionIndicator:YES];
-    
+    if ([modelName compare:@"superman"] == NSOrderedSame) {
+        [_pickerView selectRow:1 inComponent:0 animated:YES];
+    }
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (IBAction)finished:(id)sender {
@@ -113,4 +119,10 @@
     [_imageView setImage:image];
 }
 
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return 40.0;
+    }
+    return 20.0;
+}
 @end
