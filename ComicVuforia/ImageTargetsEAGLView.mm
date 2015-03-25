@@ -80,10 +80,8 @@ NSDictionary *readPlist(NSString *keyWord) {
         assert(dict != nil);
         
         _scene = [SCNScene sceneNamed:[dict objectForKey:@"filePath"]];
-        
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
         
-        NSLog(@"%@---scene", _scene);
         // create and add a camera to the scene
         _cameraNode = [SCNNode node];
         _cameraNode.camera = [SCNCamera camera];

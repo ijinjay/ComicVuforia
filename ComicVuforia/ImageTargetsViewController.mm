@@ -71,9 +71,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     }
 }
 - (void)speechHandle:(id)sender {
-    
+    [self hideButtonWithAnimation];
     [eaglView addSubview:_speechView];
-    
     [_speechView start];
 }
 - (void)setButtonHidden:(BOOL)hidden {
@@ -82,6 +81,26 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _snapButton.hidden = hidden;
     _speechButton.hidden = hidden;
     _expressionButton.hidden = hidden;
+}
+- (void)setButtonAlpha:(CGFloat)alpha {
+    _expressionButton.alpha = alpha;
+    _switchButton.alpha = alpha;
+    _snapButton.alpha = alpha;
+    _returnButton.alpha = alpha;
+    _speechButton.alpha = alpha;
+}
+- (void)hideButtonWithAnimation {
+    [UIView animateWithDuration:0.4 animations:^(){
+        [self setButtonAlpha:0.0];
+    }completion:^(BOOL finished){
+        [self setButtonHidden:YES];
+    }];
+}
+- (void)showButtonWithAnimation {
+    [self setButtonHidden:NO];
+    [UIView animateWithDuration:0.4 animations:^(){
+        [self setButtonAlpha:1.0];
+    }];
 }
 
 - (void)snapImage:(id)sender {
@@ -123,6 +142,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
             }
         }
         // analyze facial expression
+        [self hideButtonWithAnimation];
         QCAR::setFrameFormat(QCAR::RGB888, YES);
         _faceHUD.mode = MBProgressHUDModeIndeterminate;
         _faceHUD.labelText = @"正在识别";
@@ -130,19 +150,20 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         _analyzeExpression = YES;
         eaglView.isShouldShowStatic = YES;
         if (_scnView == nil) {
-            CGFloat height = [[UIScreen mainScreen] bounds].size.height;
-            CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-            _scnView = [[SCNView alloc] initWithFrame:CGRectMake(width*2/3, height*2/3, width/3, height/3)];
-            _scnView.layer.cornerRadius = 2;
+            _scnView = [[SCNView alloc] init];
             _scnView.layer.borderColor = [UIColor blackColor].CGColor;
             _scnView.layer.borderWidth = 2;
             _scnView.layer.masksToBounds = YES;
             _scnView.backgroundColor = [UIColor whiteColor];
         }
+        CGFloat height = [[UIScreen mainScreen] bounds].size.height;
+        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        _scnView.frame = CGRectMake(width*2/3, height*2/3, width/3, height/3);
+        _scnView.alpha = 1.0;
         if (_scnScene == nil) {
             _scnScene = [SCNScene sceneNamed:@"Histoire.dae"];
+            [_scnView setScene:_scnScene];
         }
-        [_scnView setScene:_scnScene];
         [self.view addSubview:_scnView];
     }
 }
@@ -404,7 +425,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         [self activateDataSet:dataLF];
         switchToLF = NO;
     }
-    
     // analyze facial expressionz
     QCAR::setFrameFormat(QCAR::RGB888, YES);
     if (_analyzeExpression) {
@@ -415,76 +435,16 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
             if (qcarImage->getFormat() == QCAR::RGB888) {
                 NSData * imageData = [NSData dataWithBytes:qcarImage->getPixels()
                                                     length:(QCAR::getBufferSize(qcarImage->getWidth(), qcarImage->getHeight(), QCAR::RGB888))];
-                
                 if (imageData != nil) {
-                    NSLog(@"success get image data");
                     // compress the image data
                     CGColorSpace *colorSpace = CGColorSpaceCreateDeviceRGB();
                     CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)imageData);
                     CGImage *imageRef = CGImageCreate(qcarImage->getWidth(), qcarImage->getHeight(), 8, 8*3, qcarImage->getStride(), colorSpace, kCGImageAlphaNone | kCGBitmapByteOrderDefault, provider, nil, false, kCGRenderingIntentDefault);
-                    
                     UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:1 orientation:UIImageOrientationRight];
-                    
                     CGImageRelease(imageRef);
                     CGDataProviderRelease(provider);
                     CGColorSpaceRelease(colorSpace);
-                    
-                    // post the imgdata
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-                        // 耗时的操作
-                        UIImage *imageFixed = [finalImage fixOrientation];
-                        NSData *imgData = UIImageJPEGRepresentation(imageFixed, 0);
-                        NSData *result = [self uploadData:imgData];
-                        NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
-                        NSArray *face = [jsonResult objectForKey:@"face"];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            // 更新界面
-                            if ([face count] < 1) {
-                                _analyzeExpression = YES;
-                            } else {
-                                
-                                NSDictionary *faceResult =  [face objectAtIndex:0];
-                                NSDictionary *attribute = [faceResult objectForKey:@"attribute"];
-                                NSLog(@"%@", attribute);
-                                NSDictionary *smiling = [attribute objectForKey:@"smiling"];
-                                NSNumber *smilingNumber = [smiling objectForKey:@"value"];
-                                NSDictionary *age = [attribute objectForKey:@"age"];
-                                NSNumber *ageNumber = [age objectForKey:@"value"];
-                                NSNumber *range = [age objectForKey:@"range"];
-                                
-                                [self.view bringSubviewToFront:_faceHUD];
-                                _faceHUD.labelText = [NSString stringWithFormat:@"识别成功,年龄:%@±%@,笑容:%@", ageNumber, range, smilingNumber];
-                                _faceHUD.mode = MBProgressHUDModeText;
-                                [_faceHUD hide:YES afterDelay:2.0];
-                                
-                                [UIView animateWithDuration:1.0
-                                                 animations:^{
-                                                     _scnView.frame = [[UIScreen mainScreen] bounds];    // move
-                                                 }
-                                                 completion:^(BOOL finished){
-                                                     if ([smilingNumber floatValue] < 10.0) {
-                                                         [self saySomething:@"主人，您看起来心情一般，小的给您跳个舞，您乐一乐"];
-                                                     } else {
-                                                         [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
-                                                     }
-                                                     // code to run when animation completes
-                                                     // (in this case, another animation:)
-                                                     SCNNode *rootNode = [_scnScene.rootNode childNodeWithName:@"root" recursively:YES];
-                                                     [rootNode runAction:[SCNAction rotateByX:0 y:0 z:M_PI*4 duration:2]];
-                                                     
-                                                     [UIView animateWithDuration:5.0
-                                                                      animations:^{        
-                                                                          _scnView.alpha = 0.0;   // fade out
-                                                                      }
-                                                                      completion:^(BOOL finished){  
-                                                                          [_scnView removeFromSuperview];
-                                                                      }];
-                                                 }];
-                                
-                                eaglView.isShouldShowStatic = NO;
-                            }
-                        });
-                    });
+                    [self handleFrameImage:finalImage];
                 }
 
             }
@@ -720,6 +680,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                 [self parseText:_speechResult];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // 更新界面
+                    NSLog(@"show button");
+                    [self showButtonWithAnimation];
                 });
             });
         }
@@ -741,7 +703,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     [avSpeech speakUtterance:utterance];
 }
 - (void)parseText:(NSString *)str {
-    
     if (str == nil) {
         NSLog(@"空字符串");
         [self saySomething:@"抱歉，您说的是什么？"];
@@ -778,8 +739,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 
 #pragma mark - Faceplusplus
-
--(NSData *)uploadData:(NSData*)imgData{
+- (NSData *)uploadData:(NSData*)imgData{
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://apicn.faceplusplus.com/v2/detection/detect?api_key=ead94b65b97e8f4be31f795fbda17b92&api_secret=ZSUHkT83T3O-ZEn55x56Yynop3aZpKA1&attribute=gender,age,smiling"]]; //创建请求对象并设置请求路径
     // Init the URLRequest
     [request setHTTPMethod:@"POST"];
@@ -815,6 +775,60 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     }
     //返回获得返回值
     return returnData;
+}
+- (void)handleFrameImage:(UIImage *)finalImage{
+    // post the imgdata
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        // 耗时的操作
+        UIImage *imageFixed = [finalImage fixOrientation];
+        NSData *imgData = UIImageJPEGRepresentation(imageFixed, 0);
+        NSData *result = [self uploadData:imgData];
+        NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
+        NSArray *face = [jsonResult objectForKey:@"face"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 更新界面
+            if ([face count] < 1) {
+                _analyzeExpression = YES;
+            } else {
+                NSDictionary *faceResult =  [face objectAtIndex:0];
+                NSDictionary *attribute = [faceResult objectForKey:@"attribute"];
+                NSDictionary *smiling = [attribute objectForKey:@"smiling"];
+                NSNumber *smilingNumber = [smiling objectForKey:@"value"];
+                NSDictionary *age = [attribute objectForKey:@"age"];
+                NSNumber *ageNumber = [age objectForKey:@"value"];
+                NSNumber *range = [age objectForKey:@"range"];
+                
+                [self.view bringSubviewToFront:_faceHUD];
+                _faceHUD.labelText = [NSString stringWithFormat:@"识别成功,年龄:%@±%@,笑容:%@", ageNumber, range, smilingNumber];
+                _faceHUD.mode = MBProgressHUDModeText;
+                [_faceHUD hide:YES afterDelay:2.0];
+                
+                [UIView animateWithDuration:1.0
+                                 animations:^{
+                                     _scnView.frame = [[UIScreen mainScreen] bounds];    // move
+                                 }
+                                 completion:^(BOOL finished){
+                                     if ([smilingNumber floatValue] < 10.0) {
+                                         [self saySomething:@"主人，您看起来心情一般，小的给您跳个舞，您乐一乐"];
+                                     } else {
+                                         [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
+                                     }
+                                     SCNNode *rootNode = [_scnScene.rootNode childNodeWithName:@"root" recursively:YES];
+                                     [rootNode runAction:[SCNAction rotateByX:0 y:0 z:M_PI*4 duration:2]];
+                                     [UIView animateWithDuration:3.0
+                                                      animations:^{
+                                                          _scnView.alpha = 0.0;   // fade out
+                                                      }
+                                                      completion:^(BOOL finished){
+                                                          [_scnView removeFromSuperview];
+                                                          [self showButtonWithAnimation];
+                                                      }];
+                                 }];
+
+                eaglView.isShouldShowStatic = NO;
+            }
+        });
+    });
 }
 
 @end
