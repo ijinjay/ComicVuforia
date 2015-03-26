@@ -55,41 +55,32 @@ NSDictionary *readPlist(NSString *keyWord) {
     if (self) {
         vapp = app;
         // Enable retina mode if available on this device
-        
         if (YES == [vapp isRetinaDisplay]) {
             [self setContentScaleFactor:2.0f];
         }
-        
         // Create the OpenGL ES context
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        
         // The EAGLContext must be set for each thread that wishes to use it.
         // Set it the first time this method is called (on the main thread)
         if (context != [EAGLContext currentContext]) {
             [EAGLContext setCurrentContext:context];
         }
-        
         // init Scenekit
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         if ([user objectForKey:@"modelName"] == nil) {
             [user setObject:@"Histoire" forKey:@"modelName"];
         }
         NSString *modelName = [user objectForKey:@"modelName"];
-        
         NSDictionary *dict = readPlist(modelName);
         assert(dict != nil);
-        
         _scene = [SCNScene sceneNamed:[dict objectForKey:@"filePath"]];
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
-        
         // create and add a camera to the scene
         _cameraNode = [SCNNode node];
         _cameraNode.camera = [SCNCamera camera];
         [_scene.rootNode addChildNode:_cameraNode];
-        
         // place the camera
         _cameraNode.position = SCNVector3Make(0, 0, 0);
-        
         // create and add an ambient light to the scene
         SCNNode *ambientLightNode = [SCNNode node];
         ambientLightNode.light = [SCNLight light];
@@ -97,10 +88,8 @@ NSDictionary *readPlist(NSString *keyWord) {
         ambientLightNode.light.color = [UIColor darkGrayColor];
         [self.scene.rootNode addChildNode:ambientLightNode];
         
-        
         _fixAngleX = [[dict objectForKey:@"angleX"] intValue];
         _fixAngleY = [[dict objectForKey:@"angleY"] intValue];
-        
         _angleX = _fixAngleX;
         _angleY = _fixAngleY;
         
@@ -208,18 +197,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
         
         [_scnRender render];
-    }
-    if (_isShouldShowStatic) {
-        // 这个函数应该完成以下事情
-        // 开启小窗口模式
-        // 在小窗口展示相应动作
-//        if (_scnView == nil) {
-//            _scnView = [[SCNView alloc] initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*3/4, 0, [[UIScreen mainScreen]bounds].size.width/4, [[UIScreen mainScreen]bounds].size.height/4)];
-//            [_scnView setScene:_scene];
-//            [self addSubview:_scnView];
-//        }
-        
-//        [_scnRender render];
     }
     
     [self presentFramebuffer];

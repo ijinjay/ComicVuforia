@@ -814,7 +814,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                                          [self saySomething:@"看起来，您挺高兴的，高兴您就拍拍手"];
                                      }
                                      SCNNode *rootNode = [_scnScene.rootNode childNodeWithName:@"root" recursively:YES];
-                                     [rootNode runAction:[SCNAction rotateByX:0 y:0 z:M_PI*4 duration:2]];
+                                     [rootNode runAction:[SCNAction rotateByX:0 y:0 z:M_PI*4 duration:1.0]];
                                      [UIView animateWithDuration:3.0
                                                       animations:^{
                                                           _scnView.alpha = 0.0;   // fade out
