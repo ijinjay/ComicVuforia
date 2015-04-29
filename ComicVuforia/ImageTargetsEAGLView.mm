@@ -74,6 +74,14 @@ NSDictionary *readPlist(NSString *keyWord) {
         NSDictionary *dict = readPlist(modelName);
         assert(dict != nil);
         _scene = [SCNScene sceneNamed:[dict objectForKey:@"filePath"]];
+        NSLog(@"%@", [dict objectForKey:@"filePath"]);
+        
+        if (_scene == nil) {
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            _scene = [SCNScene sceneWithURL:[documentsDirectoryURL URLByAppendingPathComponent:((NSString *)[dict objectForKey:@"filePath"])] options:nil error:nil];
+            NSLog(@"scene is not nil, %@", _scene);
+        }
+        
         _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
         // create and add a camera to the scene
         _cameraNode = [SCNNode node];

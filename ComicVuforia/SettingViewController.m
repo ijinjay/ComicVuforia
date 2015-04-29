@@ -55,25 +55,41 @@
     UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:[user objectForKey:@"backgroundcolor"]];
     self.view.backgroundColor = color;
     
-    _array = [[NSArray alloc] initWithObjects:@"Histoire", @"superman", nil];
+    // picture name and path
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    for( NSString *aKey in [plistDict allKeys] ) {
+        if ([aKey compare:@"version"] != NSOrderedSame) {
+            [array addObject:aKey];
+        }
+    }
+    _array = [NSArray arrayWithArray:array];
     // get the user data
     if ([user objectForKey:@"modelName"] == nil) {
         [user setObject:[_array objectAtIndex:0] forKey:@"modelName"];
     }
     
     NSString *modelName = [user objectForKey:@"modelName"];
+    NSString *picPath = [[plistDict objectForKey:modelName] objectForKey:@"picPath"];
+    
     _imageView.layer.masksToBounds = YES;
     _imageView.layer.cornerRadius = _imageView.frame.size.height / 2;
     
     UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:modelName ofType:@"png"]];
+    if (image == nil) {
+        image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:([NSString stringWithFormat:@"%@.scnassets/%@", modelName, modelName]) ofType:@"png"]];
+        if (image == nil) {
+            image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", documentsDirectory, picPath]];
+        }
+    }
     [_imageView setImage:image];
     
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     [_pickerView setShowsSelectionIndicator:YES];
-    if ([modelName compare:@"superman"] == NSOrderedSame) {
-        [_pickerView selectRow:1 inComponent:0 animated:YES];
-    }
+    [_pickerView selectRow:([_array indexOfObject:modelName]) inComponent:0 animated:YES];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -84,7 +100,6 @@
     NSString *modelName = [_array  objectAtIndex:[_pickerView selectedRowInComponent:0]];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setObject:modelName forKey:@"modelName"];
-    NSLog(@"set modelName: %@", modelName);
 }
 #pragma mark PickerView protocol
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
@@ -116,6 +131,17 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSString *modelName = [_array  objectAtIndex:[pickerView selectedRowInComponent:0]];
     UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:modelName ofType:@"png"]];
+    if (image == nil) {
+        image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:([NSString stringWithFormat:@"%@.scnassets/%@", modelName, modelName]) ofType:@"png"]];
+    }
+    // 需要在documents路径下查找
+    if (image == nil) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
+        NSString *picPath = [[plistDict objectForKey:modelName] objectForKey:@"picPath"];
+        image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", documentsDirectory, picPath]];
+    }
     [_imageView setImage:image];
 }
 
