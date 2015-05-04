@@ -10,12 +10,11 @@
 
 @implementation CustomButton
 
-- (id)initWithFrame:(CGRect)frame andTitle:(NSString *)title andBackgroundColor:(UIColor *)color andFont:(UIFont *)font {
+- (id)initWithFrame:(CGRect)frame andImage:(NSString *)image{
     self = [super initWithFrame:frame];
     if (self) {
-        [self setTitle:title forState:UIControlStateNormal];
-        self.titleLabel.font = font;
-        self.backgroundColor = [color colorWithAlphaComponent:0.5f];
+        [self setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

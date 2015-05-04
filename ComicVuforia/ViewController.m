@@ -98,6 +98,11 @@ static NSString *ServerAddress = @"http://182.92.175.104:8666";
 
 #pragma mark - checkVersion
 - (void)checkVersion{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([user objectForKey:@"needUpdate"] == nil) {
+        [user setObject:@"YES" forKey:@"needUpdate"];
+    }
+    NSString *needUpdate = (NSString *)[user objectForKey:@"needUpdate"];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     if (![[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]]) {
@@ -114,8 +119,12 @@ static NSString *ServerAddress = @"http://182.92.175.104:8666";
         NSMutableDictionary *localPlist  = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
         NSNumber *serverVersion = [serverPlist objectForKey:@"version"];
         NSNumber *localVersion  = [localPlist objectForKey:@"version"];
-        NSLog(@"server:%@  local:%@", serverVersion, localVersion);
-        if ([serverVersion floatValue] > [localVersion floatValue]) {
+        
+        if ([user objectForKey:@"serverVersion"] == nil || ([needUpdate compare:@"YES"] == NSOrderedSame)) {
+            [user setObject:serverVersion forKey:@"serverVersion"];
+        }
+        NSLog(@"server:%@  local:%@ userServerVersion:%@, needUpdate:%@", serverVersion, localVersion, [user objectForKey:@"serverVersion"], needUpdate);
+        if ( (([needUpdate compare:@"YES"] == NSOrderedSame) && ([serverVersion floatValue] > [localVersion floatValue])) || (([needUpdate compare:@"NO"] == NSOrderedSame) && ([serverVersion floatValue] > [(NSNumber *)[user objectForKey:@"serverVersion"] floatValue])) ) {
             NSLog(@"need upgrade");
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"检测到更新" message:@"亲，升级数据库咯:^)" delegate:self cancelButtonTitle:@"残忍拒绝" otherButtonTitles:@"马上升级", nil];
             [alert show];
@@ -158,9 +167,12 @@ static NSString *ServerAddress = @"http://182.92.175.104:8666";
 
 #pragma mark - UIAlertView
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if (buttonIndex == 0) {
         NSLog(@"残忍拒绝");
+        [user setObject:@"NO" forKey:@"needUpdate"];
     } else {
+        [user setObject:@"YES" forKey:@"needUpdate"];
         NSLog(@"马上升级");
         _hud.mode = MBProgressHUDModeIndeterminate;
         _hud.labelText = @"正在下载";

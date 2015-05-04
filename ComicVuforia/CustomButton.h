@@ -13,8 +13,8 @@
 
 @interface CustomButton : UIButton
 
-- (id)initWithFrame:(CGRect)frame andTitle:(NSString *)title andBackgroundColor:(UIColor *)color andFont:(UIFont *)font;
 
+- (id)initWithFrame:(CGRect)frame andImage:(NSString *)image;
 @end
 
 

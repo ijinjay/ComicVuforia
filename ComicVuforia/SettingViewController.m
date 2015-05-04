@@ -27,19 +27,26 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerWidth;
 @property (weak, nonatomic) IBOutlet UIButton *finishButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *finishBottom;
+@property (weak, nonatomic) IBOutlet UILabel *updateLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *updateTop;
+@property (weak, nonatomic) IBOutlet UISwitch *updateSwitch;
 
 @end
 
 @implementation SettingViewController
 
+- (IBAction)checkUpdate:(id)sender {
+    
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     // 更新iPad的界面
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        _titleTop.constant = 50;
-        _imageTop.constant = 50;
-        _chooseTop.constant = 80;
-        _pickerTop.constant = 80;
+        _titleTop.constant = 40;
+        _imageTop.constant = 40;
+        _chooseTop.constant = 40;
+        _pickerTop.constant = 40;
         _pickerHeight.constant = 200;
         _pickerWidth.constant = 300;
         
@@ -50,6 +57,9 @@
         _finishButton.titleLabel.font = [UIFont systemFontOfSize:50];
         _finishBottom.constant = 50;
         _choseTitle.font = [UIFont systemFontOfSize:40];
+        
+        _updateLabel.font = [UIFont systemFontOfSize:40];
+        _updateTop.constant = 50;
     }
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:[user objectForKey:@"backgroundcolor"]];
@@ -90,8 +100,27 @@
     _pickerView.dataSource = self;
     [_pickerView setShowsSelectionIndicator:YES];
     [_pickerView selectRow:([_array indexOfObject:modelName]) inComponent:0 animated:YES];
+    if ([user objectForKey:@"needUpdate"] == nil) {
+        [user setObject:@"YES" forKey:@"needUpdate"];
+    }
+    NSString *needUpdate = [user objectForKey:@"needUpdate"];
+    if ([needUpdate compare:@"YES"] == NSOrderedSame) {
+        [_updateSwitch setOn:YES];
+    } else  {
+        [_updateSwitch setOn:NO];
+    }
+    [_updateSwitch addTarget:self action:@selector(switchFunc:) forControlEvents:UIControlEventValueChanged];
 }
 
+- (void)switchFunc:(id)sender {
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSLog(@"%@", _updateSwitch.isOn ? @"ON" : @"OFF");
+    if (_updateSwitch.isOn == YES) {
+        [user setObject:@"YES" forKey:@"needUpdate"];
+    } else {
+        [user setObject:@"NO" forKey:@"needUpdate"];
+    }
+}
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }

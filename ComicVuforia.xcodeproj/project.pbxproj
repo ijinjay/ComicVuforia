@@ -80,7 +80,17 @@
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88D4C6BA1ABFF006002B782E /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */; };
 		88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21F61ABBFE1F00B65E21 /* Reachability.m */; };
+		88E890F91AF0D6C300567FF2 /* BAYMAX.dae in Resources */ = {isa = PBXBuildFile; fileRef = 88E890F81AF0D6C300567FF2 /* BAYMAX.dae */; };
 		88E91C401AB1667C00606084 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E91C3F1AB1667C00606084 /* SceneKit.framework */; };
+		88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BE81AF3428F00E57BC0 /* lf.jpg */; };
+		88EB1BF21AF346B700E57BC0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BEB1AF346B700E57BC0 /* close.png */; };
+		88EB1BF31AF346B700E57BC0 /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BEC1AF346B700E57BC0 /* more.png */; };
+		88EB1BF41AF346B700E57BC0 /* return.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BED1AF346B700E57BC0 /* return.png */; };
+		88EB1BF71AF346B700E57BC0 /* switch.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BF01AF346B700E57BC0 /* switch.png */; };
+		88EB1BFA1AF349F700E57BC0 /* snap.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BF91AF349F700E57BC0 /* snap.png */; };
+		88EB1BFC1AF3506F00E57BC0 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BFB1AF3506F00E57BC0 /* info.png */; };
+		88EB1BFE1AF35C7B00E57BC0 /* smile.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BFD1AF35C7B00E57BC0 /* smile.png */; };
+		88EB1C001AF35FA400E57BC0 /* voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BFF1AF35FA400E57BC0 /* voice.png */; };
 		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
@@ -202,7 +212,17 @@
 		88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		88DF21F51ABBFE1F00B65E21 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		88DF21F61ABBFE1F00B65E21 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		88E890F81AF0D6C300567FF2 /* BAYMAX.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = BAYMAX.dae; sourceTree = "<group>"; };
 		88E91C3F1AB1667C00606084 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		88EB1BE81AF3428F00E57BC0 /* lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lf.jpg; sourceTree = "<group>"; };
+		88EB1BEB1AF346B700E57BC0 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
+		88EB1BEC1AF346B700E57BC0 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
+		88EB1BED1AF346B700E57BC0 /* return.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = return.png; sourceTree = "<group>"; };
+		88EB1BF01AF346B700E57BC0 /* switch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch.png; sourceTree = "<group>"; };
+		88EB1BF91AF349F700E57BC0 /* snap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snap.png; sourceTree = "<group>"; };
+		88EB1BFB1AF3506F00E57BC0 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		88EB1BFD1AF35C7B00E57BC0 /* smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smile.png; sourceTree = "<group>"; };
+		88EB1BFF1AF35FA400E57BC0 /* voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice.png; sourceTree = "<group>"; };
 		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -267,6 +287,8 @@
 		3049AB8B1AA84AF0006DB915 /* ComicVuforia */ = {
 			isa = PBXGroup;
 			children = (
+				88EB1BEA1AF3467700E57BC0 /* Pictures */,
+				88E890F81AF0D6C300567FF2 /* BAYMAX.dae */,
 				88BD1F641AF0BBC20066CA4F /* model.plist */,
 				88BD1F471AF0BAE40066CA4F /* AFNetworking */,
 				88BD1F351AF0BA8C0066CA4F /* SSZipArchive */,
@@ -289,6 +311,7 @@
 				306619431AA9371900F4D8C9 /* QCARApplication */,
 				3049AB991AA84AF0006DB915 /* Images.xcassets */,
 				3049AB9B1AA84AF0006DB915 /* LaunchScreen.xib */,
+				88EB1BE81AF3428F00E57BC0 /* lf.jpg */,
 				3049AB8C1AA84AF0006DB915 /* Supporting Files */,
 			);
 			path = ComicVuforia;
@@ -496,6 +519,21 @@
 			name = InSightFile;
 			sourceTree = "<group>";
 		};
+		88EB1BEA1AF3467700E57BC0 /* Pictures */ = {
+			isa = PBXGroup;
+			children = (
+				88EB1BFF1AF35FA400E57BC0 /* voice.png */,
+				88EB1BFD1AF35C7B00E57BC0 /* smile.png */,
+				88EB1BFB1AF3506F00E57BC0 /* info.png */,
+				88EB1BF91AF349F700E57BC0 /* snap.png */,
+				88EB1BEB1AF346B700E57BC0 /* close.png */,
+				88EB1BEC1AF346B700E57BC0 /* more.png */,
+				88EB1BED1AF346B700E57BC0 /* return.png */,
+				88EB1BF01AF346B700E57BC0 /* switch.png */,
+			);
+			name = Pictures;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -576,6 +614,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88E890F91AF0D6C300567FF2 /* BAYMAX.dae in Resources */,
+				88EB1BFC1AF3506F00E57BC0 /* info.png in Resources */,
 				88BD1F651AF0BBC20066CA4F /* model.plist in Resources */,
 				881B6B141AB949810057A746 /* base_00.png in Resources */,
 				881B6B1A1AB949810057A746 /* mouth_00.png in Resources */,
@@ -584,23 +624,31 @@
 				306619AC1AA93C8A00F4D8C9 /* Tarmac.dat in Resources */,
 				881B6B101AB949810057A746 /* Histoire.png in Resources */,
 				88BD1F301AF0B6450066CA4F /* superman.scnassets in Resources */,
+				88EB1BF71AF346B700E57BC0 /* switch.png in Resources */,
 				3049AB981AA84AF0006DB915 /* Main.storyboard in Resources */,
+				88EB1BFA1AF349F700E57BC0 /* snap.png in Resources */,
 				881B6B131AB949810057A746 /* acce.png in Resources */,
 				881B6B151AB949810057A746 /* body_c.png in Resources */,
 				306619AB1AA93C8A00F4D8C9 /* StonesAndChips.xml in Resources */,
 				3049AB9D1AA84AF0006DB915 /* LaunchScreen.xib in Resources */,
+				88EB1C001AF35FA400E57BC0 /* voice.png in Resources */,
 				881B6B171AB949810057A746 /* eyelid_00.png in Resources */,
 				306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */,
 				881B6B191AB949810057A746 /* hair_c.png in Resources */,
 				881B6B1B1AB949810057A746 /* pupil_00.png in Resources */,
+				88EB1BFE1AF35C7B00E57BC0 /* smile.png in Resources */,
+				88EB1BF21AF346B700E57BC0 /* close.png in Resources */,
 				888C48DC1AAD681B007CA1CC /* lf.dat in Resources */,
 				3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */,
 				888C48DB1AAD681B007CA1CC /* lf.xml in Resources */,
+				88EB1BF31AF346B700E57BC0 /* more.png in Resources */,
 				306619AA1AA93C8A00F4D8C9 /* StonesAndChips.dat in Resources */,
 				881B6B0F1AB949810057A746 /* Histoire.dae in Resources */,
 				881B6B111AB949810057A746 /* Histoire.SMD in Resources */,
+				88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */,
 				881B6B181AB949810057A746 /* face_c.png in Resources */,
 				881B6B161AB949810057A746 /* brow_00.png in Resources */,
+				88EB1BF41AF346B700E57BC0 /* return.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 @interface ImageTargetsViewController : UIViewController <ApplicationControl>{
     CGRect viewFrame;
-    ImageTargetsEAGLView* eaglView;
+    IBOutlet ImageTargetsEAGLView* eaglView;
     QCAR::DataSet*  dataSetCurrent;
     QCAR::DataSet*  dataSetTarmac;
     QCAR::DataSet*  dataSetStonesAndChips;

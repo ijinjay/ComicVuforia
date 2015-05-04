@@ -81,6 +81,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _snapButton.hidden = hidden;
     _speechButton.hidden = hidden;
     _expressionButton.hidden = hidden;
+//    _moreButton.hidden = hidden;
+//    _infoButton.hidden = hidden;
 }
 - (void)setButtonAlpha:(CGFloat)alpha {
     _expressionButton.alpha = alpha;
@@ -88,6 +90,8 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _snapButton.alpha = alpha;
     _returnButton.alpha = alpha;
     _speechButton.alpha = alpha;
+//    _moreButton.alpha = alpha;
+//    _infoButton.alpha = alpha;
 }
 - (void)hideButtonWithAnimation {
     [UIView animateWithDuration:0.4 animations:^(){
@@ -230,30 +234,36 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 }
 - (void)addButtons {
     // add control button
-    CGFloat fontSize = 20.0;
-    NSInteger scale = 1;
+    float scale = 1.0;
     // 更新iPad的界面
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        scale = 2;
+        scale = 1.5;
     }
-    
+
     CGFloat deviceWidth = [[UIScreen mainScreen] bounds].size.width;
     CGFloat deviceHeight= [[UIScreen mainScreen] bounds].size.height;
-    // set backgroundcolor
+    // update backgroundcolor
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:[user objectForKey:@"backgroundcolor"]];
     NSInteger colorIndex = [user integerForKey:@"colorIndex"];
     if ([user objectForKey:@"colorcount"] != nil) {
         colorIndex = (colorIndex + 1)%([user integerForKey:@"colorcount"]);
         [user setInteger:colorIndex forKey:@"colorIndex"];
     }
     
-    UIFont *buttonFont = [UIFont systemFontOfSize:fontSize * scale];
-    _returnButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, 0, deviceWidth/3.0, 40*scale) andTitle:@"返回" andBackgroundColor:color andFont:buttonFont];
-    _switchButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, 0, deviceWidth/3.0, 40*scale) andTitle:@"切换相机" andBackgroundColor:color andFont:buttonFont];
-    _speechButton = [[CustomButton alloc] initWithFrame:CGRectMake(0, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"语音交互" andBackgroundColor:color andFont:buttonFont];
-    _snapButton   = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0, deviceHeight-40*scale*1.5, deviceWidth/3.0, 40*scale*1.5) andTitle:@"拍照" andBackgroundColor:color andFont:buttonFont];
-    _expressionButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth/3.0*2, deviceHeight-40*scale, deviceWidth/3.0, 40*scale) andTitle:@"表情识别" andBackgroundColor:color andFont:buttonFont];
+//    _returnButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 75*scale, deviceHeight-4*(20+50)*scale, 50*scale, 50*scale) andImage:@"return.png"];
+    _returnButton = [[CustomButton alloc] initWithFrame:CGRectMake(25*scale, 20*scale, 50*scale, 50*scale) andImage:@"return.png"];
+//    _speechButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 75*scale, deviceHeight-3*(20+50)*scale, 50*scale, 50*scale) andImage:@"voice.png"];
+    _speechButton = [[CustomButton alloc] initWithFrame:CGRectMake(25*scale, deviceHeight-(20+50)*scale, 50*scale, 50*scale) andImage:@"voice.png"];
+    
+//    _expressionButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 75*scale, deviceHeight-2*(20+50)*scale, 50*scale, 50*scale) andImage:@"smile.png"];
+    _expressionButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 75*scale, deviceHeight-1*(20+50)*scale, 50*scale, 50*scale) andImage:@"smile.png"];
+    
+//    _moreButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 75*scale, deviceHeight-1*(20+50)*scale, 50*scale, 50*scale) andImage:@"more.png"];
+//    _infoButton = [[CustomButton alloc] initWithFrame:CGRectMake(25*scale, deviceHeight-(20+50)*scale, 50*scale, 50*scale) andImage:@"info.png"];
+    _switchButton = [[CustomButton alloc] initWithFrame:CGRectMake(deviceWidth - 40*2*scale, 20*scale, 60*scale, 50*scale) andImage:@"switch.png"];
+    _snapButton = [[CustomButton alloc] initWithFrame:CGRectMake((deviceWidth - 80*scale)/2, deviceHeight-1*(20+80)*scale, 80*scale, 80*scale) andImage:@"snap.png"];
+    
+//    [_moreButton setImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateSelected];
     
     [_returnButton addTarget:self action:@selector(returnFunc:) forControlEvents:UIControlEventTouchDown];
     [_switchButton addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchDown];
@@ -429,7 +439,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCAR::setFrameFormat(QCAR::RGB888, YES);
     if (_analyzeExpression) {
         QCAR::Frame frame = state->getFrame();
-        NSLog(@"-------");
         for (int i = 0; i < frame.getNumImages(); i++) {
             const QCAR::Image *qcarImage = frame.getImage(i);
             if (qcarImage->getFormat() == QCAR::RGB888) {
