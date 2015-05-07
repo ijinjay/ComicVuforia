@@ -830,7 +830,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
+					./vuforia_sdk/build/lib/arm,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -853,7 +853,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/jinjay/Downloads/vuforia_sdk/build/lib/arm,
+					./vuforia_sdk/build/lib/arm,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
