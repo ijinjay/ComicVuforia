@@ -88,13 +88,18 @@ NSDictionary *readPlist(NSString *keyWord) {
         _cameraNode.camera = [SCNCamera camera];
         [_scene.rootNode addChildNode:_cameraNode];
         // place the camera
-        _cameraNode.position = SCNVector3Make(0, 0, 0);
+        _cameraNode.position = SCNVector3Make(0, 0, 200);
         // create and add an ambient light to the scene
         SCNNode *ambientLightNode = [SCNNode node];
         ambientLightNode.light = [SCNLight light];
         ambientLightNode.light.type = SCNLightTypeAmbient;
         ambientLightNode.light.color = [UIColor darkGrayColor];
         [self.scene.rootNode addChildNode:ambientLightNode];
+        
+//        // create and add a particalSystem node to the scene
+//        SCNNode *pNode = [SCNNode node];
+//        [self.scene.rootNode addChildNode:pNode];
+//        pNode.hidden = NO;
         
         _fixAngleX = [[dict objectForKey:@"angleX"] intValue];
         _fixAngleY = [[dict objectForKey:@"angleY"] intValue];
@@ -114,7 +119,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);
         
         [_scnRender setScene:_scene];
-        _isShouldShowStatic = NO;
     }
     
     return self;
@@ -181,35 +185,56 @@ NSDictionary *readPlist(NSString *keyWord) {
     QCAR::Renderer::getInstance().end();
     
     // show the model
-    // if long time no track, we should reinitial _angleY and _angleZ
     static int numDidnotFoundTrack = 0;
     numDidnotFoundTrack ++;
+    
+    // we've detected an image
     if (state.getNumTrackableResults() != 0 ) {
-        if (numDidnotFoundTrack > 50) {
+        // if long time no track, we should reinitial _angleY and _angleZ
+        if (numDidnotFoundTrack > 60) {
             _angleY = _fixAngleY;
             _angleX = _fixAngleX;
         }
+        for (int i = 0; (i < state.getNumTrackableResults()); ++i) {
+            
+            // Get the trackable
+            const QCAR::TrackableResult* result = state.getTrackableResult(i);
+            // const QCAR::Trackable& trackable = result->getTrackable();
+            QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
+            QCAR::Matrix44F modelViewProjection;
+            SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
+//            SampleApplicationUtils::multiplyMatrix(&modelViewMatrix.data[0], &vapp.projectionMatrix.data[0], &modelViewProjection.data[0]);
+            
+            // set the camera position
+            GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
+            _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
+            
+            printf("--------\n");
+            [self printMat:&modelViewMatrix];
+            printf("++++++++\n");
+            [self printMat:&modelViewProjection];
+            [_scnRender render];
+        }
         numDidnotFoundTrack = 0;
-    }
-    
-    for (int i = 0; (i < state.getNumTrackableResults()) && (!_isShouldShowStatic); ++i) {
-        // Get the trackable
-        const QCAR::TrackableResult* result = state.getTrackableResult(i);
-//        const QCAR::Trackable& trackable = result->getTrackable();
-        QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
-        QCAR::Matrix44F modelViewProjection;
-        SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
-        
-        // set the camera position
-        GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
-        _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
-        
-        [_scnRender render];
     }
     
     [self presentFramebuffer];
 }
 
+- (void)printMat:(QCAR::Matrix44F *)mp{
+    for (int i = 0; i < 4; i ++) {
+        for (int j = 0; j < 4; j ++) {
+            printf("%f, ", (*mp).data[4*i + j]);
+        }
+        printf("\n");
+    }
+}
+
+- (void)printNode:(SCNNode *)node {
+    printf("position:%lf, %lf, %lf\n", node.position.x, node.position.y, node.position.z);
+    printf("rotation:%lf, %lf, %lf, %lf\n", node.rotation.x, node.rotation.y, node.rotation.z, node.rotation.w);
+    printf("projectiontransfrom: %lf, %lf\n", node.camera.projectionTransform.m11, node.camera.projectionTransform.m44);
+}
 //------------------------------------------------------------------------------
 #pragma mark - OpenGL ES management
 
@@ -305,9 +330,18 @@ NSDictionary *readPlist(NSString *keyWord) {
     CGPoint lastLoc = [touch previousLocationInView:self];
     CGPoint diff = CGPointMake(lastLoc.x - location.x, lastLoc.y - location.y);
     
+    // Histoire is a special node who need spetical care.
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *modelName = [user objectForKey:@"modelName"];
+    int symbol = -1;
+    if ([modelName compare:@"Histoire"] == NSOrderedSame) {
+        symbol = 1;
+    }
+    
     _angleY = _angleY - GLKMathDegreesToRadians(diff.y / 2.0);
-    _angleX = _angleX + GLKMathDegreesToRadians(diff.x / 2.0);
-        // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
+    _angleX = _angleX + symbol * GLKMathDegreesToRadians(diff.x / 2.0);
+    
+    // set the transform of the model. tranform = rotMatrix * fixedPositionMatrix * scaleMatrix
     SCNMatrix4 rotMatrix = SCNMatrix4Mult(SCNMatrix4MakeRotation(_angleX, 0, 1, 0), SCNMatrix4MakeRotation(_angleY, 1, 0, 0));
     rotMatrix = SCNMatrix4Mult(rotMatrix, _fixedPostionMatrix);
     _rootNode.transform = SCNMatrix4Mult(rotMatrix, _scaleMatrix);

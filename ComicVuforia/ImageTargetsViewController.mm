@@ -81,8 +81,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _snapButton.hidden = hidden;
     _speechButton.hidden = hidden;
     _expressionButton.hidden = hidden;
-//    _moreButton.hidden = hidden;
-//    _infoButton.hidden = hidden;
 }
 - (void)setButtonAlpha:(CGFloat)alpha {
     _expressionButton.alpha = alpha;
@@ -90,8 +88,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     _snapButton.alpha = alpha;
     _returnButton.alpha = alpha;
     _speechButton.alpha = alpha;
-//    _moreButton.alpha = alpha;
-//    _infoButton.alpha = alpha;
 }
 - (void)hideButtonWithAnimation {
     [UIView animateWithDuration:0.4 animations:^(){
@@ -152,7 +148,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         _faceHUD.labelText = @"正在识别";
         [_faceHUD show:YES];
         _analyzeExpression = YES;
-        eaglView.isShouldShowStatic = YES;
         if (_scnView == nil) {
             _scnView = [[SCNView alloc] init];
             _scnView.layer.borderColor = [UIColor blackColor].CGColor;
@@ -364,13 +359,13 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 - (bool) doLoadTrackersData {
     dataSetStonesAndChips = [self loadObjectTrackerDataSet:@"StonesAndChips.xml"];
     dataSetTarmac = [self loadObjectTrackerDataSet:@"Tarmac.xml"];
-    dataLF = [self loadObjectTrackerDataSet:@"lf.xml"];
+    dataLF = [self loadObjectTrackerDataSet:@"ComicVuforia.xml"];
     
     if ((dataSetStonesAndChips == NULL) || (dataSetTarmac == NULL) || (dataLF == NULL)) {
         NSLog(@"Failed to load datasets");
         return NO;
     }
-    if (! [self activateDataSet:dataSetStonesAndChips]) {
+    if (! [self activateDataSet:dataLF]) {
         NSLog(@"Failed to activate dataset");
         return NO;
     }
@@ -438,6 +433,7 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     // analyze facial expressionz
     QCAR::setFrameFormat(QCAR::RGB888, YES);
     if (_analyzeExpression) {
+        _analyzeExpression = NO;
         QCAR::Frame frame = state->getFrame();
         for (int i = 0; i < frame.getNumImages(); i++) {
             const QCAR::Image *qcarImage = frame.getImage(i);
@@ -458,7 +454,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
             }
         }
-        _analyzeExpression = NO;
     }
 }
 
@@ -795,13 +790,18 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
         NSArray *face = [jsonResult objectForKey:@"face"];
         // 获取图片大小
-        NSNumber *imgWidth = [jsonResult objectForKey:@"img_width"];
-        NSNumber *imgHeight= [jsonResult objectForKey:@"img_height"];
+//        NSNumber *imgWidth = [jsonResult objectForKey:@"img_width"];
+//        NSNumber *imgHeight= [jsonResult objectForKey:@"img_height"];
         dispatch_async(dispatch_get_main_queue(), ^{
             // 更新界面
             if ([face count] < 1) {
                 _analyzeExpression = YES;
             } else {
+                // save photo
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    UIImageWriteToSavedPhotosAlbum(imageFixed, nil, nil, nil);
+                });
+                
                 NSDictionary *faceResult =  [face objectAtIndex:0];
                 NSDictionary *attribute = [faceResult objectForKey:@"attribute"];
                 NSDictionary *smiling = [attribute objectForKey:@"smiling"];
@@ -811,29 +811,30 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                 NSNumber *range = [age objectForKey:@"range"];
                 
                 // 人脸位置
-                NSDictionary *position = [faceResult objectForKey:@"position"];
-                NSDictionary *center = [position objectForKey:@"center"];
-                NSNumber *center_x = [center objectForKey:@"x"];
-                NSNumber *center_y = [center objectForKey:@"y"];
-                NSNumber *width = [position objectForKey:@"width"];
-                NSLog(@"%@, %@, %@, img: %@, %@", center_x, center_y, width, imgWidth, imgHeight);
-                float rate = self.view.bounds.size.height / [imgHeight floatValue];
-                float x_offset = ([imgWidth floatValue]*rate - self.view.bounds.size.width)/2;
-                float x = [center_x floatValue]*[imgWidth floatValue]*rate/100.0 - x_offset;
-                float y = [center_y floatValue]*[imgHeight floatValue]*rate/100.0;
-                float w = [width floatValue]*[imgWidth floatValue]*rate/100.0;
-                NSLog(@"position x: %f, y: %f, w: %f", x, y, w);
-                UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(x-w/2, y-w/2, w, w)];
-                rectView.backgroundColor = [UIColor clearColor];
-                rectView.layer.borderColor = [UIColor magentaColor].CGColor;
-                rectView.layer.borderWidth = 5.0;
-                [self.view addSubview:rectView];
+//                NSDictionary *position = [faceResult objectForKey:@"position"];
+//                NSDictionary *center = [position objectForKey:@"center"];
+//                NSNumber *center_x = [center objectForKey:@"x"];
+//                NSNumber *center_y = [center objectForKey:@"y"];
+//                NSNumber *width = [position objectForKey:@"width"];
+//                NSLog(@"%@, %@, %@, img: %@, %@", center_x, center_y, width, imgWidth, imgHeight);
+//                float rate = self.view.bounds.size.height / [imgHeight floatValue];
+//                float x_offset = ([imgWidth floatValue]*rate - self.view.bounds.size.width)/2;
+//                float x = [center_x floatValue]*[imgWidth floatValue]*rate/100.0 - x_offset;
+//                float y = [center_y floatValue]*[imgHeight floatValue]*rate/100.0;
+//                float w = [width floatValue]*[imgWidth floatValue]*rate/100.0;
+//                NSLog(@"position x: %f, y: %f, w: %f", x, y, w);
+//                UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(x-w/2, y-w/2, w, w)];
+//                rectView.backgroundColor = [UIColor clearColor];
+//                rectView.layer.borderColor = [UIColor magentaColor].CGColor;
+//                rectView.layer.borderWidth = 5.0;
+//                [self.view addSubview:rectView];
+                
                 
                 [self.view bringSubviewToFront:_faceHUD];
-                _faceHUD.labelText = [NSString stringWithFormat:@"识别成功,年龄:%@±%@,笑容:%@", ageNumber, range, smilingNumber];
+                _faceHUD.labelText = @"识别成功";
+                _faceHUD.detailsLabelText = [NSString stringWithFormat:@"年龄:%@±%@\n笑容:%@", ageNumber, range, smilingNumber];
                 _faceHUD.mode = MBProgressHUDModeText;
                 [_faceHUD hide:YES afterDelay:2.0];
-                [eaglView savePhoto];
                 
                 [UIView animateWithDuration:1.0
                                  animations:^{
@@ -854,11 +855,10 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                                                       completion:^(BOOL finished){
                                                           [_scnView removeFromSuperview];
                                                           [self showButtonWithAnimation];
-                                                          [rectView removeFromSuperview];
+//                                                          [rectView removeFromSuperview];
                                                       }];
                                  }];
 
-                eaglView.isShouldShowStatic = NO;
             }
         });
     });

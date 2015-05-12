@@ -268,7 +268,7 @@
                                 <rect key="frame" x="40" y="176" width="240" height="128"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <string key="text">使用
-QualComm Vuforia SDK4.0
+QualComm Vuforia SDK4.2
 科大讯飞语音识别SDK
 Face++ SDK</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -380,6 +380,6 @@ Face++ SDK</string>
         <simulatedScreenMetrics key="destination" type="retina47"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="n9t-Jk-IpO"/>
+        <segue reference="OAU-Z5-q0f"/>
     </inferredMetricsTieBreakers>
 </document>

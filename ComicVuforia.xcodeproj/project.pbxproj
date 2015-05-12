@@ -50,6 +50,8 @@
 		881B6B191AB949810057A746 /* hair_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0C1AB949810057A746 /* hair_c.png */; };
 		881B6B1A1AB949810057A746 /* mouth_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0D1AB949810057A746 /* mouth_00.png */; };
 		881B6B1B1AB949810057A746 /* pupil_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0E1AB949810057A746 /* pupil_00.png */; };
+		884106971B01CEC900E71C1B /* ComicVuforia.dat in Resources */ = {isa = PBXBuildFile; fileRef = 884106951B01CEC900E71C1B /* ComicVuforia.dat */; };
+		884106981B01CEC900E71C1B /* ComicVuforia.xml in Resources */ = {isa = PBXBuildFile; fileRef = 884106961B01CEC900E71C1B /* ComicVuforia.xml */; };
 		886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 886BE8301AABEAFA0049F68B /* MBProgressHUD.m */; };
 		886EF7C11AB921A500785CF1 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BD1AB921A500785CF1 /* AboutViewController.m */; };
 		886EF7C21AB921A500785CF1 /* BriefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BF1AB921A500785CF1 /* BriefViewController.m */; };
@@ -80,7 +82,6 @@
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88D4C6BA1ABFF006002B782E /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */; };
 		88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21F61ABBFE1F00B65E21 /* Reachability.m */; };
-		88E890F91AF0D6C300567FF2 /* BAYMAX.dae in Resources */ = {isa = PBXBuildFile; fileRef = 88E890F81AF0D6C300567FF2 /* BAYMAX.dae */; };
 		88E91C401AB1667C00606084 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E91C3F1AB1667C00606084 /* SceneKit.framework */; };
 		88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BE81AF3428F00E57BC0 /* lf.jpg */; };
 		88EB1BF21AF346B700E57BC0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BEB1AF346B700E57BC0 /* close.png */; };
@@ -160,6 +161,8 @@
 		881B6B0C1AB949810057A746 /* hair_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hair_c.png; sourceTree = "<group>"; };
 		881B6B0D1AB949810057A746 /* mouth_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouth_00.png; sourceTree = "<group>"; };
 		881B6B0E1AB949810057A746 /* pupil_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pupil_00.png; sourceTree = "<group>"; };
+		884106951B01CEC900E71C1B /* ComicVuforia.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ComicVuforia.dat; sourceTree = "<group>"; };
+		884106961B01CEC900E71C1B /* ComicVuforia.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ComicVuforia.xml; sourceTree = "<group>"; };
 		886BE82F1AABEAFA0049F68B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		886BE8301AABEAFA0049F68B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		886EF7BC1AB921A500785CF1 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -212,7 +215,6 @@
 		88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		88DF21F51ABBFE1F00B65E21 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		88DF21F61ABBFE1F00B65E21 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		88E890F81AF0D6C300567FF2 /* BAYMAX.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = BAYMAX.dae; sourceTree = "<group>"; };
 		88E91C3F1AB1667C00606084 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		88EB1BE81AF3428F00E57BC0 /* lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lf.jpg; sourceTree = "<group>"; };
 		88EB1BEB1AF346B700E57BC0 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
@@ -288,7 +290,6 @@
 			isa = PBXGroup;
 			children = (
 				88EB1BEA1AF3467700E57BC0 /* Pictures */,
-				88E890F81AF0D6C300567FF2 /* BAYMAX.dae */,
 				88BD1F641AF0BBC20066CA4F /* model.plist */,
 				88BD1F471AF0BAE40066CA4F /* AFNetworking */,
 				88BD1F351AF0BA8C0066CA4F /* SSZipArchive */,
@@ -392,6 +393,8 @@
 		306619751AA93C8A00F4D8C9 /* ImageTargets */ = {
 			isa = PBXGroup;
 			children = (
+				884106951B01CEC900E71C1B /* ComicVuforia.dat */,
+				884106961B01CEC900E71C1B /* ComicVuforia.xml */,
 				888C48D91AAD681B007CA1CC /* lf.xml */,
 				888C48DA1AAD681B007CA1CC /* lf.dat */,
 				306619771AA93C8A00F4D8C9 /* StonesAndChips.dat */,
@@ -614,7 +617,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88E890F91AF0D6C300567FF2 /* BAYMAX.dae in Resources */,
 				88EB1BFC1AF3506F00E57BC0 /* info.png in Resources */,
 				88BD1F651AF0BBC20066CA4F /* model.plist in Resources */,
 				881B6B141AB949810057A746 /* base_00.png in Resources */,
@@ -629,9 +631,11 @@
 				88EB1BFA1AF349F700E57BC0 /* snap.png in Resources */,
 				881B6B131AB949810057A746 /* acce.png in Resources */,
 				881B6B151AB949810057A746 /* body_c.png in Resources */,
+				884106971B01CEC900E71C1B /* ComicVuforia.dat in Resources */,
 				306619AB1AA93C8A00F4D8C9 /* StonesAndChips.xml in Resources */,
 				3049AB9D1AA84AF0006DB915 /* LaunchScreen.xib in Resources */,
 				88EB1C001AF35FA400E57BC0 /* voice.png in Resources */,
+				884106981B01CEC900E71C1B /* ComicVuforia.xml in Resources */,
 				881B6B171AB949810057A746 /* eyelid_00.png in Resources */,
 				306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */,
 				881B6B191AB949810057A746 /* hair_c.png in Resources */,

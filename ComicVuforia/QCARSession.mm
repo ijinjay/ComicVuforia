@@ -131,7 +131,10 @@ namespace {
 - (void)initQCARInBackground {
     // Background thread must have its own autorelease pool
     @autoreleasepool {
-        QCAR::setInitParameters(mQCARInitFlags, "62e60124470947828458564e09208326");
+        // for sdk4.0
+//        QCAR::setInitParameters(mQCARInitFlags, "62e60124470947828458564e09208326");
+        // for sdk4.2 or later
+        QCAR::setInitParameters(mQCARInitFlags, "Ae0uov7/////AAAAAWLmASRHCUeChFhWTgkggyYqVpfwnKm5dmTQM9Aubl3oYCfmc3Cy6N1mmmGUp7BwsEKQ6yrPsKcsmba8bjB2Zg6hEtftrHWJZAJ8bZtEC89C/9fyeDBA+qG7pLAGMqsdA5/Z94o8HNBLFvmyFtADIBBQDp/qOiisip4OCstyzvNw9PseuhemRKrUi/CY5ov0ofjjKDElHJhpZ39Z0cDid3FIdtxPQDVGXOGPaHyWMfbRuJ2zYORAXE8J+UJ9NXRetGYKJf6E+xcGnUX66XMfWG1k6UC0VmBUiiinsyDNbvCYXZUJDt3t8rTyv1JnD7QULtC54CFgqJ7gJ5msEFyMPzmb5XpV2Pd/fWqjc4nyJ2zh");
         
         // QCAR::init() will return positive numbers up to 100 as it progresses
         // towards success.  Negative numbers indicate error conditions

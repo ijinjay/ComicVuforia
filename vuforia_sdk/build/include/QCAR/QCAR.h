@@ -42,7 +42,8 @@ enum {
     INIT_LICENSE_ERROR_NO_NETWORK_PERMANENT = -6,   ///< Unable to verify license key due to network (Permanent error)
     INIT_LICENSE_ERROR_NO_NETWORK_TRANSIENT = -7,   ///< Unable to verify license key due to network (Transient error)
     INIT_LICENSE_ERROR_CANCELED_KEY = -8,           ///< Provided key is no longer valid
-    INIT_EXTERNAL_DEVICE_NOT_DETECTED = -9          ///< Dependent external device not detected/plugged in
+    INIT_LICENSE_ERROR_PRODUCT_TYPE_MISMATCH = -9,  ///< Provided key is not valid for this product
+    INIT_EXTERNAL_DEVICE_NOT_DETECTED = -10         ///< Dependent external device not detected/plugged in
 };
 
 
