@@ -79,6 +79,8 @@
 		88BD1F621AF0BAE40066CA4F /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD1F581AF0BAE40066CA4F /* AFURLResponseSerialization.m */; };
 		88BD1F631AF0BAE40066CA4F /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD1F5A1AF0BAE40066CA4F /* AFURLSessionManager.m */; };
 		88BD1F651AF0BBC20066CA4F /* model.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88BD1F641AF0BBC20066CA4F /* model.plist */; };
+		88C347241B02DDD500A5D8C9 /* SampleMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C347221B02DDD500A5D8C9 /* SampleMath.cpp */; };
+		88C347261B03260100A5D8C9 /* Bigmax.dae in Resources */ = {isa = PBXBuildFile; fileRef = 88C347251B03260100A5D8C9 /* Bigmax.dae */; };
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88D4C6BA1ABFF006002B782E /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */; };
 		88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21F61ABBFE1F00B65E21 /* Reachability.m */; };
@@ -93,6 +95,7 @@
 		88EB1BFE1AF35C7B00E57BC0 /* smile.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BFD1AF35C7B00E57BC0 /* smile.png */; };
 		88EB1C001AF35FA400E57BC0 /* voice.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BFF1AF35FA400E57BC0 /* voice.png */; };
 		88ECCDFD1AA9DA28007AF804 /* libVuforia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ECCDFC1AA9DA28007AF804 /* libVuforia.a */; settings = {ATTRIBUTES = (Required, ); }; };
+		88F6F8C81B033244000A3778 /* Bigmax.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F6F8C71B033244000A3778 /* Bigmax.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +213,9 @@
 		88BD1F591AF0BAE40066CA4F /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		88BD1F5A1AF0BAE40066CA4F /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		88BD1F641AF0BBC20066CA4F /* model.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = model.plist; path = ../model.plist; sourceTree = "<group>"; };
+		88C347221B02DDD500A5D8C9 /* SampleMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SampleMath.cpp; sourceTree = "<group>"; };
+		88C347231B02DDD500A5D8C9 /* SampleMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleMath.h; sourceTree = "<group>"; };
+		88C347251B03260100A5D8C9 /* Bigmax.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = Bigmax.dae; sourceTree = "<group>"; };
 		88D256B51AAAE343001261F8 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = ComicVuforia/iflyMSC.framework; sourceTree = "<group>"; };
 		88D4C6B81ABFEFEC002B782E /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+fixOrientation.h"; sourceTree = "<group>"; };
 		88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
@@ -226,6 +232,7 @@
 		88EB1BFD1AF35C7B00E57BC0 /* smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smile.png; sourceTree = "<group>"; };
 		88EB1BFF1AF35FA400E57BC0 /* voice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice.png; sourceTree = "<group>"; };
 		88ECCDFC1AA9DA28007AF804 /* libVuforia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVuforia.a; path = ../../Downloads/vuforia_sdk/build/lib/arm/libVuforia.a; sourceTree = "<group>"; };
+		88F6F8C71B033244000A3778 /* Bigmax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bigmax.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +296,8 @@
 		3049AB8B1AA84AF0006DB915 /* ComicVuforia */ = {
 			isa = PBXGroup;
 			children = (
+				88C347251B03260100A5D8C9 /* Bigmax.dae */,
+				88F6F8C71B033244000A3778 /* Bigmax.png */,
 				88EB1BEA1AF3467700E57BC0 /* Pictures */,
 				88BD1F641AF0BBC20066CA4F /* model.plist */,
 				88BD1F471AF0BAE40066CA4F /* AFNetworking */,
@@ -356,6 +365,8 @@
 		3066194A1AA937CE00F4D8C9 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				88C347221B02DDD500A5D8C9 /* SampleMath.cpp */,
+				88C347231B02DDD500A5D8C9 /* SampleMath.h */,
 				306619501AA9384F00F4D8C9 /* SampleApplicationUtils.cpp */,
 				306619511AA9384F00F4D8C9 /* SampleApplicationUtils.h */,
 				306619521AA9384F00F4D8C9 /* SampleGLResourceHandler.h */,
@@ -617,10 +628,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88C347261B03260100A5D8C9 /* Bigmax.dae in Resources */,
 				88EB1BFC1AF3506F00E57BC0 /* info.png in Resources */,
 				88BD1F651AF0BBC20066CA4F /* model.plist in Resources */,
 				881B6B141AB949810057A746 /* base_00.png in Resources */,
 				881B6B1A1AB949810057A746 /* mouth_00.png in Resources */,
+				88F6F8C81B033244000A3778 /* Bigmax.png in Resources */,
 				881B6B121AB949810057A746 /* HistoireBook.SMD in Resources */,
 				886EF7C31AB921A500785CF1 /* gtk_cancel.png in Resources */,
 				306619AC1AA93C8A00F4D8C9 /* Tarmac.dat in Resources */,
@@ -685,6 +698,7 @@
 				886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */,
 				3049AB8F1AA84AF0006DB915 /* main.m in Sources */,
 				88BD1F5C1AF0BAE40066CA4F /* AFHTTPRequestOperationManager.m in Sources */,
+				88C347241B02DDD500A5D8C9 /* SampleMath.cpp in Sources */,
 				88D4C6BA1ABFF006002B782E /* UIImage+fixOrientation.m in Sources */,
 				88BD1F5B1AF0BAE40066CA4F /* AFHTTPRequestOperation.m in Sources */,
 				88BD1F631AF0BAE40066CA4F /* AFURLSessionManager.m in Sources */,

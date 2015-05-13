@@ -20,12 +20,17 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #import "ImageTargetsEAGLView.h"
 #import "SampleApplicationUtils.h"
+#import "SampleMath.h"
 #import <GLKit/GLKit.h>
 
 NSDictionary *readPlist(NSString *keyWord) {
     NSDictionary *result;
-    
-    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"model" ofType:@"plist"]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+//    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"model" ofType:@"plist"]];
+    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
+    NSLog(@"%@", [documentsDirectory stringByAppendingPathComponent:@"model.plist"]);
+    NSLog(@"%@", plistDict);
     result = [plistDict objectForKey:keyWord];
     
     return result;
@@ -87,8 +92,9 @@ NSDictionary *readPlist(NSString *keyWord) {
         _cameraNode = [SCNNode node];
         _cameraNode.camera = [SCNCamera camera];
         [_scene.rootNode addChildNode:_cameraNode];
+        _cameraNode.camera.zNear = 2.0f;
+        _cameraNode.camera.zFar = 2000.0f;
         // place the camera
-        _cameraNode.position = SCNVector3Make(0, 0, 200);
         // create and add an ambient light to the scene
         SCNNode *ambientLightNode = [SCNNode node];
         ambientLightNode.light = [SCNLight light];
@@ -205,14 +211,40 @@ NSDictionary *readPlist(NSString *keyWord) {
             SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
 //            SampleApplicationUtils::multiplyMatrix(&modelViewMatrix.data[0], &vapp.projectionMatrix.data[0], &modelViewProjection.data[0]);
             
+            // extract the camera position
+//            QCAR::Matrix44F inverseMV = SampleMath::Matrix44FInverse(modelViewMatrix);
+//            QCAR::Matrix44F invTranspMV = SampleMath::Matrix44FTranspose(inverseMV);
+//            float cam_x = invTranspMV.data[12];
+//            float cam_y = invTranspMV.data[13];
+//            float cam_z = invTranspMV.data[14];
+//            float cam_right_x = invTranspMV.data[0];
+//            float cam_right_y = invTranspMV.data[1];
+//            float cam_right_z = invTranspMV.data[2];
+//            float cam_up_x = -invTranspMV.data[4];
+//            float cam_up_y = -invTranspMV.data[5];
+//            float cam_up_z = -invTranspMV.data[6];
+//            float cam_dir_x = invTranspMV.data[8];
+//            float cam_dir_y = invTranspMV.data[9];
+//            float cam_dir_z = invTranspMV.data[10];
+//            
+//            float w = sqrt(cam_right_x*cam_right_x + cam_up_y*cam_up_y + cam_dir_z*cam_dir_z + 1*1) / 2.0;
+//            float x = (cam_dir_y - cam_up_z) / (4 * w);
+//            float y = (cam_right_z - cam_dir_x) / (4 * w);
+//            float z = (cam_up_x - cam_right_y) / (4 * w);
+            
+//            _cameraNode.position = SCNVector3Make(cam_x, cam_y, cam_z);
+//            _cameraNode.rotation = SCNVector4Make(x, y, z, w);
+//            _cameraNode.orientation = SCNVector4Make(x, y, z, w);
+//            [self printMat:&invTranspMV];
+//            _cameraNode.
+//            _cameraNode.transform = SCNMatrix4FromGLKMatrix4(GLKMatrix4MakeWithArray(invTranspMV.data));
+            
             // set the camera position
             GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
             _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
             
-            printf("--------\n");
-            [self printMat:&modelViewMatrix];
-            printf("++++++++\n");
-            [self printMat:&modelViewProjection];
+            [self printNode:_cameraNode];
+            
             [_scnRender render];
         }
         numDidnotFoundTrack = 0;
@@ -233,7 +265,6 @@ NSDictionary *readPlist(NSString *keyWord) {
 - (void)printNode:(SCNNode *)node {
     printf("position:%lf, %lf, %lf\n", node.position.x, node.position.y, node.position.z);
     printf("rotation:%lf, %lf, %lf, %lf\n", node.rotation.x, node.rotation.y, node.rotation.z, node.rotation.w);
-    printf("projectiontransfrom: %lf, %lf\n", node.camera.projectionTransform.m11, node.camera.projectionTransform.m44);
 }
 //------------------------------------------------------------------------------
 #pragma mark - OpenGL ES management
