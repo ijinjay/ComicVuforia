@@ -374,7 +374,7 @@ NSDictionary *readPlist(NSString *keyWord) {
     
 }
 - (void)rotateModel:(float) angle{
-    [_rootNode runAction:[SCNAction rotateByX:0 y:angle z:0 duration:1]];
+    [_rootNode runAction:[SCNAction rotateByX:0 y:angle z:0  duration:1]];
 }
 - (SCNNode *)getNodebyName:(NSString *)name {
     SCNNode *node = [_rootNode childNodeWithName:name recursively:YES];
@@ -421,9 +421,27 @@ NSDictionary *readPlist(NSString *keyWord) {
     SCNNode *lskirt = [self getNodebyName:@"FL_skirt_02"];
     SCNNode *rskirt = [self getNodebyName:@"FR_skirt_02"];
     
-    [self legMoveForward:ll1 down:ll2 skirt:lskirt onCompltetion:^(){
-        [self legMoveForward:rl1 down:rl2 skirt:rskirt onCompltetion:nil];
-    }];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *modelName = [user objectForKey:@"modelName"];
+    if ([modelName compare:@"Histoire"] == NSOrderedSame) {
+        [self legMoveForward:ll1 down:ll2 skirt:lskirt onCompltetion:^(){
+            [self legMoveForward:rl1 down:rl2 skirt:rskirt onCompltetion:nil];
+        }];
+    } else {
+        [ll1 runAction:[SCNAction rotateByX:0 y:-M_PI/6 z:0 duration:0.4] completionHandler:^(){
+            [ll1 runAction:[SCNAction rotateByX:0 y:+M_PI/6 z:0 duration:0.4]];
+        }];
+        [ll2 runAction:[SCNAction rotateByX:0 y:+M_PI/6 z:0 duration:0.4] completionHandler:^(){
+            [ll2 runAction:[SCNAction rotateByX:0 y:-M_PI/6 z:0 duration:0.4] completionHandler:^(){
+                [rl1 runAction:[SCNAction rotateByX:0 y:-M_PI/6 z:0 duration:0.4] completionHandler:^(){
+                    [rl1 runAction:[SCNAction rotateByX:0 y:+M_PI/6 z:0 duration:0.4]];
+                }];
+                [rl2 runAction:[SCNAction rotateByX:0 y:+M_PI/6 z:0 duration:0.4] completionHandler:^(){
+                    [rl2 runAction:[SCNAction rotateByX:0 y:-M_PI/6 z:0 duration:0.4]];
+                }];
+            }];
+        }];
+    }
 }
 - (void)sayHello {
     SCNNode *R_arm = [self getNodebyName:@"R_arm"];
@@ -448,13 +466,17 @@ NSDictionary *readPlist(NSString *keyWord) {
         }];
     } else {
         // superman sayhello
-        [R_hand runAction:[SCNAction rotateByX:0 y:M_PI/2 z:0 duration:0.1] completionHandler:^(){
-            [R_arm runAction:[SCNAction rotateByX:+M_PI*3/4 y:0 z:0  duration:0.1] completionHandler:^(){
-                [R_arm runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.2] completionHandler:^(){
-                    [R_arm runAction:[SCNAction rotateByX:+M_PI/2 y:0 z:0 duration:0.1] completionHandler:^(){
+        [R_arm runAction:[SCNAction rotateByX:0 y:0 z:+M_PI/2 duration:0.1] completionHandler:^(){
+            [R_hand runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.1]];
+            [R_elbow runAction:[SCNAction rotateByX:0 y:-M_PI*5/6 z:0 duration:0.1] completionHandler:^(){
+                [R_hand runAction:[SCNAction rotateByX:M_PI/4 y:0 z:0 duration:0.2] completionHandler:^(){
+                    [R_hand runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.1] completionHandler:^(){
                         // recover
-                        [R_arm runAction:[SCNAction rotateByX:-M_PI*3/4 y:0 z:0 duration:0.2]];
-                        [R_hand runAction:[SCNAction rotateByX:0 y:-M_PI/2 z:0 duration:0.2]];
+                        [R_hand runAction:[SCNAction rotateByX:+M_PI/4 y:0 z:0 duration:0.2]];
+                        [R_elbow runAction:[SCNAction rotateByX:0 y:+M_PI*5/6 z:0 duration:0.2]];
+                        
+                        [R_hand runAction:[SCNAction rotateByX:+M_PI/2 y:0 z:0 duration:0.1]];
+                        [R_arm runAction:[SCNAction rotateByX:0 y:0 z:-M_PI/2 duration:0.1]];
                     }];
                 }];
             }];

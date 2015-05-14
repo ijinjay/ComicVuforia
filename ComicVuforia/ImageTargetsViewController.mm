@@ -698,6 +698,9 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
  */
 - (void)onError: (IFlySpeechError *) error {
     NSLog(@"%@", [error errorDesc]);
+    if (_switchButton.hidden == YES) {
+        [self showButtonWithAnimation];
+    }
 }
 - (void)saySomething:(NSString *)str{
     AVSpeechSynthesizer *avSpeech = [[AVSpeechSynthesizer alloc] init];
