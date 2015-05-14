@@ -181,7 +181,6 @@ static NSString *ServerAddress = @"http://182.92.175.104:8666";
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSMutableDictionary *serverPlist = [NSPropertyListSerialization propertyListWithData:([_response dataUsingEncoding:NSUTF8StringEncoding]) options:kNilOptions format:nil error:nil];
         NSMutableDictionary *localPlist  = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
-//        NSMutableDictionary *localPlist  = [[NSMutableDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"model" ofType:@"plist"]];
         for (NSString *aKey in [serverPlist allKeys]) {
             if ([aKey compare:@"version"] != NSOrderedSame) {
                 NSMutableDictionary *localItem = [localPlist objectForKey:aKey];

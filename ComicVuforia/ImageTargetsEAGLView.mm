@@ -27,10 +27,7 @@ NSDictionary *readPlist(NSString *keyWord) {
     NSDictionary *result;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-//    NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"model" ofType:@"plist"]];
     NSMutableDictionary *plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"model.plist"]];
-    NSLog(@"%@", [documentsDirectory stringByAppendingPathComponent:@"model.plist"]);
-    NSLog(@"%@", plistDict);
     result = [plistDict objectForKey:keyWord];
     
     return result;
@@ -242,8 +239,6 @@ NSDictionary *readPlist(NSString *keyWord) {
             // set the camera position
             GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
             _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
-            
-            [self printNode:_cameraNode];
             
             [_scnRender render];
         }

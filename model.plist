@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>version</key>
-	<real>1.34568</real>
-	<key>superman</key>
+	<real>2.21</real>
+	<key>Baymax</key>
 	<dict>
 		<key>picPath</key>
-		<string>superman.scnassets/superman.png</string>
+		<string>Baymax.scnassets/Baymax.png</string>
 		<key>picture</key>
-		<string>superman</string>
+		<string>Baymax</string>
 		<key>version</key>
 		<integer>1</integer>
 		<key>filePath</key>
-		<string>superman.scnassets/superman.dae</string>
+		<string>Baymax.scnassets/Baymax.dae</string>
 		<key>fixedPosition</key>
 		<dict>
 			<key>x</key>
@@ -24,9 +24,37 @@
 			<integer>0</integer>
 		</dict>
 		<key>scale</key>
-		<integer>25</integer>
+		<integer>100</integer>
 		<key>rootNode</key>
-		<string>Armature</string>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>Baymax2</key>
+	<dict>
+		<key>picPath</key>
+		<string>Baymax2.scnassets/Baymax2.png</string>
+		<key>picture</key>
+		<string>Baymax2</string>
+		<key>version</key>
+		<integer>0</integer>
+		<key>filePath</key>
+		<string>Baymax2.scnassets/Baymax2.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>100</integer>
+		<key>rootNode</key>
+		<string>root</string>
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
@@ -52,7 +80,7 @@
 			<integer>0</integer>
 		</dict>
 		<key>scale</key>
-		<integer>3</integer>
+		<integer>1</integer>
 		<key>rootNode</key>
 		<string>root</string>
 		<key>angleX</key>
@@ -60,16 +88,16 @@
 		<key>angleY</key>
 		<integer>-90</integer>
 	</dict>
-	<key>naruto</key>
+	<key>Lnuyasha</key>
 	<dict>
 		<key>picPath</key>
-		<string>naruto.scnassets/naruto.png</string>
+		<string>Lnuyasha.scnassets/Lnuyasha.png</string>
 		<key>picture</key>
-		<string>naruto</string>
+		<string>Lnuyasha</string>
 		<key>version</key>
-		<real>1.322</real>
+		<integer>1</integer>
 		<key>filePath</key>
-		<string>naruto.scnassets/naruto.dae</string>
+		<string>Lnuyasha.scnassets/Lnuyasha.dae</string>
 		<key>fixedPosition</key>
 		<dict>
 			<key>x</key>
@@ -80,7 +108,147 @@
 			<integer>0</integer>
 		</dict>
 		<key>scale</key>
+		<integer>100</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>Mario</key>
+	<dict>
+		<key>picPath</key>
+		<string>Mario.scnassets/Mario.png</string>
+		<key>picture</key>
+		<string>Mario</string>
+		<key>version</key>
 		<integer>3</integer>
+		<key>filePath</key>
+		<string>Mario.scnassets/Mario.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>5</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>0</integer>
+	</dict>
+	<key>SpongeBob</key>
+	<dict>
+		<key>picPath</key>
+		<string>SpongeBob.scnassets/SpongeBob.png</string>
+		<key>picture</key>
+		<string>SpongeBob</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>SpongeBob.scnassets/SpongeBob.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>100</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>Serena</key>
+	<dict>
+		<key>picPath</key>
+		<string>Serena.scnassets/Serena.png</string>
+		<key>picture</key>
+		<string>Serena</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>Serena.scnassets/Serena.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>1</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>Wally</key>
+	<dict>
+		<key>picPath</key>
+		<string>Wally.scnassets/Wally.png</string>
+		<key>picture</key>
+		<string>Wally</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>Wally.scnassets/Wally.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>1</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>AppleWatch</key>
+	<dict>
+		<key>picPath</key>
+		<string>AppleWatch.scnassets/AppleWatch.png</string>
+		<key>picture</key>
+		<string>AppleWatch</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>AppleWatch.scnassets/AppleWatch.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>10</integer>
 		<key>rootNode</key>
 		<string>root</string>
 		<key>angleX</key>
