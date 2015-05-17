@@ -73,7 +73,7 @@ static NSString *ServerAddress = @"http://182.92.175.104:8666";
     [user setInteger:colorArray.count forKey:@"colorcount"];
     
     if ([user objectForKey:@"modelName"] == nil) {
-        [user setObject:@"Histoire" forKey:@"modelName"];
+        [user setObject:@"Serena" forKey:@"modelName"];
     }
     
     _startButton.backgroundColor = colorArray[_colorIndex];

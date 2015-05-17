@@ -38,7 +38,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="8pf-fJ-9UV"/>
                                 </items>
                             </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z82-Uw-NpE">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z82-Uw-NpE">
                                 <rect key="frame" x="60" y="415" width="255" height="41"/>
                                 <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -50,7 +50,7 @@
                                     <segue destination="bDM-ay-Mme" kind="modal" id="P0z-OE-MH2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-zg-aVq">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-zg-aVq">
                                 <rect key="frame" x="60" y="80" width="255" height="255"/>
                                 <color key="backgroundColor" red="0.39067769050000001" green="1" blue="0.57017199949999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -304,6 +304,7 @@ Face++ SDK</string>
                         <outlet property="copyrightWidth" destination="9e0-9g-nMQ" id="Bzp-ow-AIl"/>
                         <outlet property="titleLabel" destination="sBa-Fk-wQm" id="VQW-TF-5Uv"/>
                         <outlet property="versionLabel" destination="7L5-Eo-FLz" id="g3t-ks-jz2"/>
+                        <outlet property="versionTextView" destination="hx5-2V-5M8" id="qgo-cY-Jbm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bbg-E8-QpX" userLabel="First Responder" sceneMemberID="firstResponder"/>

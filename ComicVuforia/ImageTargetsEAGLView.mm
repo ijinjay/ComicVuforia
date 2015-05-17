@@ -106,8 +106,8 @@ NSDictionary *readPlist(NSString *keyWord) {
         
         _fixAngleX = [[dict objectForKey:@"angleX"] intValue];
         _fixAngleY = [[dict objectForKey:@"angleY"] intValue];
-        _angleX = _fixAngleX;
-        _angleY = _fixAngleY;
+        _angleX = _fixAngleX/180*M_PI;
+        _angleY = _fixAngleY/180*M_PI;
         
         NSDictionary *fixedPosition = [dict objectForKey:@"fixedPosition"];
         _fixedPostionMatrix = SCNMatrix4MakeTranslation([[fixedPosition objectForKey:@"x"] intValue], [[fixedPosition objectForKey:@"y"] intValue],[[fixedPosition objectForKey:@"z"] intValue]);
@@ -195,8 +195,8 @@ NSDictionary *readPlist(NSString *keyWord) {
     if (state.getNumTrackableResults() != 0 ) {
         // if long time no track, we should reinitial _angleY and _angleZ
         if (numDidnotFoundTrack > 60) {
-            _angleY = _fixAngleY;
-            _angleX = _fixAngleX;
+            _angleY = _fixAngleY/180*M_PI;
+            _angleX = _fixAngleX/180*M_PI;
         }
         for (int i = 0; (i < state.getNumTrackableResults()); ++i) {
             
@@ -206,36 +206,6 @@ NSDictionary *readPlist(NSString *keyWord) {
             QCAR::Matrix44F modelViewMatrix = QCAR::Tool::convertPose2GLMatrix(result->getPose());
             QCAR::Matrix44F modelViewProjection;
             SampleApplicationUtils::multiplyMatrix(&vapp.projectionMatrix.data[0], &modelViewMatrix.data[0], &modelViewProjection.data[0]);
-//            SampleApplicationUtils::multiplyMatrix(&modelViewMatrix.data[0], &vapp.projectionMatrix.data[0], &modelViewProjection.data[0]);
-            
-            // extract the camera position
-//            QCAR::Matrix44F inverseMV = SampleMath::Matrix44FInverse(modelViewMatrix);
-//            QCAR::Matrix44F invTranspMV = SampleMath::Matrix44FTranspose(inverseMV);
-//            float cam_x = invTranspMV.data[12];
-//            float cam_y = invTranspMV.data[13];
-//            float cam_z = invTranspMV.data[14];
-//            float cam_right_x = invTranspMV.data[0];
-//            float cam_right_y = invTranspMV.data[1];
-//            float cam_right_z = invTranspMV.data[2];
-//            float cam_up_x = -invTranspMV.data[4];
-//            float cam_up_y = -invTranspMV.data[5];
-//            float cam_up_z = -invTranspMV.data[6];
-//            float cam_dir_x = invTranspMV.data[8];
-//            float cam_dir_y = invTranspMV.data[9];
-//            float cam_dir_z = invTranspMV.data[10];
-//            
-//            float w = sqrt(cam_right_x*cam_right_x + cam_up_y*cam_up_y + cam_dir_z*cam_dir_z + 1*1) / 2.0;
-//            float x = (cam_dir_y - cam_up_z) / (4 * w);
-//            float y = (cam_right_z - cam_dir_x) / (4 * w);
-//            float z = (cam_up_x - cam_right_y) / (4 * w);
-            
-//            _cameraNode.position = SCNVector3Make(cam_x, cam_y, cam_z);
-//            _cameraNode.rotation = SCNVector4Make(x, y, z, w);
-//            _cameraNode.orientation = SCNVector4Make(x, y, z, w);
-//            [self printMat:&invTranspMV];
-//            _cameraNode.
-//            _cameraNode.transform = SCNMatrix4FromGLKMatrix4(GLKMatrix4MakeWithArray(invTranspMV.data));
-            
             // set the camera position
             GLKMatrix4 mvp = GLKMatrix4MakeWithArray(modelViewProjection.data);
             _cameraNode.camera.projectionTransform = SCNMatrix4FromGLKMatrix4(mvp);
@@ -360,7 +330,7 @@ NSDictionary *readPlist(NSString *keyWord) {
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *modelName = [user objectForKey:@"modelName"];
     int symbol = -1;
-    if ([modelName compare:@"Histoire"] == NSOrderedSame) {
+    if (([modelName compare:@"Histoire"] == NSOrderedSame) || ([modelName compare:@"Mario"] == NSOrderedSame)) {
         symbol = 1;
     }
     
@@ -374,6 +344,7 @@ NSDictionary *readPlist(NSString *keyWord) {
     
 }
 - (void)rotateModel:(float) angle{
+//    [_rootNode runAction:[SCNAction rotateByAngle:angle aroundAxis:SCNVector3Make(0, 1, 0) duration:1]];
     [_rootNode runAction:[SCNAction rotateByX:0 y:angle z:0  duration:1]];
 }
 - (SCNNode *)getNodebyName:(NSString *)name {
@@ -464,6 +435,39 @@ NSDictionary *readPlist(NSString *keyWord) {
                 }];
             }];
         }];
+    } else if([modelName compare:@"Baymax"] == NSOrderedSame) {
+        SCNNode *glasses = [self getNodebyName:@"baymax_glasses"];
+        [SCNTransaction begin];
+        glasses.hidden = YES;
+        [SCNTransaction setAnimationDuration:0.3];
+        [SCNTransaction setCompletionBlock:^(){
+            [SCNTransaction begin];
+            glasses.hidden = NO;
+            [SCNTransaction setAnimationDuration:0.3];
+            [SCNTransaction setCompletionBlock:^(){
+                [SCNTransaction begin];
+                glasses.hidden = YES;
+                [SCNTransaction setAnimationDuration:0.3];
+                [SCNTransaction setCompletionBlock:^(){
+                    [SCNTransaction begin];
+                    glasses.hidden = NO;
+                    [SCNTransaction setAnimationDuration:0.3];
+                    [SCNTransaction setCompletionBlock:^(){
+                        [SCNTransaction begin];
+                        glasses.hidden = YES;
+                        [SCNTransaction setAnimationDuration:0.3];
+                        [SCNTransaction setCompletionBlock:^(){
+                            glasses.hidden = NO;
+                        }];
+                        [SCNTransaction commit];
+                    }];
+                    [SCNTransaction commit];
+                }];
+                [SCNTransaction commit];
+            }];
+            [SCNTransaction commit];
+        }];
+        [SCNTransaction commit];
     } else {
         // superman sayhello
         [R_arm runAction:[SCNAction rotateByX:0 y:0 z:+M_PI/2 duration:0.1] completionHandler:^(){

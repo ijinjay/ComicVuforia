@@ -357,11 +357,9 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     return true;
 }
 - (bool) doLoadTrackersData {
-    dataSetStonesAndChips = [self loadObjectTrackerDataSet:@"StonesAndChips.xml"];
-    dataSetTarmac = [self loadObjectTrackerDataSet:@"Tarmac.xml"];
     dataLF = [self loadObjectTrackerDataSet:@"ComicVuforia.xml"];
     
-    if ((dataSetStonesAndChips == NULL) || (dataSetTarmac == NULL) || (dataLF == NULL)) {
+    if (dataLF == NULL) {
         NSLog(@"Failed to load datasets");
         return NO;
     }
@@ -418,18 +416,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #pragma mark - Application Update
 - (void) onQCARUpdate: (QCAR::State *) state {
-    if (switchToTarmac) {
-        [self activateDataSet:dataSetTarmac];
-        switchToTarmac = NO;
-    }
-    if (switchToStonesAndChips) {
-        [self activateDataSet:dataSetStonesAndChips];
-        switchToStonesAndChips = NO;
-    }
-    if (switchToLF) {
-        [self activateDataSet:dataLF];
-        switchToLF = NO;
-    }
     // analyze facial expressionz
     QCAR::setFrameFormat(QCAR::RGB888, YES);
     if (_analyzeExpression) {
@@ -513,12 +499,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     QCAR::ObjectTracker* objectTracker = static_cast<QCAR::ObjectTracker*>(trackerManager.getTracker(QCAR::ObjectTracker::getClassType()));
     
     // Destroy the data sets:
-    if (!objectTracker->destroyDataSet(dataSetTarmac)) {
-        NSLog(@"Failed to destroy data set Tarmac.");
-    }
-    if (!objectTracker->destroyDataSet(dataSetStonesAndChips)) {
-        NSLog(@"Failed to destroy data set Stones and Chips.");
-    }
     if (!objectTracker->destroyDataSet(dataLF)) {
         NSLog(@"Failed to destroy data set LF");
     }

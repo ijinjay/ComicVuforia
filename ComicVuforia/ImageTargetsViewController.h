@@ -14,8 +14,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
     CGRect viewFrame;
     IBOutlet ImageTargetsEAGLView* eaglView;
     QCAR::DataSet*  dataSetCurrent;
-    QCAR::DataSet*  dataSetTarmac;
-    QCAR::DataSet*  dataSetStonesAndChips;
     QCAR::DataSet*  dataLF;
     UITapGestureRecognizer * tapGestureRecognizer;
     QCARSession * vapp;

@@ -30,7 +30,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>Baymax2</key>
 	<dict>
@@ -58,7 +58,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>Histoire</key>
 	<dict>
@@ -114,7 +114,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>Mario</key>
 	<dict>
@@ -142,7 +142,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>0</integer>
+		<integer>-80</integer>
 	</dict>
 	<key>SpongeBob</key>
 	<dict>
@@ -170,7 +170,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>Serena</key>
 	<dict>
@@ -198,7 +198,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>Wally</key>
 	<dict>
@@ -226,7 +226,7 @@
 		<key>angleX</key>
 		<integer>0</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>80</integer>
 	</dict>
 	<key>AppleWatch</key>
 	<dict>
@@ -252,9 +252,9 @@
 		<key>rootNode</key>
 		<string>root</string>
 		<key>angleX</key>
-		<integer>0</integer>
+		<integer>-90</integer>
 		<key>angleY</key>
-		<integer>90</integer>
+		<integer>0</integer>
 	</dict>
 </dict>
 </plist>

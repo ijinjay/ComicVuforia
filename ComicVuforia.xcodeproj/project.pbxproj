@@ -17,10 +17,6 @@
 		306619481AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 306619451AA937BE00F4D8C9 /* ImageTargetsEAGLView.mm */; };
 		306619491AA937BE00F4D8C9 /* ImageTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 306619471AA937BE00F4D8C9 /* ImageTargetsViewController.mm */; };
 		3066195D1AA9384F00F4D8C9 /* SampleApplicationUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306619501AA9384F00F4D8C9 /* SampleApplicationUtils.cpp */; };
-		306619AA1AA93C8A00F4D8C9 /* StonesAndChips.dat in Resources */ = {isa = PBXBuildFile; fileRef = 306619771AA93C8A00F4D8C9 /* StonesAndChips.dat */; };
-		306619AB1AA93C8A00F4D8C9 /* StonesAndChips.xml in Resources */ = {isa = PBXBuildFile; fileRef = 306619781AA93C8A00F4D8C9 /* StonesAndChips.xml */; };
-		306619AC1AA93C8A00F4D8C9 /* Tarmac.dat in Resources */ = {isa = PBXBuildFile; fileRef = 306619791AA93C8A00F4D8C9 /* Tarmac.dat */; };
-		306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3066197A1AA93C8A00F4D8C9 /* Tarmac.xml */; };
 		30ABDD4C1AA8677A0062A8AB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4B1AA8677A0062A8AB /* CoreVideo.framework */; };
 		30ABDD4E1AA8678D0062A8AB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4D1AA8678D0062A8AB /* CoreMedia.framework */; };
 		30ABDD501AA867960062A8AB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30ABDD4F1AA867960062A8AB /* AVFoundation.framework */; };
@@ -54,8 +50,7 @@
 		886EF7C21AB921A500785CF1 /* BriefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BF1AB921A500785CF1 /* BriefViewController.m */; };
 		886EF7C31AB921A500785CF1 /* gtk_cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 886EF7C01AB921A500785CF1 /* gtk_cancel.png */; };
 		886EF7C61AB9253500785CF1 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7C51AB9253500785CF1 /* SettingViewController.m */; };
-		888C48DB1AAD681B007CA1CC /* lf.xml in Resources */ = {isa = PBXBuildFile; fileRef = 888C48D91AAD681B007CA1CC /* lf.xml */; };
-		888C48DC1AAD681B007CA1CC /* lf.dat in Resources */ = {isa = PBXBuildFile; fileRef = 888C48DA1AAD681B007CA1CC /* lf.dat */; };
+		88965EF41B08360C00E03A6D /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88965EF31B08360C00E03A6D /* Launch Screen.xib */; };
 		889A91E11ABDA3BE000D8783 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E01ABDA3BE000D8783 /* CoreGraphics.framework */; };
 		889A91E31ABDA436000D8783 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E21ABDA436000D8783 /* CoreLocation.framework */; };
 		889A91E51ABDA489000D8783 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E41ABDA489000D8783 /* libz.dylib */; };
@@ -132,10 +127,6 @@
 		306619501AA9384F00F4D8C9 /* SampleApplicationUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SampleApplicationUtils.cpp; sourceTree = "<group>"; };
 		306619511AA9384F00F4D8C9 /* SampleApplicationUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleApplicationUtils.h; sourceTree = "<group>"; };
 		306619521AA9384F00F4D8C9 /* SampleGLResourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleGLResourceHandler.h; sourceTree = "<group>"; };
-		306619771AA93C8A00F4D8C9 /* StonesAndChips.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = StonesAndChips.dat; sourceTree = "<group>"; };
-		306619781AA93C8A00F4D8C9 /* StonesAndChips.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StonesAndChips.xml; sourceTree = "<group>"; };
-		306619791AA93C8A00F4D8C9 /* Tarmac.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tarmac.dat; sourceTree = "<group>"; };
-		3066197A1AA93C8A00F4D8C9 /* Tarmac.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tarmac.xml; sourceTree = "<group>"; };
 		30ABDD4B1AA8677A0062A8AB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		30ABDD4D1AA8678D0062A8AB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		30ABDD4F1AA867960062A8AB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -174,8 +165,7 @@
 		886EF7C01AB921A500785CF1 /* gtk_cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtk_cancel.png; sourceTree = "<group>"; };
 		886EF7C41AB9252400785CF1 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		886EF7C51AB9253500785CF1 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		888C48D91AAD681B007CA1CC /* lf.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lf.xml; sourceTree = "<group>"; };
-		888C48DA1AAD681B007CA1CC /* lf.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = lf.dat; sourceTree = "<group>"; };
+		88965EF31B08360C00E03A6D /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		889A91E01ABDA3BE000D8783 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		889A91E21ABDA436000D8783 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		889A91E41ABDA489000D8783 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -301,13 +291,13 @@
 			isa = PBXGroup;
 			children = (
 				88C925B41B038DAA002E9F24 /* AppleWatch.scnassets */,
+				88F6F8C91B03409E000A3778 /* Baymax.scnassets */,
 				88EC5A761B0360BD00BC7ADD /* Baymax2.scnassets */,
 				88EC5A771B0360BD00BC7ADD /* Lnuyasha.scnassets */,
 				88EC5A781B0360BD00BC7ADD /* Mario.scnassets */,
 				88EC5A791B0360BD00BC7ADD /* SpongeBob.scnassets */,
 				88EC5A7C1B0360BD00BC7ADD /* Serena.scnassets */,
 				88EC5A7D1B0360BD00BC7ADD /* Wally.scnassets */,
-				88F6F8C91B03409E000A3778 /* Baymax.scnassets */,
 				881B6B001AB949810057A746 /* Histoire */,
 				88EB1BEA1AF3467700E57BC0 /* Pictures */,
 				88BD1F641AF0BBC20066CA4F /* model.plist */,
@@ -318,18 +308,17 @@
 				3049AB931AA84AF0006DB915 /* ViewController.h */,
 				3049AB941AA84AF0006DB915 /* ViewController.m */,
 				3049AB961AA84AF0006DB915 /* Main.storyboard */,
+				88965EF31B08360C00E03A6D /* Launch Screen.xib */,
 				886EF7C41AB9252400785CF1 /* SettingViewController.h */,
 				886EF7C51AB9253500785CF1 /* SettingViewController.m */,
 				886EF7BC1AB921A500785CF1 /* AboutViewController.h */,
 				886EF7BD1AB921A500785CF1 /* AboutViewController.m */,
 				886EF7BE1AB921A500785CF1 /* BriefViewController.h */,
 				886EF7BF1AB921A500785CF1 /* BriefViewController.m */,
-				886EF7C01AB921A500785CF1 /* gtk_cancel.png */,
 				88DF21E41ABBFC8400B65E21 /* InSightFile */,
 				3066194A1AA937CE00F4D8C9 /* Application */,
 				306619431AA9371900F4D8C9 /* QCARApplication */,
 				3049AB991AA84AF0006DB915 /* Images.xcassets */,
-				88EB1BE81AF3428F00E57BC0 /* lf.jpg */,
 				3049AB8C1AA84AF0006DB915 /* Supporting Files */,
 			);
 			path = ComicVuforia;
@@ -396,17 +385,9 @@
 		306619631AA93C8A00F4D8C9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				306619641AA93C8A00F4D8C9 /* Assets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		306619641AA93C8A00F4D8C9 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
 				306619751AA93C8A00F4D8C9 /* ImageTargets */,
 			);
-			path = Assets;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		306619751AA93C8A00F4D8C9 /* ImageTargets */ = {
@@ -414,14 +395,9 @@
 			children = (
 				884106951B01CEC900E71C1B /* ComicVuforia.dat */,
 				884106961B01CEC900E71C1B /* ComicVuforia.xml */,
-				888C48D91AAD681B007CA1CC /* lf.xml */,
-				888C48DA1AAD681B007CA1CC /* lf.dat */,
-				306619771AA93C8A00F4D8C9 /* StonesAndChips.dat */,
-				306619781AA93C8A00F4D8C9 /* StonesAndChips.xml */,
-				306619791AA93C8A00F4D8C9 /* Tarmac.dat */,
-				3066197A1AA93C8A00F4D8C9 /* Tarmac.xml */,
 			);
-			path = ImageTargets;
+			name = ImageTargets;
+			path = Assets/ImageTargets;
 			sourceTree = "<group>";
 		};
 		30ABDD4A1AA867430062A8AB /* Framwork */ = {
@@ -542,6 +518,8 @@
 		88EB1BEA1AF3467700E57BC0 /* Pictures */ = {
 			isa = PBXGroup;
 			children = (
+				886EF7C01AB921A500785CF1 /* gtk_cancel.png */,
+				88EB1BE81AF3428F00E57BC0 /* lf.jpg */,
 				88EB1BFF1AF35FA400E57BC0 /* voice.png */,
 				88EB1BFD1AF35C7B00E57BC0 /* smile.png */,
 				88EB1BFB1AF3506F00E57BC0 /* info.png */,
@@ -643,7 +621,6 @@
 				88EC5A851B0360BD00BC7ADD /* Wally.scnassets in Resources */,
 				88EC5A811B0360BD00BC7ADD /* SpongeBob.scnassets in Resources */,
 				886EF7C31AB921A500785CF1 /* gtk_cancel.png in Resources */,
-				306619AC1AA93C8A00F4D8C9 /* Tarmac.dat in Resources */,
 				881B6B101AB949810057A746 /* Histoire.png in Resources */,
 				88EB1BF71AF346B700E57BC0 /* switch.png in Resources */,
 				3049AB981AA84AF0006DB915 /* Main.storyboard in Resources */,
@@ -653,20 +630,16 @@
 				88F6F8CA1B03409E000A3778 /* Baymax.scnassets in Resources */,
 				884106971B01CEC900E71C1B /* ComicVuforia.dat in Resources */,
 				88C925B51B038DAA002E9F24 /* AppleWatch.scnassets in Resources */,
-				306619AB1AA93C8A00F4D8C9 /* StonesAndChips.xml in Resources */,
 				88EB1C001AF35FA400E57BC0 /* voice.png in Resources */,
+				88965EF41B08360C00E03A6D /* Launch Screen.xib in Resources */,
 				884106981B01CEC900E71C1B /* ComicVuforia.xml in Resources */,
 				881B6B171AB949810057A746 /* eyelid_00.png in Resources */,
-				306619AD1AA93C8A00F4D8C9 /* Tarmac.xml in Resources */,
 				881B6B191AB949810057A746 /* hair_c.png in Resources */,
 				881B6B1B1AB949810057A746 /* pupil_00.png in Resources */,
 				88EB1BFE1AF35C7B00E57BC0 /* smile.png in Resources */,
 				88EB1BF21AF346B700E57BC0 /* close.png in Resources */,
-				888C48DC1AAD681B007CA1CC /* lf.dat in Resources */,
 				3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */,
-				888C48DB1AAD681B007CA1CC /* lf.xml in Resources */,
 				88EB1BF31AF346B700E57BC0 /* more.png in Resources */,
-				306619AA1AA93C8A00F4D8C9 /* StonesAndChips.dat in Resources */,
 				881B6B0F1AB949810057A746 /* Histoire.dae in Resources */,
 				88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */,
 				881B6B181AB949810057A746 /* face_c.png in Resources */,

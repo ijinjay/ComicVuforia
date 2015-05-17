@@ -4,8 +4,8 @@
   <contributor>
    <authoring_tool>SceneKit Collada Exporter v1.0</authoring_tool>
   </contributor>
-  <created>2015-05-13T11:11:05Z</created>
-  <modified>2015-05-13T11:11:05Z</modified>
+  <created>2015-05-17T01:56:24Z</created>
+  <modified>2015-05-17T01:56:24Z</modified>
   <unit meter="1.000000"/>
   <up_axis>Z_UP</up_axis>
  </asset>
@@ -759,6 +759,7 @@
  <library_visual_scenes>
   <visual_scene id="scene64">
    <node id="Armature" name="root">
+    <matrix>1 0 0 0 0 -1 8.742278e-08 0 0 -8.742278e-08 -1 0 0 0 0 1 </matrix>
     <node id="Mario" name="Mario" sid="SID_35" type="JOINT">
      <matrix>1 0 0 0 0 -0.53022 -0.8478601 0.356895 0 0.8478601 -0.53022 -7.68033 0 0 0 1 </matrix>
      <node id="Skl_Root_1" name="Skl_Root_1" sid="SID_1" type="JOINT">
