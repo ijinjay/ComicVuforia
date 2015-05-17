@@ -772,9 +772,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
         NSData *result = [self uploadData:imgData];
         NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingMutableContainers error:nil];
         NSArray *face = [jsonResult objectForKey:@"face"];
-        // 获取图片大小
-//        NSNumber *imgWidth = [jsonResult objectForKey:@"img_width"];
-//        NSNumber *imgHeight= [jsonResult objectForKey:@"img_height"];
         dispatch_async(dispatch_get_main_queue(), ^{
             // 更新界面
             if ([face count] < 1) {
@@ -792,26 +789,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                 NSDictionary *age = [attribute objectForKey:@"age"];
                 NSNumber *ageNumber = [age objectForKey:@"value"];
                 NSNumber *range = [age objectForKey:@"range"];
-                
-                // 人脸位置
-//                NSDictionary *position = [faceResult objectForKey:@"position"];
-//                NSDictionary *center = [position objectForKey:@"center"];
-//                NSNumber *center_x = [center objectForKey:@"x"];
-//                NSNumber *center_y = [center objectForKey:@"y"];
-//                NSNumber *width = [position objectForKey:@"width"];
-//                NSLog(@"%@, %@, %@, img: %@, %@", center_x, center_y, width, imgWidth, imgHeight);
-//                float rate = self.view.bounds.size.height / [imgHeight floatValue];
-//                float x_offset = ([imgWidth floatValue]*rate - self.view.bounds.size.width)/2;
-//                float x = [center_x floatValue]*[imgWidth floatValue]*rate/100.0 - x_offset;
-//                float y = [center_y floatValue]*[imgHeight floatValue]*rate/100.0;
-//                float w = [width floatValue]*[imgWidth floatValue]*rate/100.0;
-//                NSLog(@"position x: %f, y: %f, w: %f", x, y, w);
-//                UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(x-w/2, y-w/2, w, w)];
-//                rectView.backgroundColor = [UIColor clearColor];
-//                rectView.layer.borderColor = [UIColor magentaColor].CGColor;
-//                rectView.layer.borderWidth = 5.0;
-//                [self.view addSubview:rectView];
-                
                 
                 [self.view bringSubviewToFront:_faceHUD];
                 _faceHUD.labelText = @"识别成功";
@@ -838,7 +815,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
                                                       completion:^(BOOL finished){
                                                           [_scnView removeFromSuperview];
                                                           [self showButtonWithAnimation];
-//                                                          [rectView removeFromSuperview];
                                                       }];
                                  }];
 

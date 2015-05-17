@@ -99,11 +99,6 @@ NSDictionary *readPlist(NSString *keyWord) {
         ambientLightNode.light.color = [UIColor darkGrayColor];
         [self.scene.rootNode addChildNode:ambientLightNode];
         
-//        // create and add a particalSystem node to the scene
-//        SCNNode *pNode = [SCNNode node];
-//        [self.scene.rootNode addChildNode:pNode];
-//        pNode.hidden = NO;
-        
         _fixAngleX = [[dict objectForKey:@"angleX"] intValue];
         _fixAngleY = [[dict objectForKey:@"angleY"] intValue];
         _angleX = _fixAngleX/180*M_PI;
@@ -356,11 +351,11 @@ NSDictionary *readPlist(NSString *keyWord) {
     [SCNTransaction begin];
     _rootNode.position = SCNVector3Make(0, 50, 0);
     [self rotateModel:M_PI*6];
-    [SCNTransaction setAnimationDuration:0.5];
+    [SCNTransaction setAnimationDuration:1];
     [SCNTransaction setCompletionBlock:^(){
         [SCNTransaction begin];
         _rootNode.position = SCNVector3Make(0, 0, 0);
-        [SCNTransaction setAnimationDuration:0.5];
+        [SCNTransaction setAnimationDuration:1];
         [SCNTransaction setCompletionBlock:^(){
             [self sayHello];
             [self walk];
@@ -397,6 +392,14 @@ NSDictionary *readPlist(NSString *keyWord) {
     if ([modelName compare:@"Histoire"] == NSOrderedSame) {
         [self legMoveForward:ll1 down:ll2 skirt:lskirt onCompltetion:^(){
             [self legMoveForward:rl1 down:rl2 skirt:rskirt onCompltetion:nil];
+        }];
+    } else if([modelName compare:@"Mario"] == NSOrderedSame){
+        [ll2 runAction:[SCNAction rotateByX:0 y:0 z:M_PI/6 duration:0.4]completionHandler:^(){
+            [ll2 runAction:[SCNAction rotateByX:0 y:0 z:-M_PI/6 duration:0.4]completionHandler:^(){
+                [rl2 runAction:[SCNAction rotateByX:0 y:0 z:-M_PI/6 duration:0.4]completionHandler:^(){
+                    [rl2 runAction:[SCNAction rotateByX:0 y:0 z:+M_PI/6 duration:0.4]];
+                }];
+            }];
         }];
     } else {
         [ll1 runAction:[SCNAction rotateByX:0 y:-M_PI/6 z:0 duration:0.4] completionHandler:^(){
@@ -468,6 +471,14 @@ NSDictionary *readPlist(NSString *keyWord) {
             [SCNTransaction commit];
         }];
         [SCNTransaction commit];
+    } else if ([modelName compare:@"Mario"] == NSOrderedSame) {
+        [R_arm runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.2]completionHandler:^(){
+            [R_arm runAction:[SCNAction rotateByX:M_PI/2 y:0 z:0 duration:0.2]completionHandler:^(){
+                [R_arm runAction:[SCNAction rotateByX:-M_PI/2 y:0 z:0 duration:0.2]completionHandler:^(){
+                    [R_arm runAction:[SCNAction rotateByX:M_PI/2 y:0 z:0 duration:0.2]];
+                }];
+            }];
+        }];
     } else {
         // superman sayhello
         [R_arm runAction:[SCNAction rotateByX:0 y:0 z:+M_PI/2 duration:0.1] completionHandler:^(){
