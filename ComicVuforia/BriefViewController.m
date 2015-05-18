@@ -21,7 +21,7 @@ BOOL isPad() {
     if (isPad()) {
         _finishedButton.titleLabel.font = [UIFont systemFontOfSize:60];
         
-        _textView.font = [UIFont systemFontOfSize:48];
+        _textView.font = [UIFont systemFontOfSize:40];
         _leftSpace.constant = 100;
         _rightSpace.constant = 100;
         _topSpace.constant = 100;

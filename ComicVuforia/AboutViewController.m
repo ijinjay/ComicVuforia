@@ -20,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *closeRightSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *closeTopSpace;
 @property (weak, nonatomic) IBOutlet UITextView *versionTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLeft;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentRight;
 
 @end
 
@@ -40,6 +43,9 @@
         _aboutTopSpace.constant = 100;
         _closeRightSpace.constant = 100;
         _closeTopSpace.constant = 100;
+        _contentHeight.constant = 240;
+        _contentLeft.constant = 50;
+        _contentRight.constant = 50;
         _versionTextView.font = [UIFont systemFontOfSize:50];
     }
 }

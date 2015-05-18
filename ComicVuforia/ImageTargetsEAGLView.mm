@@ -20,7 +20,6 @@ and other countries. Trademarks of QUALCOMM Incorporated are used with permissio
 
 #import "ImageTargetsEAGLView.h"
 #import "SampleApplicationUtils.h"
-#import "SampleMath.h"
 #import <GLKit/GLKit.h>
 
 NSDictionary *readPlist(NSString *keyWord) {
