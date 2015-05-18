@@ -32,19 +32,9 @@
 		88186E7F1AAAEA1F00FD3A53 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */; };
 		88186E811AAAEA3100FD3A53 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */; };
 		88186E851AAAEB3000FD3A53 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */; };
-		881B6B0F1AB949810057A746 /* Histoire.dae in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B011AB949810057A746 /* Histoire.dae */; };
-		881B6B101AB949810057A746 /* Histoire.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B021AB949810057A746 /* Histoire.png */; };
-		881B6B131AB949810057A746 /* acce.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B061AB949810057A746 /* acce.png */; };
-		881B6B141AB949810057A746 /* base_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B071AB949810057A746 /* base_00.png */; };
-		881B6B151AB949810057A746 /* body_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B081AB949810057A746 /* body_c.png */; };
-		881B6B161AB949810057A746 /* brow_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B091AB949810057A746 /* brow_00.png */; };
-		881B6B171AB949810057A746 /* eyelid_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0A1AB949810057A746 /* eyelid_00.png */; };
-		881B6B181AB949810057A746 /* face_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0B1AB949810057A746 /* face_c.png */; };
-		881B6B191AB949810057A746 /* hair_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0C1AB949810057A746 /* hair_c.png */; };
-		881B6B1A1AB949810057A746 /* mouth_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0D1AB949810057A746 /* mouth_00.png */; };
-		881B6B1B1AB949810057A746 /* pupil_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 881B6B0E1AB949810057A746 /* pupil_00.png */; };
 		884106971B01CEC900E71C1B /* ComicVuforia.dat in Resources */ = {isa = PBXBuildFile; fileRef = 884106951B01CEC900E71C1B /* ComicVuforia.dat */; };
 		884106981B01CEC900E71C1B /* ComicVuforia.xml in Resources */ = {isa = PBXBuildFile; fileRef = 884106961B01CEC900E71C1B /* ComicVuforia.xml */; };
+		88430EC01B098A3600E883FA /* Naruto.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 88430EBF1B098A3600E883FA /* Naruto.scnassets */; };
 		886BE8311AABEAFA0049F68B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 886BE8301AABEAFA0049F68B /* MBProgressHUD.m */; };
 		886EF7C11AB921A500785CF1 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BD1AB921A500785CF1 /* AboutViewController.m */; };
 		886EF7C21AB921A500785CF1 /* BriefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EF7BF1AB921A500785CF1 /* BriefViewController.m */; };
@@ -55,6 +45,7 @@
 		889A91E31ABDA436000D8783 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E21ABDA436000D8783 /* CoreLocation.framework */; };
 		889A91E51ABDA489000D8783 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A91E41ABDA489000D8783 /* libz.dylib */; };
 		88B4A5271AB708FD00DD1756 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B4A5261AB708FD00DD1756 /* GLKit.framework */; };
+		88B7EF751B09918200406586 /* Hinata.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 88B7EF741B09918200406586 /* Hinata.scnassets */; };
 		88BD1F421AF0BA8C0066CA4F /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 88BD1F381AF0BA8C0066CA4F /* ioapi.c */; };
 		88BD1F431AF0BA8C0066CA4F /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 88BD1F3A1AF0BA8C0066CA4F /* mztools.c */; };
 		88BD1F441AF0BA8C0066CA4F /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 88BD1F3C1AF0BA8C0066CA4F /* unzip.c */; };
@@ -74,6 +65,18 @@
 		88D256B61AAAE343001261F8 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D256B51AAAE343001261F8 /* iflyMSC.framework */; };
 		88D4C6BA1ABFF006002B782E /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */; };
 		88DF22041ABBFE1F00B65E21 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DF21F61ABBFE1F00B65E21 /* Reachability.m */; };
+		88E3CE231B09BAA9008B0733 /* Histoire.dae in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE171B09BAA9008B0733 /* Histoire.dae */; };
+		88E3CE241B09BAA9008B0733 /* Histoire.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE181B09BAA9008B0733 /* Histoire.png */; };
+		88E3CE251B09BAA9008B0733 /* acce.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1A1B09BAA9008B0733 /* acce.png */; };
+		88E3CE261B09BAA9008B0733 /* base_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1B1B09BAA9008B0733 /* base_00.png */; };
+		88E3CE271B09BAA9008B0733 /* body_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1C1B09BAA9008B0733 /* body_c.png */; };
+		88E3CE281B09BAA9008B0733 /* brow_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1D1B09BAA9008B0733 /* brow_00.png */; };
+		88E3CE291B09BAA9008B0733 /* eyelid_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1E1B09BAA9008B0733 /* eyelid_00.png */; };
+		88E3CE2A1B09BAA9008B0733 /* face_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE1F1B09BAA9008B0733 /* face_c.png */; };
+		88E3CE2B1B09BAA9008B0733 /* hair_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE201B09BAA9008B0733 /* hair_c.png */; };
+		88E3CE2C1B09BAA9008B0733 /* mouth_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE211B09BAA9008B0733 /* mouth_00.png */; };
+		88E3CE2D1B09BAA9008B0733 /* pupil_00.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE221B09BAA9008B0733 /* pupil_00.png */; };
+		88E3CE311B09BF6E008B0733 /* Miku.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E3CE301B09BF6E008B0733 /* Miku.scnassets */; };
 		88E91C401AB1667C00606084 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E91C3F1AB1667C00606084 /* SceneKit.framework */; };
 		88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BE81AF3428F00E57BC0 /* lf.jpg */; };
 		88EB1BF41AF346B700E57BC0 /* return.png in Resources */ = {isa = PBXBuildFile; fileRef = 88EB1BED1AF346B700E57BC0 /* return.png */; };
@@ -140,19 +143,9 @@
 		88186E7E1AAAEA1F00FD3A53 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		88186E801AAAEA3100FD3A53 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		88186E841AAAEB3000FD3A53 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		881B6B011AB949810057A746 /* Histoire.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = Histoire.dae; sourceTree = "<group>"; };
-		881B6B021AB949810057A746 /* Histoire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Histoire.png; sourceTree = "<group>"; };
-		881B6B061AB949810057A746 /* acce.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = acce.png; sourceTree = "<group>"; };
-		881B6B071AB949810057A746 /* base_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_00.png; sourceTree = "<group>"; };
-		881B6B081AB949810057A746 /* body_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_c.png; sourceTree = "<group>"; };
-		881B6B091AB949810057A746 /* brow_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brow_00.png; sourceTree = "<group>"; };
-		881B6B0A1AB949810057A746 /* eyelid_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eyelid_00.png; sourceTree = "<group>"; };
-		881B6B0B1AB949810057A746 /* face_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_c.png; sourceTree = "<group>"; };
-		881B6B0C1AB949810057A746 /* hair_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hair_c.png; sourceTree = "<group>"; };
-		881B6B0D1AB949810057A746 /* mouth_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouth_00.png; sourceTree = "<group>"; };
-		881B6B0E1AB949810057A746 /* pupil_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pupil_00.png; sourceTree = "<group>"; };
 		884106951B01CEC900E71C1B /* ComicVuforia.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = ComicVuforia.dat; path = Assets/ImageTargets/ComicVuforia.dat; sourceTree = "<group>"; };
 		884106961B01CEC900E71C1B /* ComicVuforia.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ComicVuforia.xml; path = Assets/ImageTargets/ComicVuforia.xml; sourceTree = "<group>"; };
+		88430EBF1B098A3600E883FA /* Naruto.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Naruto.scnassets; sourceTree = "<group>"; };
 		886BE82F1AABEAFA0049F68B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		886BE8301AABEAFA0049F68B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		886EF7BC1AB921A500785CF1 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -167,6 +160,7 @@
 		889A91E21ABDA436000D8783 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		889A91E41ABDA489000D8783 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		88B4A5261AB708FD00DD1756 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		88B7EF741B09918200406586 /* Hinata.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Hinata.scnassets; sourceTree = "<group>"; };
 		88BD1F371AF0BA8C0066CA4F /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		88BD1F381AF0BA8C0066CA4F /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		88BD1F391AF0BA8C0066CA4F /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -204,6 +198,18 @@
 		88D4C6B91ABFF006002B782E /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		88DF21F51ABBFE1F00B65E21 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		88DF21F61ABBFE1F00B65E21 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		88E3CE171B09BAA9008B0733 /* Histoire.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = Histoire.dae; sourceTree = "<group>"; };
+		88E3CE181B09BAA9008B0733 /* Histoire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Histoire.png; sourceTree = "<group>"; };
+		88E3CE1A1B09BAA9008B0733 /* acce.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = acce.png; sourceTree = "<group>"; };
+		88E3CE1B1B09BAA9008B0733 /* base_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base_00.png; sourceTree = "<group>"; };
+		88E3CE1C1B09BAA9008B0733 /* body_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_c.png; sourceTree = "<group>"; };
+		88E3CE1D1B09BAA9008B0733 /* brow_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brow_00.png; sourceTree = "<group>"; };
+		88E3CE1E1B09BAA9008B0733 /* eyelid_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eyelid_00.png; sourceTree = "<group>"; };
+		88E3CE1F1B09BAA9008B0733 /* face_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_c.png; sourceTree = "<group>"; };
+		88E3CE201B09BAA9008B0733 /* hair_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hair_c.png; sourceTree = "<group>"; };
+		88E3CE211B09BAA9008B0733 /* mouth_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouth_00.png; sourceTree = "<group>"; };
+		88E3CE221B09BAA9008B0733 /* pupil_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pupil_00.png; sourceTree = "<group>"; };
+		88E3CE301B09BF6E008B0733 /* Miku.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Miku.scnassets; sourceTree = "<group>"; };
 		88E91C3F1AB1667C00606084 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		88EB1BE81AF3428F00E57BC0 /* lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lf.jpg; sourceTree = "<group>"; };
 		88EB1BED1AF346B700E57BC0 /* return.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = return.png; sourceTree = "<group>"; };
@@ -283,6 +289,10 @@
 		3049AB8B1AA84AF0006DB915 /* ComicVuforia */ = {
 			isa = PBXGroup;
 			children = (
+				88E3CE301B09BF6E008B0733 /* Miku.scnassets */,
+				88E3CE161B09BAA9008B0733 /* Histoire */,
+				88B7EF741B09918200406586 /* Hinata.scnassets */,
+				88430EBF1B098A3600E883FA /* Naruto.scnassets */,
 				88C925B41B038DAA002E9F24 /* AppleWatch.scnassets */,
 				88F6F8C91B03409E000A3778 /* Baymax.scnassets */,
 				88EC5A761B0360BD00BC7ADD /* Baymax2.scnassets */,
@@ -291,7 +301,6 @@
 				88EC5A791B0360BD00BC7ADD /* SpongeBob.scnassets */,
 				88EC5A7C1B0360BD00BC7ADD /* Serena.scnassets */,
 				88EC5A7D1B0360BD00BC7ADD /* Wally.scnassets */,
-				881B6B001AB949810057A746 /* Histoire */,
 				88EB1BEA1AF3467700E57BC0 /* Pictures */,
 				88BD1F641AF0BBC20066CA4F /* model.plist */,
 				88BD1F471AF0BAE40066CA4F /* AFNetworking */,
@@ -308,7 +317,8 @@
 				886EF7BD1AB921A500785CF1 /* AboutViewController.m */,
 				886EF7BE1AB921A500785CF1 /* BriefViewController.h */,
 				886EF7BF1AB921A500785CF1 /* BriefViewController.m */,
-				88DF21E41ABBFC8400B65E21 /* InSightFile */,
+				88DF21F51ABBFE1F00B65E21 /* Reachability.h */,
+				88DF21F61ABBFE1F00B65E21 /* Reachability.m */,
 				3066194A1AA937CE00F4D8C9 /* Application */,
 				306619431AA9371900F4D8C9 /* QCARApplication */,
 				3049AB991AA84AF0006DB915 /* Images.xcassets */,
@@ -410,32 +420,6 @@
 			name = Framwork;
 			sourceTree = "<group>";
 		};
-		881B6B001AB949810057A746 /* Histoire */ = {
-			isa = PBXGroup;
-			children = (
-				881B6B011AB949810057A746 /* Histoire.dae */,
-				881B6B021AB949810057A746 /* Histoire.png */,
-				881B6B051AB949810057A746 /* images */,
-			);
-			path = Histoire;
-			sourceTree = "<group>";
-		};
-		881B6B051AB949810057A746 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				881B6B061AB949810057A746 /* acce.png */,
-				881B6B071AB949810057A746 /* base_00.png */,
-				881B6B081AB949810057A746 /* body_c.png */,
-				881B6B091AB949810057A746 /* brow_00.png */,
-				881B6B0A1AB949810057A746 /* eyelid_00.png */,
-				881B6B0B1AB949810057A746 /* face_c.png */,
-				881B6B0C1AB949810057A746 /* hair_c.png */,
-				881B6B0D1AB949810057A746 /* mouth_00.png */,
-				881B6B0E1AB949810057A746 /* pupil_00.png */,
-			);
-			path = images;
-			sourceTree = "<group>";
-		};
 		88BD1F351AF0BA8C0066CA4F /* SSZipArchive */ = {
 			isa = PBXGroup;
 			children = (
@@ -488,13 +472,30 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
-		88DF21E41ABBFC8400B65E21 /* InSightFile */ = {
+		88E3CE161B09BAA9008B0733 /* Histoire */ = {
 			isa = PBXGroup;
 			children = (
-				88DF21F51ABBFE1F00B65E21 /* Reachability.h */,
-				88DF21F61ABBFE1F00B65E21 /* Reachability.m */,
+				88E3CE171B09BAA9008B0733 /* Histoire.dae */,
+				88E3CE181B09BAA9008B0733 /* Histoire.png */,
+				88E3CE191B09BAA9008B0733 /* images */,
 			);
-			name = InSightFile;
+			path = Histoire;
+			sourceTree = "<group>";
+		};
+		88E3CE191B09BAA9008B0733 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				88E3CE1A1B09BAA9008B0733 /* acce.png */,
+				88E3CE1B1B09BAA9008B0733 /* base_00.png */,
+				88E3CE1C1B09BAA9008B0733 /* body_c.png */,
+				88E3CE1D1B09BAA9008B0733 /* brow_00.png */,
+				88E3CE1E1B09BAA9008B0733 /* eyelid_00.png */,
+				88E3CE1F1B09BAA9008B0733 /* face_c.png */,
+				88E3CE201B09BAA9008B0733 /* hair_c.png */,
+				88E3CE211B09BAA9008B0733 /* mouth_00.png */,
+				88E3CE221B09BAA9008B0733 /* pupil_00.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		88EB1BEA1AF3467700E57BC0 /* Pictures */ = {
@@ -592,37 +593,40 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88E3CE2C1B09BAA9008B0733 /* mouth_00.png in Resources */,
+				88430EC01B098A3600E883FA /* Naruto.scnassets in Resources */,
 				88EB1BFC1AF3506F00E57BC0 /* info.png in Resources */,
 				88BD1F651AF0BBC20066CA4F /* model.plist in Resources */,
-				881B6B141AB949810057A746 /* base_00.png in Resources */,
+				88E3CE291B09BAA9008B0733 /* eyelid_00.png in Resources */,
+				88E3CE271B09BAA9008B0733 /* body_c.png in Resources */,
+				88E3CE2B1B09BAA9008B0733 /* hair_c.png in Resources */,
 				88EC5A7F1B0360BD00BC7ADD /* Lnuyasha.scnassets in Resources */,
-				881B6B1A1AB949810057A746 /* mouth_00.png in Resources */,
 				88EC5A841B0360BD00BC7ADD /* Serena.scnassets in Resources */,
 				88EC5A851B0360BD00BC7ADD /* Wally.scnassets in Resources */,
+				88E3CE251B09BAA9008B0733 /* acce.png in Resources */,
+				88E3CE241B09BAA9008B0733 /* Histoire.png in Resources */,
 				88EC5A811B0360BD00BC7ADD /* SpongeBob.scnassets in Resources */,
+				88E3CE311B09BF6E008B0733 /* Miku.scnassets in Resources */,
 				886EF7C31AB921A500785CF1 /* gtk_cancel.png in Resources */,
-				881B6B101AB949810057A746 /* Histoire.png in Resources */,
+				88E3CE2D1B09BAA9008B0733 /* pupil_00.png in Resources */,
+				88E3CE281B09BAA9008B0733 /* brow_00.png in Resources */,
 				88EB1BF71AF346B700E57BC0 /* switch.png in Resources */,
 				3049AB981AA84AF0006DB915 /* Main.storyboard in Resources */,
 				88EB1BFA1AF349F700E57BC0 /* snap.png in Resources */,
-				881B6B131AB949810057A746 /* acce.png in Resources */,
-				881B6B151AB949810057A746 /* body_c.png in Resources */,
 				88F6F8CA1B03409E000A3778 /* Baymax.scnassets in Resources */,
 				884106971B01CEC900E71C1B /* ComicVuforia.dat in Resources */,
 				88C925B51B038DAA002E9F24 /* AppleWatch.scnassets in Resources */,
+				88E3CE261B09BAA9008B0733 /* base_00.png in Resources */,
 				88EB1C001AF35FA400E57BC0 /* voice.png in Resources */,
+				88E3CE2A1B09BAA9008B0733 /* face_c.png in Resources */,
 				88965EF41B08360C00E03A6D /* Launch Screen.xib in Resources */,
 				884106981B01CEC900E71C1B /* ComicVuforia.xml in Resources */,
-				881B6B171AB949810057A746 /* eyelid_00.png in Resources */,
-				881B6B191AB949810057A746 /* hair_c.png in Resources */,
-				881B6B1B1AB949810057A746 /* pupil_00.png in Resources */,
+				88B7EF751B09918200406586 /* Hinata.scnassets in Resources */,
 				88EB1BFE1AF35C7B00E57BC0 /* smile.png in Resources */,
 				3049AB9A1AA84AF0006DB915 /* Images.xcassets in Resources */,
-				881B6B0F1AB949810057A746 /* Histoire.dae in Resources */,
 				88EB1BE91AF3428F00E57BC0 /* lf.jpg in Resources */,
-				881B6B181AB949810057A746 /* face_c.png in Resources */,
+				88E3CE231B09BAA9008B0733 /* Histoire.dae in Resources */,
 				88EC5A801B0360BD00BC7ADD /* Mario.scnassets in Resources */,
-				881B6B161AB949810057A746 /* brow_00.png in Resources */,
 				88EC5A7E1B0360BD00BC7ADD /* Baymax2.scnassets in Resources */,
 				88EB1BF41AF346B700E57BC0 /* return.png in Resources */,
 			);

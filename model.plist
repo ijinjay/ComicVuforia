@@ -80,11 +80,11 @@
 			<integer>0</integer>
 		</dict>
 		<key>scale</key>
-		<integer>1</integer>
+		<integer>2</integer>
 		<key>rootNode</key>
 		<string>root</string>
 		<key>angleX</key>
-		<integer>135</integer>
+		<integer>180</integer>
 		<key>angleY</key>
 		<integer>-90</integer>
 	</dict>
@@ -109,6 +109,34 @@
 		</dict>
 		<key>scale</key>
 		<integer>100</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>0</integer>
+		<key>angleY</key>
+		<integer>80</integer>
+	</dict>
+	<key>Miku</key>
+	<dict>
+		<key>picPath</key>
+		<string>Miku.scnassets/Miku.png</string>
+		<key>picture</key>
+		<string>Miku</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>Miku.scnassets/Miku.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>20</integer>
 		<key>rootNode</key>
 		<string>root</string>
 		<key>angleX</key>
@@ -227,6 +255,62 @@
 		<integer>0</integer>
 		<key>angleY</key>
 		<integer>80</integer>
+	</dict>
+	<key>Naruto</key>
+	<dict>
+		<key>picPath</key>
+		<string>Naruto.scnassets/Naruto.png</string>
+		<key>picture</key>
+		<string>Naruto</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>Naruto.scnassets/Naruto.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>80</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>-90</integer>
+		<key>angleY</key>
+		<integer>90</integer>
+	</dict>
+	<key>Hinata</key>
+	<dict>
+		<key>picPath</key>
+		<string>Hinata.scnassets/Hinata.png</string>
+		<key>picture</key>
+		<string>Hinata</string>
+		<key>version</key>
+		<integer>1</integer>
+		<key>filePath</key>
+		<string>Hinata.scnassets/Hinata.dae</string>
+		<key>fixedPosition</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>z</key>
+			<integer>0</integer>
+		</dict>
+		<key>scale</key>
+		<integer>80</integer>
+		<key>rootNode</key>
+		<string>root</string>
+		<key>angleX</key>
+		<integer>-90</integer>
+		<key>angleY</key>
+		<integer>90</integer>
 	</dict>
 	<key>AppleWatch</key>
 	<dict>
