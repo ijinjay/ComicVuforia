@@ -83,7 +83,7 @@ NSDictionary *readPlist(NSString *keyWord) {
             NSLog(@"scene is not nil, %@", _scene);
         }
         
-        _scnRender = [SCNRenderer rendererWithContext:(void *)context options:nil];
+        _scnRender = [SCNRenderer rendererWithContext:((void *)context) options:nil];
         // create and add a camera to the scene
         _cameraNode = [SCNNode node];
         _cameraNode.camera = [SCNCamera camera];
